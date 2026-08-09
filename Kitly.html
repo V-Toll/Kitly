@@ -1,0 +1,3912 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <!-- Favicon v3.4.0 - Zentriertes Trikot mit Checkmark -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPCEtLSBIaW50ZXJncnVuZDogRnXDn2JhbGxmZWxkLUdyw7xuIC0tPgogIDxyZWN0IHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgZmlsbD0iIzBBNzM0QyIgcng9IjQiLz4KCiAgPCEtLSBUcmlrb3QtRm9ybSAoemVudHJpZXJ0KSAtLT4KICA8IS0tIFNjaHVsdGVybiB1bmQgS8O2cnBlciAtLT4KICA8cGF0aCBkPSJNIDEwIDEwIEwgMTEgOCBMIDE0IDkgTCAxNiA3IEwgMTggOSBMIDIxIDggTCAyMiAxMCBMIDIyIDIyIFEgMjIgMjUgMTkgMjUgTCAxMyAyNSBRIDEwIDI1IDEwIDIyIFoiIAogICAgICAgIGZpbGw9IiNmZmZmZmYiIHN0cm9rZT0iIzBBNzM0QyIgc3Ryb2tlLXdpZHRoPSIwLjUiLz4KCiAgPCEtLSBWLUF1c3NjaG5pdHQgLS0+CiAgPHBhdGggZD0iTSAxNCA5IEwgMTYgMTIgTCAxOCA5IiBmaWxsPSJub25lIiBzdHJva2U9IiMwQTczNEMiIHN0cm9rZS13aWR0aD0iMS4yIi8+CgogIDwhLS0gTGlua2VyIMOEcm1lbCAtLT4KICA8cGF0aCBkPSJNIDEwIDEwIEwgOCAxMSBMIDggMTUgTCAxMCAxNCBaIiBmaWxsPSIjZmZmZmZmIiBzdHJva2U9IiMwQTczNEMiIHN0cm9rZS13aWR0aD0iMC41Ii8+CgogIDwhLS0gUmVjaHRlciDDhHJtZWwgLS0+CiAgPHBhdGggZD0iTSAyMiAxMCBMIDI0IDExIEwgMjQgMTUgTCAyMiAxNCBaIiBmaWxsPSIjZmZmZmZmIiBzdHJva2U9IiMwQTczNEMiIHN0cm9rZS13aWR0aD0iMC41Ii8+CgogIDwhLS0gQ2hlY2ttYXJrIChmw7xyICJBYmhha2VuIi1GdW5rdGlvbmFsaXTDpHQpIC0tPgogIDxwYXRoIGQ9Ik0gMTIgMTcgTCAxNC41IDIwIEwgMjAgMTQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzRDQUY1MCIgc3Ryb2tlLXdpZHRoPSIyLjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L3N2Zz4=">
+  <!-- Fallback für ältere Browser -->
+  <link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAABjElEQVR4nO2WS0sDMRSFv7pQcOPChQvBhW5c+QNc+QdcuRFXLlz5A1z5A1y5cOVCcOHChQsXLlxYEBcuXLgQXLhwoQsXLlxYEBe6cGGh0JqZNmPaTJrJTJKZ5MDh3tx7kpub3JsA/oVmYBxYBKrACXAMrAKzwCDQWu8CzcAEsA3kgSfgBbgHdoAZoK9eBVqAaWAP+AC+gUfgAFgGxoC2ehNoByaBA+AL+AHugV1gHuiuJ4EOYArYBz6BV+AW2AImga56EegCZoAt4B14A26ANWAC6KwHgR5gGrgCXoAbYB2YAHprcXIN6AXmgEvgGbgC1oFhoCcQvxvoA+aAS+AJuKzU9wbij/p+zwG1H9u/kAz5PgPDgfjRwN/dBvQ7l4V6HgxsU8CDcz19zhXU8wSO09N/GjaqyFfP4+FO/BRwXkW+ep6A5/Tq7VaRr54n4Dm9evtV5KvnCXhOr97WqshXzxPwnF691SryVc3zBJqAQWAEGHbu1btxvn8Dfh1/AV/0hY6if5idAAAAAElFTkSuQmCC">
+  <title>Kitly</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root, :root[data-theme="dark"] {
+      /* Dunkelmodus = ursprüngliche „Pitch"-Palette (tiefer Rasen bei Nacht) */
+      --pitch-dark: #07261D;
+      --pitch-shadow: #060D0B;
+      --pitch-main: #07593B;
+      --pitch-bright: #0A734C;
+      --pitch-highlight: #81A69F;
+      --line-white: #ffffff;
+      --text-primary: #ffffff;
+      --text-secondary: #81A69F;
+    }
+    /* v6.6.0: Hellmodus – gleiche grüne Rasen-Identität, nur hell & luftig.
+       Dieselben Variablen, andere Werte: Flächen werden hell, Text dunkel,
+       das Akzent-Grün (--pitch-bright) bleibt. JS setzt data-theme (light/dark)
+       und löst „auto" über prefers-color-scheme auf. */
+    :root[data-theme="light"] {
+      --pitch-shadow: #E7F0E9;   /* hellster Ton: Seiten-/Header-Hintergrund */
+      --pitch-dark:   #ffffff;    /* Karten-/Panel-Fläche */
+      --pitch-main:   #DBEADE;   /* sanfte Sage-Fläche (Hover, leere Zustände) */
+      --pitch-bright: #0A734C;   /* Akzent-Grün – unverändert */
+      --pitch-highlight: #4F6F64;/* gedämpfter Text/Rahmen (dunkleres Sage) */
+      --line-white:   #2C4A3C;   /* Linien & Titeltext -> dunkel auf hell */
+      --text-primary: #0C241B;
+      --text-secondary: #4F6F64;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    
+    /* Header */
+    header {
+      position: relative;
+      padding: 15px 20px;
+      background: linear-gradient(135deg, var(--pitch-shadow), var(--pitch-dark));
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 3px solid var(--line-white);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .header-actions {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .primary-btn, .secondary-btn {
+      padding: 9px 18px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .primary-btn {
+      background: linear-gradient(135deg, var(--pitch-bright), var(--pitch-highlight));
+      color: var(--pitch-shadow);
+      box-shadow: 0 2px 10px rgba(10,115,76,0.4);
+    }
+
+    .primary-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(10,115,76,0.6);
+    }
+
+    .secondary-btn {
+      background: var(--pitch-dark);
+      color: var(--line-white);
+    }
+
+    .secondary-btn:hover {
+      background: var(--pitch-main);
+      transform: translateY(-2px);
+    }
+
+    .filter-panel {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+      padding: 0;
+    }
+
+    .filter-panel.collapsed {
+      max-height: 0;
+      padding: 0;
+    }
+
+    .filter-panel:not(.collapsed) {
+      max-height: 700px;
+      padding: 15px 0;
+    }
+
+    .filter-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px 14px;
+      margin-bottom: 14px;
+    }
+
+    .filter-grid label {
+      display: block;
+      font-size: 10px;
+      color: var(--pitch-highlight);
+      margin-bottom: 4px;
+      font-weight: 600;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      opacity: 0.85;
+    }
+
+    /* v6.2.4: schlankere, dezentere Filterfelder (1px-Rahmen statt kräftigem Weiß). */
+    .filter-grid input[type="date"],
+    .filter-grid input[type="number"],
+    .filter-grid select {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(7, 38, 29, 0.55);
+      color: var(--text-primary);
+      font-size: 13px;
+      font-weight: 500;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    .filter-grid input[type="date"]:hover,
+    .filter-grid input[type="number"]:hover,
+    .filter-grid select:hover {
+      border-color: rgba(129, 166, 159, 0.5);
+    }
+
+    .filter-grid input[type="date"]:focus,
+    .filter-grid input[type="number"]:focus,
+    .filter-grid select:focus {
+      outline: none;
+      transform: none;
+      border-color: var(--pitch-highlight);
+      box-shadow: 0 0 0 3px rgba(129, 166, 159, 0.18);
+      background: rgba(7, 38, 29, 0.78);
+    }
+
+    .filter-grid input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      padding: 0;
+      border: none;
+      margin-right: 8px;
+      accent-color: var(--pitch-bright);
+      cursor: pointer;
+      vertical-align: middle;
+    }
+
+    /* v6.3: Thematische Gruppierung der Einstellungen (Datenabruf / Filter / Darstellung). */
+    .filter-groups {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+    .filter-group {
+      flex: 1 1 240px;
+      min-width: 0;
+      margin: 0;
+      padding: 10px 14px 14px;
+      border: 1px solid rgba(129, 166, 159, 0.22);
+      border-radius: 10px;
+      background: rgba(7, 38, 29, 0.28);
+    }
+    .filter-group > legend {
+      padding: 0 6px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      color: var(--pitch-highlight);
+    }
+    .filter-group .filter-grid {
+      margin-bottom: 0;
+      gap: 10px 12px;
+      align-items: end; /* Checkboxen an Feld-Unterkante ausrichten */
+    }
+    /* Kompakte Inline-Checkbox (ersetzt den großen Kasten). */
+    .filter-check {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 0;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--pitch-highlight);
+      cursor: pointer;
+      user-select: none;
+    }
+    .filter-check input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      margin: 0;
+      padding: 0;
+      border: none;
+      accent-color: var(--pitch-bright);
+      cursor: pointer;
+    }
+
+    #notice {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 13px;
+      color: var(--pitch-highlight);
+    }
+
+
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      margin: 0;
+      background: linear-gradient(135deg, var(--pitch-shadow) 0%, var(--pitch-dark) 25%, var(--pitch-main) 50%, var(--pitch-dark) 75%, var(--pitch-shadow) 100%);
+      background-size: 400% 400%;
+      animation: pitchGlow 20s ease infinite;
+      color: var(--text-primary);
+      min-height: 100vh;
+      position: relative;
+    }
+
+    @keyframes pitchGlow {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 50px,
+        rgba(10, 115, 76, 0.1) 50px,
+        rgba(10, 115, 76, 0.1) 100px
+      );
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    header {
+      padding: 20px;
+      background: linear-gradient(135deg, var(--pitch-shadow) 0%, var(--pitch-dark) 100%);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 3px solid var(--line-white);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), inset 0 -2px 10px rgba(129, 166, 159, 0.2);
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+
+    header.collapsed {
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+
+    header.collapsed h1 {
+      font-size: 18px;
+      margin: 0;
+    }
+
+    header.collapsed .title-icon {
+      font-size: 20px;
+    }
+
+    header.collapsed .title-badge {
+      font-size: 9px;
+      padding: 2px 6px;
+    }
+
+
+    header.collapsed::after {
+      content: '▼ Klicken zum Erweitern';
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 11px;
+      color: var(--pitch-highlight);
+      font-weight: 600;
+      animation: pulse 2s ease infinite;
+    }
+    /* v6.6.0: englische Variante des Aufklapp-Hinweises (lang wird per JS gesetzt). */
+    :root[lang="en"] header.collapsed::after { content: '▼ Click to expand'; }
+
+    h1 {
+      margin: 0 0 16px 0;
+      font-size: 28px;
+      color: var(--line-white);
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      position: relative;
+    }
+
+    .title-icon {
+      font-size: 32px;
+      animation: spin 3s linear infinite;
+      filter: drop-shadow(0 0 10px rgba(129, 166, 159, 0.6));
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .title-main {
+      background: linear-gradient(135deg, var(--line-white) 0%, var(--pitch-highlight) 50%, var(--line-white) 100%);
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradientShift 3s ease infinite;
+      text-shadow: none;
+      font-weight: 900;
+    }
+
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .title-badge {
+      background: linear-gradient(135deg, var(--pitch-bright) 0%, var(--pitch-highlight) 100%);
+      color: white;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 2px 8px rgba(255, 68, 68, 0.4);
+      animation: pulse 2s ease infinite;
+      border: 2px solid var(--line-white);
+    }
+
+    @keyframes pulse {
+      0%, 100% { 
+        transform: scale(1);
+        box-shadow: 0 2px 8px rgba(255, 68, 68, 0.4);
+      }
+      50% { 
+        transform: scale(1.05);
+        box-shadow: 0 4px 12px rgba(255, 68, 68, 0.6);
+      }
+    }
+
+    
+
+
+    /* v6.2.5: Einheitliche, dezente Basis für Eingaben (Buttons mit eigener Klasse
+       überschreiben dies). Feiner 1px-Rahmen statt kräftigem Weiß, weniger Padding. */
+    input, select, button {
+      padding: 8px 11px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(7, 38, 29, 0.55);
+      color: var(--text-primary);
+      font-size: 13px;
+      transition: all 0.2s ease;
+      font-weight: 500;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: var(--pitch-highlight);
+      box-shadow: 0 0 0 3px rgba(129, 166, 159, 0.18);
+    }
+
+    input:hover, select:hover {
+      border-color: rgba(129, 166, 159, 0.5);
+    }
+
+    button.primary {
+      background: linear-gradient(135deg, var(--pitch-bright) 0%, var(--pitch-highlight) 100%);
+      border: 2px solid var(--line-white);
+      cursor: pointer;
+      font-weight: 700;
+      color: var(--pitch-shadow);
+      text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3);
+      box-shadow: 0 4px 15px rgba(10, 115, 76, 0.4);
+    }
+
+    button.primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(10, 115, 76, 0.6);
+      background: linear-gradient(135deg, var(--pitch-highlight) 0%, var(--pitch-bright) 100%);
+    }
+
+    button.primary:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 10px rgba(10, 115, 76, 0.4);
+    }
+
+    .wrap {
+      padding: 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .grid {
+      display: grid;
+      gap: 28px;
+    }
+
+    .team-group {
+      border: 3px solid var(--line-white);
+      border-radius: 12px;
+      background: linear-gradient(145deg, var(--pitch-shadow) 0%, var(--pitch-dark) 50%, var(--pitch-main) 100%);
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .team-group::before,
+    .team-group::after {
+      content: '';
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      background: var(--line-white);
+      border-radius: 50%;
+      z-index: 1;
+    }
+
+    .team-group::before {
+      top: -6px;
+      left: -6px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    }
+
+    .team-group::after {
+      top: -6px;
+      right: -6px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    }
+
+    .team-group:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      border-color: var(--pitch-highlight);
+    }
+
+    .team-header {
+      padding: 20px 26px;
+      background: linear-gradient(135deg, var(--pitch-bright) 0%, var(--pitch-main) 100%);
+      border-bottom: 3px solid var(--line-white);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .team-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 30px,
+        rgba(129, 166, 159, 0.1) 30px,
+        rgba(129, 166, 159, 0.1) 60px
+      );
+      pointer-events: none;
+    }
+
+    .team-title {
+      font-weight: 900;
+      font-size: 24px;
+      margin: 0;
+      color: var(--line-white);
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8), 0 0 20px rgba(129, 166, 159, 0.3);
+      position: relative;
+      z-index: 1;
+    }
+
+    .team-subtitle {
+      font-size: 14px;
+      color: var(--pitch-highlight);
+      margin: 10px 0 0 0;
+      font-weight: 600;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* v6.4.0: team-kits stapelt jetzt Saison-Blöcke untereinander. */
+    .team-kits {
+      padding: 20px 26px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      background: linear-gradient(to bottom, var(--pitch-dark), var(--pitch-shadow));
+    }
+    .season-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+      padding-bottom: 7px;
+      border-bottom: 1px solid rgba(129, 166, 159, 0.28);
+    }
+    .season-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--line-white);
+      letter-spacing: 0.3px;
+    }
+    .season-header .copy-infobox-btn { margin: 0 0 0 auto; } /* rechtsbündig, kein Top-Margin */
+    .season-kits {
+      display: grid;
+      /* Kitsets (Heim/Auswärts/…) nebeneinander wie in der Infobox, Umbruch bei schmal. */
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      align-items: start;
+      gap: 20px;
+    }
+
+    .kitset-card {
+      border: 2px solid var(--line-white);
+      border-radius: 10px;
+      background: var(--pitch-main);
+      overflow: hidden;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    }
+
+    .kitset-card:hover {
+      border-color: var(--pitch-highlight);
+      box-shadow: 0 6px 20px rgba(10, 115, 76, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .kitset-header {
+      padding: 14px 18px;
+      background: linear-gradient(90deg, var(--pitch-bright) 0%, var(--pitch-main) 100%);
+      border-bottom: 2px solid var(--line-white);
+    }
+
+    .kitset-title {
+      font-weight: 700;
+      font-size: 17px;
+      margin: 0;
+      color: var(--line-white);
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .kitset-subtitle {
+      font-size: 12px;
+      color: var(--pitch-highlight);
+      margin: 5px 0 0 0;
+      font-weight: 500;
+    }
+
+    .kitset-parts {
+      padding: 18px;
+      display: grid;
+      /* v6.0.3: Spaltenbreite folgt der eingestellten Thumb-Breite (--thumb-w). */
+      grid-template-columns: repeat(auto-fit, minmax(var(--thumb-w, 160px), 1fr));
+      gap: 14px;
+      background: var(--pitch-dark);
+    }
+
+    
+
+    .file-card {
+      border: 2px solid var(--line-white);
+      border-radius: 8px;
+      background: var(--pitch-shadow);
+      overflow: hidden;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+      cursor: pointer !important;
+    }
+
+    .file-card:hover {
+      border-color: var(--pitch-highlight);
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 8px 20px rgba(10, 115, 76, 0.3);
+    }
+
+    .file-card:active {
+      transform: translateY(-1px) scale(1.01);
+    }
+
+    .file-card:hover {
+      border-color: var(--pitch-highlight);
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 8px 20px rgba(10, 115, 76, 0.3);
+    }
+
+    .file-header {
+      padding: 10px 12px;
+      background: var(--pitch-bright);
+      border-bottom: 2px solid var(--line-white);
+      font-size: 13px;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .file-header a {
+      color: var(--line-white);
+      text-decoration: none;
+      transition: color 0.2s ease;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    }
+
+    .file-header a:hover {
+      color: var(--pitch-highlight);
+    }
+
+    .file-thumb {
+      /* v6.0.3: Vorschau-Höhe folgt der eingestellten Thumb-Breite (--thumb-w). */
+      height: var(--thumb-w, 110px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--pitch-main);
+      border: 2px dashed rgba(255, 255, 255, 0.3);
+      margin: 10px;
+      border-radius: 6px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .file-thumb::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 10px,
+        rgba(129, 166, 159, 0.05) 10px,
+        rgba(129, 166, 159, 0.05) 20px
+      );
+    }
+
+    .file-thumb img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      position: relative;
+      z-index: 1;
+    }
+    .file-thumb img.lazy-thumb { cursor: pointer; } /* v6.6.0: klickbar -> Commons-Dateiseite */
+
+    .file-meta {
+      padding: 8px 12px;
+      font-size: 11px;
+      color: var(--pitch-highlight);
+      border-top: 2px solid var(--line-white);
+      text-align: center;
+      background: var(--pitch-dark);
+      font-weight: 600;
+    }
+
+    .single-grid {
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+
+    /* v6.2.1: Trikotsets-Ansicht – Kitsets nebeneinander (wie Infobox), Umbruch bei schmalem Fenster. */
+    .kitset-grid {
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      align-items: start;
+    }
+
+    .card {
+      border: 3px solid var(--line-white);
+      border-radius: 12px;
+      background: linear-gradient(145deg, var(--pitch-shadow), var(--pitch-dark));
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+    }
+
+    .card:hover {
+      border-color: var(--pitch-highlight);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(10, 115, 76, 0.3);
+    }
+
+    .card-header {
+      padding: 14px 18px;
+      background: var(--pitch-bright);
+      border-bottom: 2px solid var(--line-white);
+    }
+
+    .card-title {
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--line-white);
+    }
+
+    .card-title a {
+      color: var(--line-white);
+      text-decoration: none;
+    }
+
+    .card-title a:hover {
+      color: var(--pitch-highlight);
+    }
+
+    .thumbs {
+      padding: 18px;
+      display: flex;
+      justify-content: center;
+      background: var(--pitch-main);
+    }
+
+    .thumb {
+      width: 100%;
+      height: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--pitch-dark);
+      border: 2px dashed var(--line-white);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .thumb img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    .meta {
+      padding: 14px 18px;
+      background: var(--pitch-dark);
+      border-top: 2px solid var(--line-white);
+      font-size: 12px;
+      color: var(--pitch-highlight);
+      font-weight: 600;
+    }
+
+    .loading {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(7, 38, 29, 0.95);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+    }
+
+    .loading .box {
+      background: var(--pitch-dark);
+      border: 3px solid var(--line-white);
+      padding: 24px 32px;
+      border-radius: 16px;
+      font-size: 18px;
+      color: var(--pitch-highlight);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
+      font-weight: 700;
+    }
+
+    #notice {
+      margin: 12px 0 0 0;
+      font-size: 13px;
+      color: var(--pitch-highlight);
+      font-weight: 500;
+    }
+
+    #notice a {
+      color: var(--line-white);
+      text-decoration: none;
+      font-weight: 700;
+      border-bottom: 2px solid var(--pitch-bright);
+      padding-bottom: 2px;
+    }
+
+    #notice a:hover {
+      color: var(--pitch-highlight);
+      border-bottom-color: var(--pitch-highlight);
+    }
+
+    .checkbox-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .checkbox-container input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      padding: 0;
+      margin: 0;
+      accent-color: var(--pitch-bright);
+      cursor: pointer;
+    }
+
+    .checkbox-container label {
+      margin-bottom: 0;
+      color: var(--pitch-highlight);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .filter-live {
+      background: var(--pitch-main) !important;
+      border-color: var(--pitch-highlight) !important;
+      box-shadow: 0 0 0 3px rgba(129, 166, 159, 0.2) !important;
+    }
+
+
+    @media (max-width: 768px) {
+
+      .team-header {
+        padding: 16px 18px;
+      }
+      .team-title {
+        font-size: 20px;
+      
+      h1 {
+        font-size: 20px;
+      }
+      .title-icon {
+        font-size: 24px;
+      }
+      .title-badge {
+        font-size: 9px;
+        padding: 3px 8px;
+      }
+      }
+      .kitset-parts {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      }
+      h1 {
+        font-size: 20px;
+      }
+      .title-icon {
+        font-size: 24px;
+      }
+      .title-badge {
+        font-size: 9px;
+        padding: 3px 8px;
+      }
+    }
+  
+
+    /* === GlobalUsage Button === */
+    .file-card {
+      position: relative;
+    }
+
+    .usage-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: rgba(10, 115, 76, 0.95);
+      color: white;
+      border: 2px solid white;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      cursor: pointer;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      z-index: 10;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .usage-btn:hover {
+      background: var(--pitch-bright);
+      transform: scale(1.15);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    }
+
+    /* GlobalUsage Modal */
+    .usage-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.85);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      padding: 20px;
+    }
+
+    .usage-modal.active {
+      display: flex;
+    }
+
+    .usage-content {
+      background: var(--pitch-dark);
+      border: 3px solid var(--pitch-bright);
+      border-radius: 12px;
+      max-width: 650px;
+      width: 100%;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+    }
+
+    .usage-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      border-bottom: 2px solid var(--pitch-bright);
+      background: rgba(10, 115, 76, 0.2);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .usage-header h2 {
+      margin: 0;
+      font-size: 20px;
+      color: var(--pitch-highlight);
+    }
+
+    .usage-close {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 32px;
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      border-radius: 6px;
+      transition: background 0.3s;
+    }
+
+    .usage-close:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .usage-body {
+      padding: 20px;
+    }
+
+    .usage-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .usage-wiki {
+      margin-bottom: 24px;
+    }
+
+    .usage-wiki-name {
+      font-weight: 700;
+      color: var(--pitch-highlight);
+      font-size: 16px;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid rgba(10, 115, 76, 0.3);
+    }
+
+    .usage-pages {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .usage-pages li {
+      padding: 12px 16px;
+      margin-bottom: 8px;
+      background: rgba(10, 115, 76, 0.2);
+      border-radius: 8px;
+      border-left: 4px solid var(--pitch-bright);
+      transition: all 0.3s;
+    }
+
+    .usage-pages li:hover {
+      background: rgba(10, 115, 76, 0.35);
+      transform: translateX(4px);
+    }
+
+    .usage-pages a {
+      color: var(--text-primary);
+      text-decoration: none;
+      font-size: 15px;
+    }
+
+    .usage-pages a:hover {
+      color: var(--pitch-highlight);
+    }
+
+    .usage-empty {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-primary);
+      opacity: 0.6;
+      font-size: 16px;
+    }
+
+    .usage-loading {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-primary);
+      font-size: 16px;
+    }
+
+    .usage-error {
+      padding: 24px;
+      background: rgba(255, 68, 68, 0.2);
+      border: 2px solid #ff4444;
+      border-radius: 8px;
+      color: white;
+      text-align: center;
+      margin: 20px 0;
+    }
+
+  .check-btn,.team-check-btn,.kitset-check-btn{background:rgba(7,38,29,.6);border:2px solid var(--pitch-highlight);color:var(--pitch-highlight);border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.3s}.check-btn{position:absolute;top:8px;left:8px;width:32px;height:32px;font-size:18px;z-index:10}.team-check-btn,.kitset-check-btn{position:absolute;top:15px;right:15px;width:36px;height:36px;font-size:20px;z-index:5}.check-btn:hover,.team-check-btn:hover,.kitset-check-btn:hover{background:rgba(129,166,159,.25);border-color:var(--line-white);transform:scale(1.1)}.checked{background:#4CAF50!important;border-color:#4CAF50!important;color:#fff!important}.checked::before{content:"✓";font-weight:700}.check-btn:not(.checked)::before,.team-check-btn:not(.checked)::before,.kitset-check-btn:not(.checked)::before{content:"○"}.team-card,.kitset-card{position:relative}
+/* ============================================================================
+     TEAM-ABHAKEN FUNKTIONALITÄT - v3.4.0 | 2025-10-06
+     ============================================================================ */
+  .team-header{position:relative;padding-right:45px}
+  .team-check-btn{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:32px;height:32px;border:2px solid var(--pitch-highlight);border-radius:6px;background:rgba(7,38,29,.6);color:var(--pitch-highlight);cursor:pointer;transition:all .3s cubic-bezier(.4,0,.2,1);box-shadow:0 2px 4px rgba(0,0,0,.25);z-index:10;outline-offset:2px}
+  .team-check-btn:hover{border-color:var(--line-white);background:rgba(129,166,159,.25);transform:translateY(-50%) scale(1.05);box-shadow:0 4px 8px rgba(0,0,0,.3)}
+  .team-check-btn:focus{outline:3px solid #4CAF50;outline-offset:2px}
+  .team-check-btn.checked{background:linear-gradient(135deg,#4CAF50 0%,#45a049 100%);border-color:#4CAF50;animation:checkBounce .4s ease}
+  .team-check-btn.checked::after{content:'✓';position:absolute;color:white;font-size:22px;font-weight:bold;left:50%;top:50%;transform:translate(-50%,-50%);text-shadow:0 1px 2px rgba(0,0,0,.2)}
+  @keyframes checkBounce{0%,100%{transform:translateY(-50%) scale(1)}50%{transform:translateY(-50%) scale(1.15)}}
+  .team-card.completed{display:none;transition:opacity .3s ease}
+  .show-completed .team-card.completed{display:block;opacity:.55;filter:grayscale(30%)}
+  .show-completed .team-card.completed .team-header{background:rgba(76,175,80,.1);border-left:4px solid #4CAF50;padding-left:12px}
+  @media (max-width:768px){.team-check-btn{width:28px;height:28px;border-width:2px}}
+  @media (prefers-color-scheme:dark){.team-check-btn{background:#2a2a2a;border-color:#888}.team-check-btn:hover{background:#1a3a1a}}
+
+  /* Unified Storage Controls – compact one-line bar */
+  .unified-storage-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+    padding: 5px 10px;
+    background: rgba(10, 115, 76, 0.10);
+    border: 1px solid rgba(129, 166, 159, 0.3);
+    border-radius: 10px;
+    flex-wrap: wrap;
+  }
+  .unified-toggle-btn {
+    padding: 5px 12px;
+    background: rgba(129, 166, 159, 0.15);
+    color: var(--pitch-highlight);
+    border: 1px solid rgba(129, 166, 159, 0.4);
+    border-radius: 7px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 12px;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+  }
+  .unified-toggle-btn:hover { background: rgba(129, 166, 159, 0.28); color: #fff; }
+  .unified-stats-text {
+    flex: 1;
+    min-width: 0;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--pitch-highlight, #81A69F);
+  }
+
+
+  /* v5.3.0 - Lazy-Loading Thumbnails (API-basiert, kein ORB-Blocking) */
+  img.lazy-thumb {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    position: relative;
+    z-index: 1;
+  }
+  .empty-completed-msg {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--pitch-highlight);
+  }
+
+  /* ── Changelog Modal (v5.3.2) ──────────────────────────────────────── */
+  .cl-overlay {
+	display: none; position: fixed; inset: 0; z-index: 9999;
+	background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+	align-items: center; justify-content: center;
+  }
+  .cl-overlay.active { display: flex; }
+  .cl-modal {
+	background: var(--surface, #1a2e1a); color: var(--text, #e8f5e9);
+	border: 1px solid rgba(255,255,255,0.14); border-radius: 14px;
+	padding: 28px 32px; max-width: 540px; width: 90%;
+	max-height: 80vh; overflow-y: auto;
+	box-shadow: 0 20px 60px rgba(0,0,0,0.55); position: relative;
+  }
+  .cl-modal h2 { font-size: 1.15rem; margin-bottom: 18px; }
+  .cl-close {
+	position: absolute; top: 14px; right: 16px; background: none; border: none;
+	color: inherit; font-size: 1.5rem; cursor: pointer; line-height: 1;
+	opacity: 0.55; transition: opacity .15s;
+  }
+  .cl-close:hover { opacity: 1; }
+  .cl-version { margin-bottom: 20px; }
+  .cl-version h3 { font-size: 0.93rem; font-weight: 700; color: #4caf50; margin-bottom: 6px; }
+  .cl-version ul { margin: 0; padding-left: 1.3em; font-size: 0.86rem; opacity: 0.88; line-height: 1.75; }
+  .cl-version code { background: rgba(255,255,255,0.1); border-radius: 3px; padding: 1px 4px; font-size: 0.82em; }
+
+  /* ── v6.0 „Der Schneider": Infobox-Code-Button ─────────────────────────── */
+  .copy-infobox-btn {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 7px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--line-white);
+    background: linear-gradient(135deg, var(--pitch-bright) 0%, var(--pitch-highlight) 100%);
+    border: 2px solid var(--line-white);
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    z-index: 2;
+    transition: all 0.25s ease;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+  }
+  .copy-infobox-btn:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(10,115,76,0.5);
+  }
+  .copy-infobox-btn:focus-visible {
+    outline: 3px solid var(--pitch-highlight);
+    outline-offset: 2px;
+  }
+  .copy-infobox-btn:disabled { cursor: progress; opacity: 0.9; }
+  .copy-infobox-btn.copied {
+    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+    border-color: #4CAF50;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .copy-infobox-btn { transition: none; }
+    .copy-infobox-btn:hover:not(:disabled) { transform: none; }
+  }
+
+  /* ── v6.1 „Aufstellung": Zusammengesetzte Kit-Ansicht (WP-Layout 100×135) ── */
+  .kit-figure {
+    width: calc(100px * var(--kit-scale, 1.2));
+    height: calc(135px * var(--kit-scale, 1.2));
+    margin: 6px auto 16px;
+  }
+  .kit-figure .kit {
+    position: relative;
+    width: 100px;              /* Basis-Geometrie exakt wie {{Football kit}} */
+    height: 135px;
+    transform: scale(var(--kit-scale, 1.2));
+    transform-origin: top left;
+    filter: drop-shadow(0 2px 3px rgba(0,0,0,.35));
+  }
+  .kit-cell {
+    position: absolute;
+    background: rgba(255,255,255,.06); /* Platzhalter, bis Farbe erkannt ist */
+    overflow: hidden;
+  }
+  /* Muster-PNG füllt die Zelle exakt (WP setzt feste px-Maße). */
+  .kit-figure img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    object-fit: fill;
+    opacity: 0;
+    transition: opacity .35s ease;
+  }
+  .kc-la { left: 0;    top: 0;    width: 31px;  height: 59px; }
+  .kc-b  { left: 31px; top: 0;    width: 38px;  height: 59px; }
+  .kc-ra { left: 69px; top: 0;    width: 31px;  height: 59px; }
+  .kc-sh { left: 0;    top: 59px; width: 100px; height: 36px; }
+  .kc-so { left: 0;    top: 95px; width: 100px; height: 40px; }
+  @media (prefers-reduced-motion: reduce) {
+    .kit-figure img { transition: none; }
+  }
+
+  /* v6.6.0: kompakte Icon-Buttons (Theme-/Sprach-Umschalter) */
+  .icon-btn { padding: 9px 12px; }
+
+  /* ===== v6.6.0: HELLMODUS-KORREKTUREN =====
+     Rein additiv – der Dunkelmodus bleibt unangetastet. Behebt nur die Stellen,
+     an denen fest kodiertes Weiß/Schwarz auf hellem Grund sonst unsichtbar wäre. */
+  :root[data-theme="light"] body {
+    color: var(--text-primary);
+  }
+  /* Weiße Trennlinien/Overlays -> zarte dunkle Hairlines auf Hell */
+  :root[data-theme="light"] .filter-grid input[type="date"],
+  :root[data-theme="light"] .filter-grid input[type="number"],
+  :root[data-theme="light"] .filter-grid select {
+    border-color: rgba(12, 36, 27, 0.22);
+    background: rgba(255, 255, 255, 0.85);
+    color: var(--text-primary);
+  }
+  /* Karten/Panels: sichtbarer, weicher Rahmen statt „weiß auf weiß" */
+  :root[data-theme="light"] .team-group,
+  :root[data-theme="light"] .season-block,
+  :root[data-theme="light"] .kitset-card,
+  :root[data-theme="light"] .card,
+  :root[data-theme="light"] .file-card,
+  :root[data-theme="light"] .modal-box {
+    border-color: rgba(12, 36, 27, 0.14) !important;
+    box-shadow: 0 2px 10px rgba(12, 36, 27, 0.08);
+  }
+  /* Grüner „Infobox-Code"-Button: heller Text bleibt auf dem grünen Verlauf */
+  :root[data-theme="light"] .copy-infobox-btn { color: #ffffff; }
+  /* Der Teil-Name sitzt auf einem GRÜNEN Balken -> weißer Text (nicht grün auf grün). */
+  :root[data-theme="light"] .file-header a { color: #ffffff; }
+  /* Links auf hellen Flächen als Akzent-Grün. */
+  :root[data-theme="light"] .card-title a,
+  :root[data-theme="light"] #notice a { color: var(--pitch-bright); }
+  /* Weiche Schatten – die tiefen schwarzen Schatten wirken auf Hell zu hart */
+  :root[data-theme="light"] header { box-shadow: 0 2px 12px rgba(12, 36, 27, 0.12); }
+  /* Filter-Fieldsets: helle Fläche statt trübem Dunkelgrün-Schleier. */
+  :root[data-theme="light"] .filter-group {
+    background: rgba(255, 255, 255, 0.55);
+    border-color: rgba(12, 36, 27, 0.12);
+  }
+  :root[data-theme="light"] .filter-group > legend { color: var(--pitch-bright); }
+  /* Team-/Kitset-Kopf: helle Sage-Fläche mit dunklem Text + grünem Akzent
+     (im Dunkelmodus sind das grüne Verläufe mit weißem Text). */
+  :root[data-theme="light"] .team-header,
+  :root[data-theme="light"] .kitset-header {
+    background: linear-gradient(135deg, #DCECE0 0%, #F1F8F2 100%);
+    border-bottom: 2px solid rgba(10, 115, 76, 0.3);
+  }
+  :root[data-theme="light"] .team-title,
+  :root[data-theme="light"] .kitset-title { color: var(--text-primary); }
+  :root[data-theme="light"] .team-subtitle,
+  :root[data-theme="light"] .kitset-subtitle { color: var(--text-secondary); }
+  /* Schlagschatten der Titel/Teilnamen im Hellmodus entfernen (schlecht lesbar). */
+  :root[data-theme="light"] .team-title,
+  :root[data-theme="light"] .kitset-title,
+  :root[data-theme="light"] .season-title,
+  :root[data-theme="light"] .file-header a { text-shadow: none; }
+  /* Abhak-Buttons (Checkboxen) im Hellmodus: helle Fläche, grüner Rand statt trübem Quadrat. */
+  :root[data-theme="light"] .check-btn,
+  :root[data-theme="light"] .team-check-btn,
+  :root[data-theme="light"] .kitset-check-btn {
+    background: rgba(255, 255, 255, 0.75);
+    border-color: rgba(10, 115, 76, 0.45);
+    color: var(--pitch-bright);
+  }
+  :root[data-theme="light"] .check-btn:hover,
+  :root[data-theme="light"] .team-check-btn:hover,
+  :root[data-theme="light"] .kitset-check-btn:hover {
+    background: rgba(10, 115, 76, 0.12);
+    border-color: var(--pitch-bright);
+  }
+
+  </style>
+  <script>
+    /* v6.6.0: Theme so früh wie möglich setzen (verhindert Farb-Flackern beim Laden). */
+    (function () {
+      try {
+        var pref = localStorage.getItem('kitly_theme') || 'auto';
+        var eff = (pref === 'auto')
+          ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+          : pref;
+        document.documentElement.setAttribute('data-theme', eff);
+      } catch (e) { document.documentElement.setAttribute('data-theme', 'dark'); }
+    })();
+  </script>
+</head>
+<body>
+<header>
+  <h1>
+    <span class="title-icon">⚽</span>
+    <span class="title-main">Kitly</span>
+    <span class="title-badge" onclick="showChangelogModal()" style="cursor:pointer" title="Changelog anzeigen">v6.7.0</span>
+  </h1>
+  
+  <div class="header-actions">
+    <button onclick="fetchData();" class="primary-btn">🔄 <span data-de="Aktualisieren" data-en="Refresh">Aktualisieren</span></button>
+    <button onclick="toggleFilters()" class="secondary-btn">
+      <span id="filterIcon">▼</span> <span data-de="Filter" data-en="Filters">Filter</span>
+    </button>
+    <button id="themeToggle" onclick="cycleTheme()" class="secondary-btn icon-btn" title="Design: Auto / Hell / Dunkel" aria-label="Theme umschalten">🌗 <span id="themeLabel"></span></button>
+    <button id="langToggle" onclick="cycleLanguage()" class="secondary-btn icon-btn" title="Sprache / Language" aria-label="Sprache umschalten">🌐 <span id="langLabel">DE</span></button>
+  </div>
+
+  <div id="filterPanel" class="filter-panel collapsed">
+    <div class="filter-groups">
+
+      <fieldset class="filter-group">
+        <legend data-de="📥 Datenabruf" data-en="📥 Data retrieval">📥 Datenabruf</legend>
+        <div class="filter-grid">
+          <div>
+            <label data-de="📅 Datum (nach)" data-en="📅 Date (after)">📅 Datum (nach)</label>
+            <input type="date" id="after">
+          </div>
+          <div>
+            <label data-de="🔢 Limit" data-en="🔢 Limit">🔢 Limit</label>
+            <input type="number" id="limit" value="1000" min="1" max="10000">
+          </div>
+          <div>
+            <label data-de="📊 Tiefe" data-en="📊 Depth">📊 Tiefe</label>
+            <input type="number" id="depth" value="50" min="1" max="100">
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="filter-group">
+        <legend data-de="🔎 Filter" data-en="🔎 Filter">🔎 Filter</legend>
+        <div class="filter-grid">
+          <div>
+            <label data-de="⚽ Saison" data-en="⚽ Season">⚽ Saison</label>
+            <select id="seasonFilter">
+              <option value="" data-de="Alle Saisons" data-en="All seasons">Alle Saisons</option>
+            </select>
+          </div>
+          <div>
+            <label data-de="👕 Trikottyp" data-en="👕 Kit type">👕 Trikottyp</label>
+            <select id="kitTypeFilter">
+              <option value="" data-de="Alle Trikottypen" data-en="All kit types">Alle Trikottypen</option>
+            </select>
+          </div>
+          <label class="filter-check">
+            <input type="checkbox" id="filterTrikotTeile" checked>
+            <span data-de="Nur Trikot-Teile" data-en="Kit parts only">Nur Trikot-Teile</span>
+          </label>
+          <label class="filter-check" title="Blendet Dateien aus, die im Zeitraum nur eine neue Version bekamen (Erst-Upload liegt davor).">
+            <input type="checkbox" id="filterHideUpdates" checked>
+            <span data-de="Datei-Updates ausblenden" data-en="Hide file updates">Datei-Updates ausblenden</span>
+          </label>
+        </div>
+      </fieldset>
+
+      <fieldset class="filter-group">
+        <legend data-de="🖥️ Darstellung" data-en="🖥️ Display">🖥️ Darstellung</legend>
+        <div class="filter-grid">
+          <div>
+            <label data-de="👁️ Ansicht" data-en="👁️ View">👁️ Ansicht</label>
+            <select id="viewMode">
+              <option value="teams" data-de="Teams" data-en="Teams">Teams</option>
+              <option value="kitsets" data-de="Trikotsets" data-en="Kit sets">Trikotsets</option>
+              <option value="single" data-de="Einzeln" data-en="Single">Einzeln</option>
+            </select>
+          </div>
+          <div>
+            <label data-de="🖼️ Thumb-Breite" data-en="🖼️ Thumb width">🖼️ Thumb-Breite</label>
+            <input type="number" id="width" value="120" min="50">
+          </div>
+        </div>
+      </fieldset>
+
+    </div>
+  </div>
+
+  <div id="notice"></div>
+  <!-- v5.2.0 Unified Storage Controls (compact) -->
+  <div class="unified-storage-bar">
+    <button id="btnToggleCompleted" onclick="toggleShowCompleted()" class="unified-toggle-btn" data-de="👁️ Erledigte anzeigen" data-en="👁️ Show completed">👁️ Erledigte anzeigen</button>
+    <div id="unified-stats" class="unified-stats-text" data-de="Klicke auf &quot;Aktualisieren&quot; um Daten zu laden" data-en="Click &quot;Refresh&quot; to load data">Klicke auf "Aktualisieren" um Daten zu laden</div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="grid" id="grid-teams"></div>
+</div>
+
+<div class="loading" id="loading">
+  <div class="box"><span data-de="Lade Daten…" data-en="Loading data…">Lade Daten…</span></div>
+</div>
+
+<script>
+
+// ================================================================
+// === v6.6.0: i18n (DE/EN) + THEME-ENGINE (Auto/Hell/Dunkel) ===
+// ================================================================
+var I18N = {
+  de: {
+    "header.changelogTitle": "Changelog anzeigen",
+    "fieldset.dataRetrieval": "📥 Datenabruf",
+    "filter.dateAfter": "📅 Datum (nach)",
+    "filter.limit": "🔢 Limit",
+    "filter.depth": "📊 Tiefe",
+    "fieldset.filter": "🔎 Filter",
+    "filter.season": "⚽ Saison",
+    "filter.allSeasons": "Alle Saisons",
+    "filter.kitType": "👕 Trikottyp",
+    "filter.allKitTypes": "Alle Trikottypen",
+    "filter.onlyKitParts": "Nur Trikot-Teile",
+    "fieldset.display": "🖥️ Darstellung",
+    "filter.view": "👁️ Ansicht",
+    "view.teams": "Teams",
+    "view.kitsets": "Trikotsets",
+    "view.single": "Einzeln",
+    "filter.thumbWidth": "🖼️ Thumb-Breite",
+    "btn.showCompleted": "👁️ Erledigte anzeigen",
+    "btn.hideCompleted": "👁️ Erledigte ausblenden",
+    "btn.showCompletedPlain": "Erledigte anzeigen",
+    "stats.line": "📦 {vt}/{at} Teams | 📄 {vf}/{af} Dateien | ✅ {tc} Teams + {fc} Dateien erledigt",
+    "usage.loading": "⏳ Lädt Verwendungen...",
+    "usage.empty": "📭 Diese Datei wird noch nicht verwendet.",
+    "usage.error": "❌ Fehler beim Laden.",
+    "notice.proxyUrl": "PetScan-Proxy-URL: <a href=\"{link}\" target=\"_blank\">öffnen</a> — bitte warten…",
+    "notice.noTeamsFiltered": "Keine Teams entsprechen den Filterkriterien.",
+    "notice.noTeamsFound": "Keine Teams gefunden.",
+    "notice.teamsFound": "{n} Teams gefunden.",
+    "notice.teamsFound.one": "{n} Team gefunden.",
+    "notice.noKitsetsFiltered": "Keine Kitsets entsprechen den Filterkriterien.",
+    "notice.noKitsetsFound": "Keine Kitsets gefunden.",
+    "notice.kitsetsFound": "{n} Kitsets gefunden.",
+    "notice.kitsetsFound.one": "{n} Kitset gefunden.",
+    "notice.noFilesFiltered": "Keine Dateien entsprechen den Filterkriterien.",
+    "notice.noFilesFound": "Keine Dateien gefunden.",
+    "notice.filesCount": "{n} von {total} Dateien.",
+    "notice.checkingUploads": "Prüfe Upload-Daten … {n}/{total}",
+    "notice.error": "Fehler: {msg}",
+    "kitType.h": "Heim", "kitType.a": "Auswärts", "kitType.t": "Ausweich",
+    "kitType.e": "Europa", "kitType.f": "Viertes", "kitType.gk": "Torhüter",
+    "kitType.gkh": "Torhüter Heim", "kitType.gka": "Torhüter Auswärts", "kitType.gkt": "Torhüter Ausweich",
+    "part.body": "Trikot", "part.leftArm": "L. Ärmel", "part.rightArm": "R. Ärmel",
+    "part.shorts": "Hose", "part.socks": "Stutzen", "part.socksLong": "Stutzen (L)",
+    "season.noneOption": "Keine Saison ({n})",
+    "season.none": "Keine Saison",
+    "season.prefix": "Saison {label}",
+    "label.parts": "{n} Teile",
+    "label.parts.one": "{n} Teil",
+    "label.seasonSingular": "Saison",
+    "label.seasonPlural": "Saisons",
+    "label.unknown": "Unbekannt",
+    "btn.showUsage": "Verwendung anzeigen",
+    "btn.copyInfobox": "📋 Infobox-Code",
+    "btn.copyInfoboxTitle": "Infobox-Code dieser Saison kopieren",
+    "btn.analyzingColors": "⏳ Analysiere Farben…",
+    "btn.copied": "✅ Kopiert!",
+    "btn.copyFailed": "❌ Kopieren fehlgeschlagen",
+    "btn.failed": "❌ Fehlgeschlagen",
+    "aria.kitView": "Kit-Ansicht: {parts}",
+    "aria.kitViewTitle": "Zusammengesetzte Kit-Ansicht (wie Wikipedia)",
+    "thumb.noPreview": "Keine<br>Vorschau",
+    "empty.allDone": "Alle {n} Einträge erledigt!",
+    "empty.hint": "Erhöhe das Limit oder zeige Erledigte an.",
+    "locale.dateLocale": "de-DE"
+  },
+  en: {
+    "header.changelogTitle": "Show changelog",
+    "fieldset.dataRetrieval": "📥 Data retrieval",
+    "filter.dateAfter": "📅 Date (after)",
+    "filter.limit": "🔢 Limit",
+    "filter.depth": "📊 Depth",
+    "fieldset.filter": "🔎 Filter",
+    "filter.season": "⚽ Season",
+    "filter.allSeasons": "All seasons",
+    "filter.kitType": "👕 Kit type",
+    "filter.allKitTypes": "All kit types",
+    "filter.onlyKitParts": "Kit parts only",
+    "fieldset.display": "🖥️ Display",
+    "filter.view": "👁️ View",
+    "view.teams": "Teams",
+    "view.kitsets": "Kit sets",
+    "view.single": "Single",
+    "filter.thumbWidth": "🖼️ Thumb width",
+    "btn.showCompleted": "👁️ Show completed",
+    "btn.hideCompleted": "👁️ Hide completed",
+    "btn.showCompletedPlain": "Show completed",
+    "stats.line": "📦 {vt}/{at} teams | 📄 {vf}/{af} files | ✅ {tc} teams + {fc} files completed",
+    "usage.loading": "⏳ Loading usages…",
+    "usage.empty": "📭 This file is not used yet.",
+    "usage.error": "❌ Error while loading.",
+    "notice.proxyUrl": "PetScan proxy URL: <a href=\"{link}\" target=\"_blank\">open</a> — please wait…",
+    "notice.noTeamsFiltered": "No teams match the filter criteria.",
+    "notice.noTeamsFound": "No teams found.",
+    "notice.teamsFound": "{n} teams found.",
+    "notice.teamsFound.one": "{n} team found.",
+    "notice.noKitsetsFiltered": "No kit sets match the filter criteria.",
+    "notice.noKitsetsFound": "No kit sets found.",
+    "notice.kitsetsFound": "{n} kit sets found.",
+    "notice.kitsetsFound.one": "{n} kit set found.",
+    "notice.noFilesFiltered": "No files match the filter criteria.",
+    "notice.noFilesFound": "No files found.",
+    "notice.filesCount": "{n} of {total} files.",
+    "notice.checkingUploads": "Checking upload dates … {n}/{total}",
+    "notice.error": "Error: {msg}",
+    "kitType.h": "Home", "kitType.a": "Away", "kitType.t": "Third",
+    "kitType.e": "Europe", "kitType.f": "Fourth", "kitType.gk": "Goalkeeper",
+    "kitType.gkh": "Goalkeeper home", "kitType.gka": "Goalkeeper away", "kitType.gkt": "Goalkeeper third",
+    "part.body": "Body", "part.leftArm": "L. sleeve", "part.rightArm": "R. sleeve",
+    "part.shorts": "Shorts", "part.socks": "Socks", "part.socksLong": "Socks (L)",
+    "season.noneOption": "No season ({n})",
+    "season.none": "No season",
+    "season.prefix": "Season {label}",
+    "label.parts": "{n} parts",
+    "label.parts.one": "{n} part",
+    "label.seasonSingular": "season",
+    "label.seasonPlural": "seasons",
+    "label.unknown": "Unknown",
+    "btn.showUsage": "Show usage",
+    "btn.copyInfobox": "📋 Infobox code",
+    "btn.copyInfoboxTitle": "Copy this season's infobox code",
+    "btn.analyzingColors": "⏳ Analyzing colors…",
+    "btn.copied": "✅ Copied!",
+    "btn.copyFailed": "❌ Copy failed",
+    "btn.failed": "❌ Failed",
+    "aria.kitView": "Kit view: {parts}",
+    "aria.kitViewTitle": "Composite kit view (like Wikipedia)",
+    "thumb.noPreview": "No<br>preview",
+    "empty.allDone": "All {n} entries completed!",
+    "empty.hint": "Increase the limit or show completed.",
+    "locale.dateLocale": "en-GB"
+  }
+};
+var currentLang = (function () {
+  try {
+    var saved = localStorage.getItem('kitly_lang');
+    if (saved === 'de' || saved === 'en') return saved;
+  } catch (e) {}
+  return ((navigator.language || 'de').toLowerCase().indexOf('de') === 0) ? 'de' : 'en';
+})();
+// t('key', {placeholder: value}) – Übersetzung + Platzhalter-Ersetzung.
+function t(key, vars) {
+  var dict = I18N[currentLang] || I18N.de;
+  var s = (dict[key] != null) ? dict[key] : (I18N.de[key] != null ? I18N.de[key] : key);
+  if (vars) { for (var k in vars) { s = s.replace(new RegExp('\\{' + k + '\\}', 'g'), vars[k]); } }
+  return s;
+}
+// tp('key', n, vars): pluralisiert. Bei n === 1 wird – falls vorhanden – der
+// Singular-Schlüssel 'key.one' genutzt, sonst der (Plural-)Standardschlüssel.
+function tp(key, n, vars) {
+  var v = vars || {}; v.n = n;
+  var oneKey = key + '.one';
+  var dict = I18N[currentLang] || I18N.de;
+  if (n === 1 && (dict[oneKey] != null || I18N.de[oneKey] != null)) return t(oneKey, v);
+  return t(key, v);
+}
+// Übersetzte Anzeige-Namen für Trikotteile und Trikottypen (überall wiederverwendet).
+var PART_KEY = { body: 'part.body', left_arm: 'part.leftArm', right_arm: 'part.rightArm', shorts: 'part.shorts', socks: 'part.socks' };
+function partName(p) { return PART_KEY[p] ? t(PART_KEY[p]) : p; }
+var KITTYPE_KEY = { h: 'kitType.h', a: 'kitType.a', t: 'kitType.t', e: 'kitType.e', f: 'kitType.f', gk: 'kitType.gk', gkd: 'kitType.gk', gkh: 'kitType.gkh', gka: 'kitType.gka', gkt: 'kitType.gkt' };
+function kitTypeName(kt) { return KITTYPE_KEY[kt] ? t(KITTYPE_KEY[kt]) : null; }
+// Statische HTML-Elemente mit data-de/data-en auf die aktuelle Sprache setzen.
+function applyStaticTranslations() {
+  var els = document.querySelectorAll('[data-de][data-en]');
+  for (var i = 0; i < els.length; i++) {
+    var v = els[i].getAttribute('data-' + currentLang);
+    if (v != null) els[i].textContent = v;
+  }
+  var chg = document.querySelector('.title-badge');
+  if (chg) chg.setAttribute('title', t('header.changelogTitle'));
+}
+function cycleLanguage() {
+  currentLang = (currentLang === 'de') ? 'en' : 'de';
+  try { localStorage.setItem('kitly_lang', currentLang); } catch (e) {}
+  applyLanguage();
+}
+function applyLanguage() {
+  document.documentElement.setAttribute('lang', currentLang);
+  applyStaticTranslations();
+  var ll = document.getElementById('langLabel');
+  if (ll) ll.textContent = currentLang.toUpperCase();
+  updateThemeButton();
+  // Dynamische Inhalte neu aufbauen, wenn schon Daten geladen sind.
+  if (typeof isDataLoaded !== 'undefined' && isDataLoaded && typeof renderFiles === 'function') renderFiles();
+  if (typeof updateStats === 'function') updateStats();
+  if (typeof refreshCompletedToggleLabel === 'function') refreshCompletedToggleLabel();
+}
+
+// --- Theme (Auto / Hell / Dunkel) ---
+var THEME_KEY = 'kitly_theme';
+function getThemePref() { try { return localStorage.getItem(THEME_KEY) || 'auto'; } catch (e) { return 'auto'; } }
+function effectiveTheme(pref) {
+  return (pref === 'auto')
+    ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+    : pref;
+}
+function applyTheme() {
+  document.documentElement.setAttribute('data-theme', effectiveTheme(getThemePref()));
+  updateThemeButton();
+}
+function cycleTheme() {
+  var next = { auto: 'light', light: 'dark', dark: 'auto' }[getThemePref()];
+  try { localStorage.setItem(THEME_KEY, next); } catch (e) {}
+  applyTheme();
+}
+function updateThemeButton() {
+  var b = document.getElementById('themeToggle');
+  if (!b) return;
+  var pref = getThemePref();
+  var icons = { auto: '🌗', light: '☀️', dark: '🌙' };
+  var labels = { de: { auto: 'Auto', light: 'Hell', dark: 'Dunkel' }, en: { auto: 'Auto', light: 'Light', dark: 'Dark' } };
+  if (b.firstChild && b.firstChild.nodeType === 3) b.firstChild.nodeValue = icons[pref] + ' ';
+  var lbl = document.getElementById('themeLabel');
+  if (lbl) lbl.textContent = (labels[currentLang] || labels.de)[pref];
+  b.setAttribute('title', currentLang === 'de' ? 'Design: Auto / Hell / Dunkel' : 'Theme: Auto / Light / Dark');
+}
+// Auf OS-Theme-Wechsel reagieren, solange „auto" aktiv ist.
+(function () {
+  var mq = window.matchMedia('(prefers-color-scheme: dark)');
+  var handler = function () { if (getThemePref() === 'auto') applyTheme(); };
+  if (mq.addEventListener) mq.addEventListener('change', handler);
+  else if (mq.addListener) mq.addListener(handler);
+})();
+
+/* Team-Abhaken v3.4.0 */
+
+// ================================================
+// === DATENABRUF (fetchData + Render) ===
+// ================================================
+const PETSCAN_PROXY = "https://kitproxy.toolforge.org/petscan";
+let allFiles = [];
+let isDataLoaded = false;
+
+function yesterday() {
+  const d = new Date();
+  d.setDate(d.getDate() - 1);
+  return d.toISOString().slice(0,10);
+}
+function readControls() {
+  const afterEl = document.getElementById("after");
+  if (afterEl && !afterEl.value) afterEl.value = yesterday();
+  return {
+	after: document.getElementById("after").value,
+	limit: document.getElementById("limit").value,
+	depth: document.getElementById("depth").value,
+	width: document.getElementById("width").value,
+	filterTrikotTeile: document.getElementById("filterTrikotTeile").checked,
+	hideUpdates: (function(){ var el = document.getElementById("filterHideUpdates"); return el ? el.checked : true; })(),
+	seasonFilter: document.getElementById("seasonFilter").value,
+	viewMode: document.getElementById("viewMode").value,
+	kitTypeFilters: getSelectedKitTypes()
+  };
+}
+function getSelectedKitTypes() {
+  const select = document.getElementById('kitTypeFilter');
+  if (!select || !select.value) return [];
+  return [select.value];
+}
+function showLoading(on) {
+  document.getElementById("loading").style.display = on ? "flex" : "none";
+}
+function setNotice(text, link) {
+  const n = document.getElementById("notice");
+  if (link) {
+	n.innerHTML = t('notice.proxyUrl', { link: link });
+  } else {
+	n.textContent = text;
+  }
+}
+async function fetchJSON(url) {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(res.statusText);
+  return res.json();
+}
+// v6.0.1: Echte Commons-Datei? PetScan liefert gelegentlich Nicht-Dateien
+// (z. B. Kategorien wie "Football_kit_body/VARAMAN_specific_patterns"). Solche
+// Einträge haben KEINE Bild-Endung und keinen Datei-Namensraum -> aussortieren.
+function isCommonsFile(title) {
+  if (!title || typeof title !== 'string') return false;
+  if (/^category:/i.test(title)) return false;              // Kategorie-Namensraum
+  // v6.2.3: „/" ist in gültigen Commons-Dateinamen erlaubt – die Endungs-Prüfung
+  // unten sortiert Kategorien/Nicht-Dateien ohnehin aus.
+  return /\.(png|jpe?g|gif|svg|tiff?|webp)$/i.test(title);  // muss echte Mediendatei sein
+}
+function isTrikotTeil(filename) {
+  if (filename.startsWith('Category:')) return false;
+  const trikotTeile = ["body", "left arm", "left_arm", "right arm", "right_arm", "shorts", "socks"];
+  return trikotTeile.some(function(teil) { return filename.toLowerCase().indexOf(teil) !== -1; });
+}
+// v6.6.0: 4-stelligen Code als Saison-SPANNE (XXYY) deuten. Zwei Fälle:
+//  1) Der Code KÖNNTE ein echtes Kalenderjahr sein (1800…heute+2, z.B. 1819, 1920,
+//     2021, 1923, 1975). Nur bei DIREKT aufeinanderfolgenden Jahren (Abstand 1) als
+//     Saison-Spanne deuten (1819->2018/19), sonst als Einzeljahr (1923, 1975, 1922).
+//  2) Der Code ist KEIN plausibles Jahr (z.B. 8792, 2627, 9395) -> es MUSS eine
+//     Spanne sein; jeder Abstand >= 1 zählt (8792 -> 1987–1992).
+// Rückgabe: {start,end,gap} bei Spanne, sonst null.
+function seasonSpan(s) {
+  if (!/^\d{4}$/.test(s)) return null;
+  var thisYear = new Date().getFullYear();
+  var n = parseInt(s, 10);
+  var xx = parseInt(s.slice(0, 2), 10), yy = parseInt(s.slice(2), 10);
+  var start = (2000 + xx <= thisYear + 2) ? 2000 + xx : 1900 + xx;
+  var end = Math.floor(start / 100) * 100 + yy;
+  if (end < start) end += 100; // Jahrhundertwechsel (98->01 = 2001)
+  var gap = end - start;
+  var couldBeYear = (n >= 1800 && n <= thisYear + 2);
+  if (couldBeYear) return (gap === 1) ? { start: start, end: end, gap: gap } : null;
+  return (gap >= 1) ? { start: start, end: end, gap: gap } : null; // kein echtes Jahr -> zwingend Spanne
+}
+// Einheitliche Saison-Formatierung – von Anzeige UND Filter genutzt.
+// Eingabe: interner Saison-Code ("2627","9395","1975","26"); Ausgabe: Label.
+//  - Aufeinanderfolgende Jahre (Abstand 1) -> Saison-Notation "2026/27" (bzw. bei
+//    Jahrhundertwechsel volles Endjahr "1999/2000").
+//  - Mehrjährige Spanne (Abstand >= 2) -> voller Bereich mit Halbgeviertstrich
+//    "1987–1992" (bekommt in der Anzeige das Präfix "Saison ").
+function formatSeasonLabel(s) {
+  if (!s) return '';
+  if (/^\d{4}$/.test(s)) {
+    var sp = seasonSpan(s);
+    if (sp) {
+      if (sp.gap === 1) {
+        var e2 = sp.end % 100;
+        return (Math.floor(sp.end / 100) === Math.floor(sp.start / 100))
+          ? sp.start + '/' + (e2 < 10 ? '0' : '') + e2  // gleiches Jahrhundert -> 2-stelliges Ende
+          : sp.start + '/' + sp.end;                     // Jahrhundertwechsel -> volles Endjahr
+      }
+      return sp.start + '–' + sp.end;               // mehrjährig -> "1987–1992"
+    }
+    return s; // echtes Einzeljahr (1923, 1975, 2026)
+  }
+  // 2-stelliger Code (z.B. "26") -> volles, jahrhundert-korrektes Jahr ("2026").
+  if (/^\d{2}$/.test(s)) {
+    var ty = new Date().getFullYear();
+    var y = parseInt(s, 10);
+    return String((2000 + y <= ty + 2) ? 2000 + y : 1900 + y);
+  }
+  return s; // Sonstiges unverändert
+}
+// v6.5.1: Einheitliche Trikottyp-Normalisierung – von Filter UND Dropdown genutzt,
+// damit die Dropdown-Werte exakt dem entsprechen, wonach gefiltert wird.
+// Roh-Typen (home/away/third, g/gkd, ...) -> kanonische Kürzel (h/a/t/gk/gkh/gka/gkt).
+function normKitType(kt) {
+  if (!kt) return '';
+  var t = String(kt).toLowerCase();
+  if (t === 'home') return 'h';
+  if (t === 'away') return 'a';
+  if (t === 'third') return 't';
+  if (t === 'g' || t === 'gkd') return 'gk';
+  return t;
+}
+// v6.3.11: Der Saison-Filter nutzt exakt dieselbe Saison wie die Team-Anzeige
+// (abgeleitet über analyzeKitFilename), damit beide immer übereinstimmen.
+function extractSeasons(filename) {
+  var a = analyzeKitFilename(filename);
+  var code = a && a.season;
+  if (!code) return [];
+  var label = formatSeasonLabel(code);
+  return label ? [label] : [];
+}
+function analyzeKitFilename(filename) {
+  var cleanName = filename.replace(/\.(png|jpg|jpeg|gif|svg)$/i, '').replace(/^kit[_\s]/i, '');
+  var result = { original: filename, part: null, team: null, season: null, kit_type: null, is_long_socks: false, is_teamware: false, manufacturer: null, set_id: null };
+  var partPatterns = { body: /body/i, left_arm: /left[_\s]arm/i, right_arm: /right[_\s]arm/i, shorts: /shorts/i, socks: /socks/i };
+  var workingName = cleanName;
+  for (var p in partPatterns) { if (partPatterns[p].test(workingName)) { result.part = p; workingName = workingName.replace(partPatterns[p], '').replace(/^_+|_+$/g, '').trim(); break; } }
+  if (!result.part) return result;
+  // v6.3.6: Ausführliches Namensschema, z.B. "FC_Tokyo_2026_-_27_AWAY_FP"
+  // (Vollname · Saison "YYYY - YY" · TYP · Rolle). Erkennung an Klartext-Typwörtern.
+  // FP = Field Player (Feldspieler) -> h/a/t; GK = Goalkeeper (Torwart) -> gkh/gka/gkt.
+  var verbose = workingName.replace(/_/g, ' ');
+  var vUp = verbose.toUpperCase();
+  if (/\b(HOME|AWAY|THIRD|FOURTH|GK|GOALKEEPER|FP)\b/.test(vUp)) {
+    var vIsGK = /\bGK\b|\bGOALKEEPER\b/.test(vUp);
+    var vType;
+    if (/\bAWAY\b/.test(vUp))              vType = vIsGK ? 'gka' : 'a';
+    else if (/\bTHIRD\b|\b3RD\b/.test(vUp)) vType = vIsGK ? 'gkt' : 't';
+    else if (/\bFOURTH\b|\b4TH\b/.test(vUp)) vType = vIsGK ? 'gk'  : 'f';
+    else if (/\bHOME\b/.test(vUp))         vType = vIsGK ? 'gkh' : 'h';
+    else                                    vType = vIsGK ? 'gk'  : 'h'; // kein Typwort -> Heim bzw. Torwart
+    // Saison "YYYY - YY" (auch "YYYY-YY", "YYYY/YY") -> kompaktes "XXYY"; sonst einzelnes Jahr.
+    var vSeason = null;
+    var vm = verbose.match(/(\d{4})\s*[-–\/]\s*(\d{2})/);
+    if (vm) vSeason = vm[1].slice(2) + vm[2];
+    else { var vy = verbose.match(/\b(\d{4})\b/); if (vy) vSeason = vy[1]; }
+    // Team = alles vor der Saison bzw. vor dem ersten Typwort.
+    var vTeam = verbose
+      .replace(/\d{4}(\s*[-–\/]\s*\d{2})?.*/, '') // v6.5.1: auch alleinstehendes Jahr (2026) abschneiden
+      .replace(/\b(HOME|AWAY|THIRD|FOURTH|GK|GOALKEEPER|FP|3RD|4TH)\b.*/i, '')
+      .replace(/\s+/g, ' ').trim();
+    result.team = vTeam || 'unknown';
+    result.season = vSeason;
+    result.kit_type = vType;
+    result.set_id = result.team + "_" + (result.season || 'noseason') + "_" + result.kit_type;
+    return result;
+  }
+  // v6.3.9: Getrenntes Schema mit Trennzeichen (- – / _ Leerzeichen) und Saison als
+  // "YY-YY", "YYYY-YY" oder einzelnem 4-stelligen Block, z.B. "spartak-vn-26-27-a".
+  // Team darf Bindestriche enthalten. Ein EINZELNES 2-stelliges Jahr wird NICHT als
+  // Saison gewertet (zu mehrdeutig -> Fallthrough).
+  var sep = workingName.match(/^(.+?)[\s_\-–\/]+(\d{2,4})(?:[\s_\-–\/]+(\d{2}))?(?:[\s_\-–\/]+([a-z][a-z0-9]*))?[\s_\-–\/]*$/i);
+  if (sep && (sep[2].length === 4 || sep[3])) {
+    result.team = sep[1].replace(/[\s_\-–\/]+$/, '').trim();
+    result.season = sep[3]
+      ? ((sep[2].length === 4 ? sep[2].slice(2) : sep[2]) + sep[3]) // Jahr1(+Jahr2) -> "XXYY"
+      : sep[2];                                                     // einzelner 4-stelliger Block
+    var sRaw = (sep[4] || '').toLowerCase().replace(/([a-z]+)\d+$/i, '$1'); // Variantenziffer weg
+    if (result.part === 'socks' && sRaw.length > 1 && sRaw.slice(-1) === 'l' && /^[haetf]l$/.test(sRaw)) {
+      result.is_long_socks = true; sRaw = sRaw.slice(0, -1);
+    }
+    if (sRaw === '' || sRaw === 'home')      result.kit_type = 'h';
+    else if (sRaw === 'away')                result.kit_type = 'a';
+    else if (sRaw === 'third')               result.kit_type = 't';
+    else if (sRaw === 'g' || sRaw === 'gkd') result.kit_type = 'gk';
+    else                                     result.kit_type = sRaw; // h,a,t,f,gk,gkh,gka,gkt
+    result.set_id = result.team + "_" + result.season + "_" + result.kit_type;
+    return result;
+  }
+  var fourDigitMatch = workingName.match(/^(.+?)(\d{4})([a-z][a-z0-9]*)$/i);
+  if (fourDigitMatch && !/^(nike|adidas|puma|umbro|kappa)/i.test(fourDigitMatch[1])) {
+	result.team = fourDigitMatch[1].replace(/^_+|_+$/g, '').trim();
+	result.season = fourDigitMatch[2];
+	var kt = fourDigitMatch[3].toLowerCase();
+	if (result.part === 'socks' && kt.slice(-1) === 'l' && kt.length > 1) { result.is_long_socks = true; result.kit_type = kt.slice(0, -1); /* v5.3.1: strip variant digit h2→h */ result.kit_type = result.kit_type.replace(/([a-z]+)\d+$/i, "$1"); } else { result.kit_type = kt; /* v5.3.1: strip variant digit h2→h, a2→a, gk2→gk */ result.kit_type = result.kit_type.replace(/([a-z]+)\d+$/i, '$1'); if (result.kit_type === 'away') result.kit_type = 'a'; if (result.kit_type === 'home') result.kit_type = 'h'; if (result.kit_type === 'third') result.kit_type = 't'; if (result.kit_type === 'gk' || result.kit_type === 'g') result.kit_type = 'gk'; }
+	result.set_id = result.team + "_" + result.season + "_" + result.kit_type;
+	return result;
+  }
+  var twoDigitMatch = workingName.match(/^(.+?)(\d{2})([a-z][a-z0-9]*)$/i);
+  if (twoDigitMatch && !/^(nike|adidas|puma|umbro|kappa)/i.test(twoDigitMatch[1])) {
+	result.team = twoDigitMatch[1].replace(/^_+|_+$/g, '').trim();
+	result.season = twoDigitMatch[2];
+	var kt = twoDigitMatch[3].toLowerCase();
+	if (result.part === 'socks' && kt.slice(-1) === 'l' && kt.length > 1) { result.is_long_socks = true; result.kit_type = kt.slice(0, -1); /* v5.3.1: strip variant digit h2→h */ result.kit_type = result.kit_type.replace(/([a-z]+)\d+$/i, "$1"); } else { result.kit_type = kt; /* v5.3.1: strip variant digit h2→h, a2→a, gk2→gk */ result.kit_type = result.kit_type.replace(/([a-z]+)\d+$/i, '$1'); if (result.kit_type === 'away') result.kit_type = 'a'; if (result.kit_type === 'home') result.kit_type = 'h'; if (result.kit_type === 'third') result.kit_type = 't'; if (result.kit_type === 'gk' || result.kit_type === 'g') result.kit_type = 'gk'; }
+	result.set_id = result.team + "_" + result.season + "_" + result.kit_type;
+	return result;
+  }
+  // v6.3.4: 4-stellige Jahreszahl am Ende OHNE Typ-Suffix -> Heimtrikot (h) als Standard.
+  // Beispiel "River_1975" -> Team "River", Saison "1975", Typ "h".
+  var yearOnly4 = workingName.match(/^(.+?)(\d{4})$/);
+  if (yearOnly4 && !/^(nike|adidas|puma|umbro|kappa)/i.test(yearOnly4[1])) {
+	result.team = yearOnly4[1].replace(/^_+|_+$/g, '').trim();
+	result.season = yearOnly4[2];
+	result.kit_type = 'h';
+	result.set_id = result.team + "_" + result.season + "_" + result.kit_type;
+	return result;
+  }
+  if (/^(nike|adidas|puma|umbro|kappa|joma|macron|hummel|errea|jako)/i.test(workingName) || /ultimate|park|challenge|striped|tiro/i.test(workingName)) {
+	result.is_teamware = true;
+	result.manufacturer = (workingName.match(/^(nike|adidas|puma|umbro|kappa|joma|macron|hummel|errea|jako)/i) || [])[1] || 'unknown';
+	result.set_id = "teamware_" + result.manufacturer + "_" + workingName;
+	return result;
+  }
+  var kitTypeMatch = workingName.match(/^(.+?)([a-z]+)$/i);
+  if (kitTypeMatch) {
+	result.team = kitTypeMatch[1].replace(/^_+|_+$/g, '').trim();
+	var kt = kitTypeMatch[2].toLowerCase();
+	if (result.part === 'socks' && kt.slice(-1) === 'l' && kt.length > 1) { result.is_long_socks = true; result.kit_type = kt.slice(0, -1); /* v5.3.1: strip variant digit h2→h */ result.kit_type = result.kit_type.replace(/([a-z]+)\d+$/i, "$1"); } else { result.kit_type = kt; /* v5.3.1: strip variant digit h2→h, a2→a, gk2→gk */ result.kit_type = result.kit_type.replace(/([a-z]+)\d+$/i, '$1'); if (result.kit_type === 'away') result.kit_type = 'a'; if (result.kit_type === 'home') result.kit_type = 'h'; if (result.kit_type === 'third') result.kit_type = 't'; if (result.kit_type === 'gk' || result.kit_type === 'g') result.kit_type = 'gk'; }
+	result.set_id = result.team + "_noseason_" + result.kit_type;
+	return result;
+  }
+  result.team = workingName || 'unknown';
+  result.set_id = result.team + "_unknown_unknown";
+  return result;
+}
+function getFilteredFiles() {
+  var ctrl = readControls();
+  var filtered = allFiles.slice();
+  if (ctrl.filterTrikotTeile) filtered = filtered.filter(function(f) { return isTrikotTeil(f.title); });
+  // v6.7.0: „Datei-Updates ausblenden" – nur Dateien behalten, deren ERST-Upload
+  // am/nach dem „nach"-Datum liegt. Reine Neu-Versionen alter Dateien fallen raus.
+  // (firstUploadTs unbekannt -> behalten; keine Daten geladen -> kein Filter.)
+  if (ctrl.hideUpdates && ctrl.after) {
+    var afterMw = ctrl.after.replace(/-/g, '') + '000000';
+    filtered = filtered.filter(function(f) { return !f.firstUploadTs || f.firstUploadTs >= afterMw; });
+  }
+  if (ctrl.seasonFilter && ctrl.seasonFilter !== '') {
+	if (ctrl.seasonFilter === 'keine') filtered = filtered.filter(function(f) { return extractSeasons(f.title).length === 0; });
+	else filtered = filtered.filter(function(f) { return extractSeasons(f.title).indexOf(ctrl.seasonFilter) !== -1; });
+  }
+  if (ctrl.kitTypeFilters && ctrl.kitTypeFilters.length > 0) {
+	filtered = filtered.filter(function(f) { var a = analyzeKitFilename(f.title); var t = normKitType(a.kit_type); return t && ctrl.kitTypeFilters.indexOf(t) !== -1; });
+  }
+  return filtered;
+}
+function populateSeasonFilter() {
+  var ctrl = readControls();
+  var seasonCounts = {};
+  var relevantFiles = allFiles.filter(function(file) { return ctrl.filterTrikotTeile ? isTrikotTeil(file.title) : true; });
+  relevantFiles.forEach(function(file) {
+	extractSeasons(file.title).forEach(function(season) { seasonCounts[season] = (seasonCounts[season] || 0) + 1; });
+  });
+  var sortedSeasons = Object.keys(seasonCounts).sort(function(a, b) { return parseInt(b.split('/')[0], 10) - parseInt(a.split('/')[0], 10); });
+  var select = document.getElementById("seasonFilter");
+  if (!select) return;
+  var currentValue = select.value;
+  var allOpt = select.querySelector('option[value=""]');
+  select.innerHTML = '';
+  if (allOpt) select.appendChild(allOpt);
+  var filesWithoutSeason = relevantFiles.filter(function(f) { return extractSeasons(f.title).length === 0; });
+  if (filesWithoutSeason.length > 0) { var o = document.createElement('option'); o.value = 'keine'; o.textContent = t('season.noneOption', { n: filesWithoutSeason.length }); select.appendChild(o); }
+  sortedSeasons.forEach(function(season) { var o = document.createElement('option'); o.value = season; o.textContent = season + " (" + seasonCounts[season] + ")"; select.appendChild(o); });
+  if (currentValue && [].slice.call(select.options).some(function(opt) { return opt.value === currentValue; })) select.value = currentValue;
+}
+function populateKitTypeFilter() {
+  var select = document.getElementById('kitTypeFilter');
+  if (!select) return;
+  var filteredFiles = getFilteredFiles();
+  var kitTypeCounts = {};
+  filteredFiles.forEach(function(file) {
+	var a = analyzeKitFilename(file.title);
+	if (a.kit_type && !a.is_teamware) {
+	  var nk = normKitType(a.kit_type); // v6.5.1: identisch zur Filter-Logik in getFilteredFiles
+	  kitTypeCounts[nk] = (kitTypeCounts[nk] || 0) + 1;
+	}
+  });
+  // v6.4.0: aktueller Wert bzw. gespeicherter Wert (Persistenz über Reload).
+  var currentValue = select.value || localStorage.getItem('filter_kitType') || '';
+  select.innerHTML = '<option value="">' + t('filter.allKitTypes') + '</option>';
+  Object.keys(kitTypeCounts).sort(function(a, b) { var p = { h: 1, a: 2, t: 3, gkh: 4, gka: 5, gkt: 6, gk: 7 }; return (p[a] || 999) - (p[b] || 999) || a.localeCompare(b); }).forEach(function(kitType) {
+	var o = document.createElement('option'); o.value = kitType; o.textContent = (kitTypeName(kitType) || kitType) + " (" + kitTypeCounts[kitType] + ")"; select.appendChild(o);
+  });
+  if (currentValue && [].slice.call(select.options).some(function(opt) { return opt.value === currentValue; })) select.value = currentValue;
+}
+function groupIntoKitsets(files) {
+  var kitsets = {};
+  files.forEach(function(file) {
+	var a = analyzeKitFilename(file.title);
+	if (!a.set_id) return;
+	if (!kitsets[a.set_id]) kitsets[a.set_id] = { id: a.set_id, team: a.team, season: a.season, kit_type: a.kit_type, is_teamware: a.is_teamware, manufacturer: a.manufacturer, parts: [], newest_date: null };
+	var k = kitsets[a.set_id];
+	k.parts.push({ file: file, analysis: a });
+	var fd = mwToDate(file.uploadTs || file.touched); // v5.4.0: nach echtem Upload sortieren
+	if (!k.newest_date || fd > k.newest_date) k.newest_date = fd;
+  });
+  return Object.keys(kitsets).map(function(id) { return kitsets[id]; }).sort(function(a, b) { return b.newest_date - a.newest_date; });
+}
+// v6.5.1: Saison-Sortierwert (Startjahr) – neueste Saison = höchster Wert.
+// Nutzt dieselbe Spannen-Logik wie die Anzeige (seasonSpan), damit Sortierung
+// und Label immer übereinstimmen (2018/19 sortiert als 2018, nicht 1819).
+function seasonSortValue(s) {
+  if (!s) return -1;
+  var sp = seasonSpan(s);
+  if (sp) return sp.start;                          // Saison-Spanne -> Startjahr
+  if (/^\d{4}$/.test(s)) return parseInt(s, 10);    // echtes Einzeljahr
+  if (/^\d{2}$/.test(s)) { var ty = new Date().getFullYear(), y = parseInt(s, 10); return (2000 + y <= ty + 2) ? 2000 + y : 1900 + y; }
+  return -1;
+}
+// v6.4.0: Alle Saisons eines Teams unter EINEM Team zusammenfassen (Team -> Saison -> Kitset -> Teile).
+function groupIntoTeams(files) {
+  var teams = {};
+  files.forEach(function(file) {
+    var a = analyzeKitFilename(file.title);
+    if (!a.team || a.is_teamware) return;
+    var teamKey = a.team; // nur Team; Saison ist jetzt Unterebene
+    if (!teams[teamKey]) teams[teamKey] = { team: a.team, seasons: {}, total_parts: 0, newest_date: null };
+    var tg = teams[teamKey];
+    var seasonKey = a.season || 'noseason';
+    if (!tg.seasons[seasonKey]) tg.seasons[seasonKey] = { season: a.season, kitsets: {}, total_parts: 0 };
+    var sg = tg.seasons[seasonKey];
+    var kk = a.kit_type || 'unknown';
+    if (!sg.kitsets[kk]) sg.kitsets[kk] = { kit_type: a.kit_type, parts: [] };
+    sg.kitsets[kk].parts.push({ file: file, analysis: a });
+    sg.total_parts++; tg.total_parts++;
+    var fd = mwToDate(file.uploadTs || file.touched); // Team-Reihenfolge nach echtem Upload
+    if (!tg.newest_date || fd > tg.newest_date) tg.newest_date = fd;
+  });
+  return Object.keys(teams).map(function(k) { return teams[k]; }).sort(function(a, b) { return b.newest_date - a.newest_date; });
+}
+function safeId(str) { if (!str) return 'unknown'; return str.replace(/[^a-zA-Z0-9_-]/g, '_'); }
+function renderTeams() {
+  var filteredFiles = getFilteredFiles();
+  var teams = groupIntoTeams(filteredFiles);
+  var grid = document.getElementById("grid-teams");
+  if (!grid) return;
+  grid.className = "grid";
+  grid.innerHTML = "";
+  if (teams.length === 0) { setNotice(isDataLoaded ? t('notice.noTeamsFiltered') : t('notice.noTeamsFound')); return; }
+  setNotice(tp('notice.teamsFound', teams.length));
+  var kitTypeOrder = { h: 1, a: 2, t: 3, gkh: 4, gka: 5, gkt: 6, gk: 7, gkd: 7 };
+  var partOrder = ['body', 'left_arm', 'right_arm', 'shorts', 'socks'];
+  function seasonLabel(code) {
+    if (!code) return t('season.none');
+    var label = formatSeasonLabel(code);
+    return label.indexOf('/') === -1 ? t('season.prefix', { label: label }) : label;
+  }
+  function kitsetCardHtml(kitset, safeTeam, safeSeason, kitType) {
+    kitset.parts.sort(function(a, b) { return partOrder.indexOf(a.analysis.part) - partOrder.indexOf(b.analysis.part); });
+    var socksFiles = kitset.parts.filter(function(p) { return p.analysis.part === 'socks'; });
+    if (socksFiles.length > 1 && socksFiles.some(function(p) { return p.analysis.is_long_socks; })) kitset.parts = kitset.parts.filter(function(p) { return p.analysis.part !== 'socks' || p.analysis.is_long_socks; });
+    var displayName = kitTypeName(kitType) || kitType.toUpperCase();
+    var partsHtml = kitset.parts.map(function(part) {
+      var pn = partName(part.analysis.part);
+      if (part.analysis.part === 'socks' && part.analysis.is_long_socks) pn = t('part.socksLong');
+      return "<div class=\"file-card\" data-file=\"" + part.file.title.replace(/"/g, '&quot;') + "\"><button class=\"usage-btn\" onclick=\"event.stopPropagation(); showUsageModal('" + part.file.title.replace(/'/g, "\\'") + "');\" title=\"" + t('btn.showUsage') + "\">📊</button><div class=\"file-header\"><a href=\"https://commons.wikimedia.org/wiki/File:" + encodeURIComponent(part.file.title) + "\" target=\"_blank\" rel=\"noopener noreferrer\">" + pn + "</a></div><div class=\"file-thumb\"><img class=\"lazy-thumb\" data-filename=\"" + part.file.title.replace(/\"/g, '&quot;') + "\" alt=\"\"></div><div class=\"file-meta\">" + part.file.len + " Bytes • " + formatMwTimestamp(part.file.uploadTs || part.file.touched) + "</div></div>";
+    }).join('');
+    return "<div class=\"kitset-card\" data-kitset-id=\"" + safeTeam + "-" + safeSeason + "-" + kitType + "\" data-kit-type=\"" + kitType + "\"><div class=\"kitset-header\"><div class=\"kitset-title\">" + displayName + "</div><div class=\"kitset-subtitle\">" + tp('label.parts', kitset.parts.length) + "</div></div>" + buildKitFigureHtml(kitset.parts) + "<div class=\"kitset-parts\">" + partsHtml + "</div></div>";
+  }
+  teams.forEach(function(team) {
+    var safeTeam = safeId(team.team);
+    var seasonKeys = Object.keys(team.seasons).sort(function(a, b) { return seasonSortValue(team.seasons[b].season) - seasonSortValue(team.seasons[a].season); });
+    var seasonCount = seasonKeys.length;
+    var teamCard = document.createElement("div");
+    teamCard.className = "team-group";
+    teamCard.setAttribute("data-team-id", safeTeam);
+    var subtitle = seasonCount + " " + (seasonCount === 1 ? t('label.seasonSingular') : t('label.seasonPlural')) + " • " + tp('label.parts', team.total_parts);
+    teamCard.innerHTML = "<div class=\"team-header\"><div class=\"team-title\">" + (team.team.charAt(0).toUpperCase() + team.team.slice(1)) + "</div><div class=\"team-subtitle\">" + subtitle + "</div><button class=\"team-check-btn\" data-team-id=\"" + safeTeam + "\" role=\"checkbox\" aria-checked=\"false\" tabindex=\"0\"></button></div><div class=\"team-kits\"></div>";
+    var teamKits = teamCard.querySelector(".team-kits");
+    seasonKeys.forEach(function(sk) {
+      var sg = team.seasons[sk];
+      var safeSeason = safeId(sg.season);
+      var kitTypes = Object.keys(sg.kitsets).sort(function(a, b) { return (kitTypeOrder[a] || 999) - (kitTypeOrder[b] || 999) || a.localeCompare(b); });
+      var kitsetsHtml = kitTypes.map(function(kt) { return kitsetCardHtml(sg.kitsets[kt], safeTeam, safeSeason, kt); }).join('');
+      var block = document.createElement("div");
+      block.className = "season-block";
+      block.innerHTML = "<div class=\"season-header\"><span class=\"season-title\">" + seasonLabel(sg.season) + "</span><button class=\"copy-infobox-btn\" onclick=\"event.stopPropagation(); copyTeamInfobox(this);\" title=\"" + t('btn.copyInfoboxTitle') + "\">" + t('btn.copyInfobox') + "</button></div><div class=\"season-kits\">" + kitsetsHtml + "</div>";
+      teamKits.appendChild(block);
+    });
+    grid.appendChild(teamCard);
+  });
+}
+function renderKitsets() {
+  var filteredFiles = getFilteredFiles();
+  var kitsets = groupIntoKitsets(filteredFiles);
+  var grid = document.getElementById("grid-teams");
+  if (!grid) return;
+  grid.className = "grid kitset-grid"; // v6.2.1: Kitsets nebeneinander wie in der Infobox
+  grid.innerHTML = "";
+  if (kitsets.length === 0) { setNotice(isDataLoaded ? t('notice.noKitsetsFiltered') : t('notice.noKitsetsFound')); return; }
+  setNotice(tp('notice.kitsetsFound', kitsets.length));
+  var partOrder = ['body', 'left_arm', 'right_arm', 'shorts', 'socks'];
+  kitsets.forEach(function(kitset) {
+	var title = (kitset.team ? kitset.team.charAt(0).toUpperCase() + kitset.team.slice(1) : t('label.unknown')) + (kitset.season ? " " + formatSeasonLabel(kitset.season) : "") + (kitset.kit_type ? " " + (kitTypeName(kitset.kit_type) || kitset.kit_type) : "");
+	var card = document.createElement("div");
+	card.className = "kitset-card";
+	card.setAttribute("data-kitset-id", kitset.id);
+	var partsHtml = kitset.parts.sort(function(a, b) { return partOrder.indexOf(a.analysis.part) - partOrder.indexOf(b.analysis.part); }).map(function(part) {
+	  var pn = partName(part.analysis.part);
+	  if (part.analysis.part === 'socks' && part.analysis.is_long_socks) pn = t('part.socksLong');
+	  return "<div class=\"file-card\" data-file=\"" + part.file.title.replace(/"/g, '&quot;') + "\"><button class=\"usage-btn\" onclick=\"event.stopPropagation(); showUsageModal('" + part.file.title.replace(/'/g, "\\'") + "');\" title=\"" + t('btn.showUsage') + "\">📊</button><div class=\"file-header\"><a href=\"https://commons.wikimedia.org/wiki/File:" + encodeURIComponent(part.file.title) + "\" target=\"_blank\" rel=\"noopener noreferrer\">" + pn + "</a></div><div class=\"file-thumb\"><img class=\"lazy-thumb\" data-filename=\"" + part.file.title.replace(/\"/g, '&quot;') + "\" alt=\"\"></div><div class=\"file-meta\">" + part.file.len + " Bytes • " + formatMwTimestamp(part.file.uploadTs || part.file.touched) + "</div></div>";
+	}).join('');
+	card.innerHTML = "<div class=\"kitset-header\"><div class=\"kitset-title\">" + title + "</div><div class=\"kitset-subtitle\">" + tp('label.parts', kitset.parts.length) + "</div></div>" + buildKitFigureHtml(kitset.parts) + "<div class=\"kitset-parts\">" + partsHtml + "</div>";
+	grid.appendChild(card);
+  });
+}
+function renderSingleFiles() {
+  var filteredFiles = getFilteredFiles();
+  var grid = document.getElementById("grid-teams");
+  if (!grid) return;
+  grid.className = "grid single-grid";
+  grid.innerHTML = "";
+  if (filteredFiles.length === 0) { setNotice(isDataLoaded ? t('notice.noFilesFiltered') : t('notice.noFilesFound')); return; }
+  setNotice(t('notice.filesCount', { n: filteredFiles.length, total: allFiles.length }));
+  filteredFiles.forEach(function(f) {
+	var div = document.createElement("div");
+	div.className = "file-card";
+	div.setAttribute("data-file", f.title);
+	div.innerHTML = "<button class=\"usage-btn\" onclick=\"event.stopPropagation(); showUsageModal('" + f.title.replace(/'/g, "\\'") + "');\" title=\"" + t('btn.showUsage') + "\">📊</button><div class=\"file-header\"><a href=\"https://commons.wikimedia.org/wiki/File:" + encodeURIComponent(f.title) + "\" target=\"_blank\" rel=\"noopener noreferrer\">" + f.title + "</a></div><div class=\"file-thumb\"><img class=\"lazy-thumb\" data-filename=\"" + f.title.replace(/\"/g, '&quot;') + "\" alt=\"\"></div><div class=\"file-meta\">" + f.len + " Bytes • " + formatMwTimestamp(f.uploadTs || f.touched) + "</div>";
+	grid.appendChild(div);
+  });
+}
+// ================================================================================
+// === v6.1 „Aufstellung" – ZUSAMMENGESETZTE KIT-ANSICHT ========================
+// ================================================================================
+// Baut je Kitset eine Trikot-Figur im exakten Layout der WP-Vorlage
+// {{Football kit}} (Ärmel+Trikot = Shirt, darunter Hose, darunter Stutzen).
+// Die Farbflächen werden mit der v6.0-Engine (ciModeColor) erkannt – lazy, nur
+// für sichtbare Figuren (IntersectionObserver), Ergebnis in kitColorCache.
+
+var kitColorObserver = null;
+var kitColorCache = {}; // Dateiname -> Hex (ohne #) | null (keine Farbe)
+
+// v6.2.3: Farb-Cache über Sitzungen hinweg persistieren (Farben sind pro Datei
+// stabil). Nur erfolgreiche Werte werden gespeichert – Fehlschläge (null) werden
+// beim nächsten Laden erneut versucht.
+var KIT_COLOR_CACHE_KEY = 'kitColorCache_v1';
+var _kitColorSaveTimer = null;
+function loadKitColorCache() {
+  try {
+    var s = localStorage.getItem(KIT_COLOR_CACHE_KEY);
+    if (s) { var obj = JSON.parse(s); if (obj && typeof obj === 'object') kitColorCache = obj; }
+  } catch (e) { /* Cache ignorieren */ }
+}
+function saveKitColorCache() {
+  if (_kitColorSaveTimer) return;              // entprellt: max. 1 Schreibvorgang/800ms
+  _kitColorSaveTimer = setTimeout(function() {
+    _kitColorSaveTimer = null;
+    try {
+      var out = {};
+      Object.keys(kitColorCache).forEach(function(k) { if (kitColorCache[k]) out[k] = kitColorCache[k]; });
+      localStorage.setItem(KIT_COLOR_CACHE_KEY, JSON.stringify(out));
+    } catch (e) { /* z.B. Quota – unkritisch */ }
+  }, 800);
+}
+loadKitColorCache();
+
+// Teil-Analyse -> Zellen-Kürzel der Figur.
+var KIT_PART_TO_CELL = { left_arm: 'la', body: 'b', right_arm: 'ra', shorts: 'sh', socks: 'so' };
+
+/**
+ * HTML einer Kit-Figur aus den Teilen eines Kitsets bauen.
+ * @param {Array<{file:{title:string}, analysis:{part:string}}>} parts
+ * @returns {string} HTML der Figur
+ */
+function buildKitFigureHtml(parts) {
+  var byCell = {};
+  parts.forEach(function(p) {
+    var cell = KIT_PART_TO_CELL[p.analysis.part];
+    if (cell && !byCell[cell]) byCell[cell] = p.file.title;
+  });
+  var GEOM = { la: [0, 59], b: [0, 59], ra: [0, 59], sh: [59, 36], so: [95, 40] }; // [top, height]
+  function cellHtml(cell) {
+    var fn = byCell[cell];
+    if (!fn) return '';
+    var esc = fn.replace(/"/g, '&quot;');
+    return '<div class="kit-cell kc-' + cell + '" data-file="' + esc + '" data-part="' + cell + '">' +
+           '<img class="lazy-thumb" data-filename="' + esc + '" alt=""></div>';
+  }
+  // v6.2: Nur tatsächlich vorhandene Teile zeichnen (KEIN Stutzen-Platzhalter mehr)
+  // und die Figur exakt auf die Unterkante des untersten Teils zuschneiden – so
+  // entsteht kein Leerraum und kein weißes Rechteck unter dem Trikot.
+  var html = '', maxBottom = 0;
+  ['la', 'b', 'ra', 'sh', 'so'].forEach(function(cell) {
+    if (!byCell[cell]) return;
+    html += cellHtml(cell);
+    maxBottom = Math.max(maxBottom, GEOM[cell][0] + GEOM[cell][1]);
+  });
+  if (!html) return '';
+  // v6.2.3 (A11y): Figur als Bild mit sprechendem Label aus den vorhandenen Teilen;
+  // die inneren <img> bleiben alt="" (dekorativ), da das Label hier sitzt.
+  var PART_LABEL = { la: t('part.leftArm'), b: t('part.body'), ra: t('part.rightArm'), sh: t('part.shorts'), so: t('part.socks') };
+  var present = ['b', 'la', 'ra', 'sh', 'so'].filter(function(cell) { return byCell[cell]; })
+                 .map(function(cell) { return PART_LABEL[cell]; });
+  var aria = t('aria.kitView', { parts: present.join(', ') }).replace(/"/g, '&quot;');
+  return '<div class="kit-figure" role="img" aria-label="' + aria + '" ' +
+         'title="' + t('aria.kitViewTitle').replace(/"/g, '&quot;') + '" ' +
+         'style="height:calc(var(--kit-scale,1.2) * ' + maxBottom + 'px)">' +
+         '<div class="kit" style="height:' + maxBottom + 'px">' + html + '</div></div>';
+}
+
+/**
+ * Farbe eines Teils bestimmen (mit Cache). Nutzt die vorab geholten Original-URLs.
+ * @returns {Promise<string|null>} Hex ohne # oder null
+ */
+async function kitPartColor(fn, urlMap) {
+  if (fn in kitColorCache) return kitColorCache[fn];
+  var url = ciResolveUrl(urlMap, fn);
+  if (!url) { kitColorCache[fn] = null; return null; }
+  try {
+    var img = await ciLoadImage(ciOriginalUrl(url));
+    var c = ciModeColor(img);
+    kitColorCache[fn] = c ? ciRgbToHex(c.r, c.g, c.b) : null;
+  } catch (e) {
+    kitColorCache[fn] = null;
+  }
+  return kitColorCache[fn];
+}
+
+/**
+ * Farbflächen für MEHRERE sichtbare Figuren in einem Rutsch befüllen.
+ * v6.2.3: Alle noch fehlenden Dateien werden über einen EINZIGEN imageinfo-Aufruf
+ * aufgelöst (statt einem pro Figur) und die Farben anschließend zwischengespeichert.
+ * @param {HTMLElement[]} figs
+ */
+async function colorizeKitFigures(figs) {
+  figs = figs.filter(function(f) { return f && !f.dataset.colored; });
+  if (!figs.length) return;
+  figs.forEach(function(f) { f.dataset.colored = '1'; });
+
+  var allCells = [];
+  figs.forEach(function(fig) {
+    Array.prototype.slice.call(fig.querySelectorAll('.kit-cell[data-file]'))
+      .forEach(function(c) { allCells.push(c); });
+  });
+
+  // Fehlende Dateinamen einmalig sammeln (dedupliziert) und gemeinsam auflösen.
+  var need = [], seen = {};
+  allCells.forEach(function(c) {
+    var fn = c.getAttribute('data-file');
+    if (!(fn in kitColorCache) && !seen[fn]) { seen[fn] = 1; need.push(fn); }
+  });
+  var urlMap = need.length ? await ciFetchOriginalUrls(need) : {};
+
+  await Promise.all(allCells.map(async function(c) {
+    var hex = await kitPartColor(c.getAttribute('data-file'), urlMap);
+    if (hex) c.style.background = '#' + hex;
+  }));
+  saveKitColorCache();
+}
+
+/** IntersectionObserver: Farben nur für sichtbare Figuren berechnen (gebatcht). */
+function setupKitColorObserver() {
+  if (kitColorObserver) { kitColorObserver.disconnect(); kitColorObserver = null; }
+  var figs = Array.prototype.slice.call(document.querySelectorAll('.kit-figure:not([data-colored])'));
+  if (!figs.length) return;
+  if (!('IntersectionObserver' in window)) { colorizeKitFigures(figs); return; }
+  kitColorObserver = new IntersectionObserver(function(entries) {
+    var batch = [];
+    entries.forEach(function(e) {
+      if (e.isIntersecting) { kitColorObserver.unobserve(e.target); batch.push(e.target); }
+    });
+    if (batch.length) colorizeKitFigures(batch);
+  }, { rootMargin: '300px 0px', threshold: 0 });
+  figs.forEach(function(f) { kitColorObserver.observe(f); });
+}
+
+function renderFiles() {
+  var viewMode = readControls().viewMode;
+  // v6.0.3: Eingestellte Thumb-Breite als CSS-Variable setzen -> steuert die
+  // sichtbare Vorschaugröße (Spaltenbreite + Vorschau-Höhe). Wird an das Grid
+  // gehängt und vererbt sich an alle Karten.
+  var grid = document.getElementById("grid-teams");
+  if (grid) {
+    var w = parseInt(readControls().width, 10);
+    if (!(w > 0)) w = 120;
+    grid.style.setProperty('--thumb-w', w + 'px');
+    // v6.1: gleiche Breite steuert die Kit-Figur (Basis 100px -> Skalierungsfaktor).
+    grid.style.setProperty('--kit-scale', (w / 100).toFixed(3));
+  }
+  if (viewMode === 'teams') renderTeams();
+  else if (viewMode === 'kitsets') renderKitsets();
+  else renderSingleFiles();
+  // v5.3.0: Thumbnails via IntersectionObserver on-demand laden
+  setupThumbObserver();
+  // v6.1: Kit-Figuren-Farben lazy erkennen (nur Teams-/Trikotsets-Ansicht hat Figuren).
+  setupKitColorObserver();
+}
+/**
+ * v5.4.0 – Behält nur Dateien, deren jüngster ECHTER Datei-Upload am/nach dem
+ * "after"-Datum liegt, und hängt den Upload-Zeitstempel als `.uploadTs` an.
+ *
+ * Hintergrund: PetScan filtert nach `touched` (Zeitpunkt der letzten Seiten-
+ * bearbeitung – inkl. reiner Text-/Metadaten-Änderungen). Dadurch tauchen alte
+ * Bilder auf, an denen nur die Beschreibung geändert wurde. Die MediaWiki-API
+ * `prop=imageinfo&iiprop=timestamp` liefert dagegen NUR echte Datei-Versionen;
+ * `iilimit=1` gibt den jüngsten tatsächlichen Upload zurück.
+ *
+ * @param {Array<{title:string, touched?:string}>} files  PetScan-Dateien
+ * @param {string} afterDate  Untergrenze als "YYYY-MM-DD" (inklusive)
+ * @returns {Promise<Array>} gefilterte Dateien (jeweils ggf. mit `.uploadTs`)
+ */
+async function filterByRealUpload(files, afterDate) {
+  // Leere / ungültige Eingaben robust behandeln.
+  if (!Array.isArray(files) || files.length === 0) return files || [];
+
+  var BATCH = 50;      // MediaWiki erlaubt max. 50 Titel pro Anfrage
+  var DELAY_MS = 100;  // kleine Pause zwischen Batches (API-Freundlichkeit)
+  // Untergrenze als 14-stelliger MW-Zeitstempel; da diese fix-breit und
+  // null-aufgefüllt sind, entspricht der String-Vergleich der Chronologie.
+  var minMw = (afterDate || '').replace(/-/g, '') + '000000';
+
+  var uploadMap = {}; // Dateiname -> 14-stelliger MW-Upload-Zeitstempel
+
+  for (var i = 0; i < files.length; i += BATCH) {
+    var chunk = files.slice(i, i + BATCH);
+    var titlesParam = chunk.map(function(f) { return 'File:' + f.title; }).join('|');
+
+    var apiUrl = 'https://commons.wikimedia.org/w/api.php?' + new URLSearchParams({
+      action: 'query',
+      titles: titlesParam,
+      prop:   'imageinfo',
+      iiprop: 'timestamp',
+      iilimit:'50',       // v6.7.0: mehrere Versionen -> jüngste UND älteste (Erst-Upload)
+      format: 'json',
+      origin: '*'         // Pflicht für CORS (auch von file://)
+    });
+
+    try {
+      var resp = await fetch(apiUrl);
+      if (!resp.ok) throw new Error('API HTTP ' + resp.status);
+      var data = await resp.json();
+
+      // Normalisierungs-Map: API gleicht Leerzeichen <-> Unterstriche an.
+      var normalMap = {};
+      if (data.query && data.query.normalized) {
+        data.query.normalized.forEach(function(n) {
+          normalMap[n.to] = n.from.replace(/^File:/, '');
+        });
+      }
+
+      if (data.query && data.query.pages) {
+        Object.values(data.query.pages).forEach(function(page) {
+          if (page.missing !== undefined) return; // Datei existiert nicht
+          var revs = page.imageinfo;
+          if (!revs || !revs.length || !revs[0].timestamp) return;
+          // imageinfo ist neueste-zuerst: [0] = jüngster Upload, [len-1] = Erst-Upload.
+          var toMw = function(iso) { return iso.replace(/[^0-9]/g, '').slice(0, 14); };
+          var rec = { latest: toMw(revs[0].timestamp), first: toMw(revs[revs.length - 1].timestamp) };
+          var apiName = page.title.replace(/^File:/, '');
+          uploadMap[apiName] = rec;
+          if (normalMap[page.title]) uploadMap[normalMap[page.title]] = rec;
+        });
+      }
+    } catch (err) {
+      // Netzwerk-/API-Fehler: betroffene Dateien bleiben unentschieden und
+      // werden weiter unten sicherheitshalber BEHALTEN (kein Datenverlust).
+      console.error('[UploadFilter] Batch-Fehler:', err);
+    }
+
+    setNotice(t('notice.checkingUploads', { n: Math.min(i + BATCH, files.length), total: files.length }));
+    if (i + BATCH < files.length) {
+      await new Promise(function(r) { setTimeout(r, DELAY_MS); });
+    }
+  }
+
+  // Filtern + Upload-Zeitstempel anhängen.
+  var kept = [];
+  files.forEach(function(f) {
+    // exakter Match, dann Leerzeichen/Unterstrich-Varianten
+    var rec = uploadMap[f.title]
+          || uploadMap[f.title.replace(/ /g, '_')]
+          || uploadMap[f.title.replace(/_/g, ' ')];
+    if (rec) {
+      f.uploadTs = rec.latest;            // für Anzeige + Sortierung (jüngster Upload)
+      f.firstUploadTs = rec.first;        // v6.7.0: Erst-Upload -> unterscheidet Neu von Update
+      if (rec.latest >= minMw) kept.push(f); // Datei hatte im Zeitraum echte Upload-Aktivität
+    } else {
+      // Upload-Datum unbekannt (fehlend/Fehler) -> behalten, Anzeige nutzt `touched`.
+      kept.push(f);
+    }
+  });
+  return kept;
+}
+
+async function fetchData() {
+  var ctrl = readControls();
+  var params = new URLSearchParams({
+	language: "commons", project: "wikimedia", ns: "1", depth: ctrl.depth,
+	combination: "union", sortorder: "descending", output_limit: ctrl.limit,
+	categories: "Football kit templates\nAssociation football kits", // v6.3.2: redundante Unterkategorie entfernt (bei Tiefe 50 bereits abgedeckt, Ergebnis unverändert)
+	format: "json", doit: "1",
+	after: ctrl.after.replace(/-/g, "") + "000000"
+  });
+  var url = PETSCAN_PROXY + "?" + params.toString();
+  showLoading(true);
+  setNotice("", url);
+  try {
+	var data = await fetchJSON(url);
+	allFiles = (data["*"] && data["*"][0] && data["*"][0].a && data["*"][0].a["*"]) ? data["*"][0].a["*"] : [];
+	// v6.0.1: Nicht-Dateien (Kategorien o. Ä.) direkt an der Quelle aussortieren.
+	allFiles = allFiles.filter(function(f) { return f && isCommonsFile(f.title); });
+	// v5.4.0: PetScan filtert nach `touched` (jede Bearbeitung). Nachgelagert nur
+	// echte Neu-Uploads behalten (Upload-Datum via imageinfo) – ignoriert reine
+	// Text-/Metadaten-Änderungen.
+	if (allFiles.length) {
+	  allFiles = await filterByRealUpload(allFiles, ctrl.after);
+	}
+	isDataLoaded = true;
+	populateSeasonFilter();
+	populateKitTypeFilter();
+	renderFiles();
+	setTimeout(function() {
+	  if (typeof applyCompletedState === 'function') applyCompletedState();
+	  if (typeof updateStats === 'function') updateStats();
+	}, 200);
+  } catch (e) {
+	console.error("Fehler in fetchData:", e);
+	setNotice(t('notice.error', { msg: e.message }));
+	allFiles = [];
+	isDataLoaded = false;
+  }
+  showLoading(false);
+}
+
+// ================================================================================
+// === v6.0 „Der Schneider" – INFOBOX-CODE-KOPIERER =============================
+// ================================================================================
+// Baut aus den Trikot-Teilen eines Teams den fertigen Wikipedia-Infobox-Block
+// ("| pattern_b1 = _team2627h" + "| body1 = FFCD00" …) und legt ihn in die
+// Zwischenablage. Die Farb-Erkennung ist aus dem Userscript
+// „Wikipedia Football Kit Code Copier" (v3.1 „Tailor") portiert: jede Farbe wird
+// aus dem EIGENEN Bild des jeweiligen Teils bestimmt (Silhouetten-Innenraum).
+//
+// Reihenfolge der Zeilen je Kit + Spalten-Padding entsprechen exakt dem
+// Userscript (STANDARD_PARAMS, Breite 14).
+
+// Kürzel je Teil -> Infobox-Parameter-Basisnamen.
+var CI_PART_META = {
+  la: { pattern: 'pattern_la', color: 'leftarm'  },
+  b:  { pattern: 'pattern_b',  color: 'body'     },
+  ra: { pattern: 'pattern_ra', color: 'rightarm' },
+  sh: { pattern: 'pattern_sh', color: 'shorts'   },
+  so: { pattern: 'pattern_so', color: 'socks'    }
+};
+// Zeilen-Reihenfolge je Kit (wie im Userscript).
+var CI_LINE_ORDER = ['pattern_la','pattern_b','pattern_ra','pattern_sh','pattern_so',
+                     'leftarm','body','rightarm','shorts','socks'];
+// v6.3.8: Kit-Nummer nach Trikottyp (Wikipedia-Infobox: 1=Heim, 2=Auswärts, 3=Ausweich,
+// 4=Viertes). Torwart-Trikots dahinter (kein Standard-Slot in der Vereins-Infobox).
+var CI_KIT_NUMBER = { h: 1, a: 2, t: 3, f: 4, e: 5, gkh: 6, gka: 7, gkt: 8, gk: 9, gkd: 9 };
+var CI_IMG_TIMEOUT_MS = 6000;
+
+/** Teil-Kürzel aus einem Dateinamen ableiten ("Kit_left_arm_x.png" -> "la"). */
+function ciPartFromFilename(fn) {
+  var s = (fn || '').toLowerCase();
+  if (/left[_\s]arm/.test(s))  return 'la';
+  if (/right[_\s]arm/.test(s)) return 'ra';
+  if (/body/.test(s))          return 'b';
+  if (/shorts/.test(s))        return 'sh';
+  if (/socks/.test(s))         return 'so';
+  return null;
+}
+
+/** Pattern-Token aus Dateiname ("Kit_body_kaizerchiefs2627h.png" -> "_kaizerchiefs2627h"). */
+function ciTokenFromFilename(fn) {
+  var base = (fn || '').replace(/\.(png|jpg|jpeg|gif|svg)$/i, '');
+  // führendes "Kit_<teil>_" entfernen (Teil kann Unterstriche enthalten: left_arm)
+  base = base.replace(/^kit[_\s](?:body|left[_\s]arm|right[_\s]arm|shorts|socks)[_\s]/i, '');
+  return '_' + base;
+}
+
+/** MediaWiki-Thumb-URL -> Original-Datei (Original ist scharf, Thumb ist geglättet). */
+function ciOriginalUrl(url) {
+  if (!url) return url;
+  var m = url.match(/^(.*)\/thumb\/(.+\.(?:png|svg|jpe?g|gif))\/[^\/]+$/i);
+  return m ? (m[1] + '/' + m[2]) : url;
+}
+
+/** Bild laden (CORS-anonym, damit Canvas nicht „tainted" wird) mit Timeout. */
+function ciLoadImage(url, timeoutMs) {
+  return new Promise(function(resolve, reject) {
+    var done = false;
+    var img = new Image();
+    img.crossOrigin = 'Anonymous'; // Wikimedia liefert ACAO:* -> Canvas lesbar
+    img.onload  = function() { if (!done) { done = true; resolve(img); } };
+    img.onerror = function() { if (!done) { done = true; reject(new Error('Bild-Ladefehler')); } };
+    img.src = url;
+    setTimeout(function() { if (!done) { done = true; reject(new Error('Bild-Timeout')); } }, timeoutMs || CI_IMG_TIMEOUT_MS);
+  });
+}
+
+/**
+ * Häufigste Kleidungs-Farbe (Silhouetten-Innenraum) eines Trikot-Teil-Bildes.
+ * 1:1 aus dem Userscript portiert. Kit-Bilder haben WEISSEN Hintergrund + dunkle
+ * Kontur; wir bestimmen den Innenraum per Zeilen-/Spalten-Projektion, damit weiße
+ * Kleidungsteile am Bildrand nicht als Hintergrund/Schwarz fehlgelesen werden.
+ * @returns {{r:number,g:number,b:number}|null} null wenn keine Kleidungspixel.
+ */
+function ciModeColor(img, maxSide) {
+  maxSide = maxSide || 256;
+  var nw = img.naturalWidth || img.width;
+  var nh = img.naturalHeight || img.height;
+  if (!nw || !nh) return null;
+
+  var longest = Math.max(nw, nh);
+  var scale = longest > maxSide ? (maxSide / longest) : 1;
+  var sw = Math.max(1, Math.round(nw * scale));
+  var sh = Math.max(1, Math.round(nh * scale));
+
+  var canvas = document.createElement('canvas');
+  canvas.width = sw; canvas.height = sh;
+  var ctx = canvas.getContext('2d', { willReadFrequently: true });
+  ctx.imageSmoothingEnabled = false; // harte Kante Kleidung/Hintergrund erhalten
+  ctx.drawImage(img, 0, 0, sw, sh);
+
+  var data;
+  try { data = ctx.getImageData(0, 0, sw, sh).data; }
+  catch (e) { return null; } // Canvas tainted (CORS fehlgeschlagen)
+
+  var WHITE = 240, SNAP = 245;
+
+  // 1) Kontur-Grenzen (deckend, nicht-weiß) je Zeile & Spalte.
+  var Lrow = new Int32Array(sh).fill(-1);
+  var Rrow = new Int32Array(sh).fill(-1);
+  var Tcol = new Int32Array(sw).fill(-1);
+  var Bcol = new Int32Array(sw).fill(-1);
+  for (var y = 0; y < sh; y++) {
+    for (var x = 0; x < sw; x++) {
+      var p = (y * sw + x) * 4;
+      if (data[p + 3] < 128) continue;
+      if (data[p] >= WHITE && data[p + 1] >= WHITE && data[p + 2] >= WHITE) continue;
+      if (Lrow[y] < 0) Lrow[y] = x;
+      Rrow[y] = x;
+      if (Tcol[x] < 0) Tcol[x] = y;
+      Bcol[x] = y;
+    }
+  }
+
+  // 2) Modus der Pixel im Silhouetten-Innenraum (Zeilen- ODER Spalten-Spanne).
+  var counts = new Map(), sums = new Map();
+  for (var y2 = 0; y2 < sh; y2++) {
+    for (var x2 = 0; x2 < sw; x2++) {
+      var q = (y2 * sw + x2) * 4;
+      if (data[q + 3] < 128) continue;
+      var inRow = Lrow[y2] >= 0 && x2 >= Lrow[y2] && x2 <= Rrow[y2];
+      var inCol = Tcol[x2] >= 0 && y2 >= Tcol[x2] && y2 <= Bcol[x2];
+      if (!inRow && !inCol) continue; // Hintergrund
+      var r = data[q], g = data[q + 1], b = data[q + 2];
+      var key = ((r >> 4) << 8) | ((g >> 4) << 4) | (b >> 4);
+      counts.set(key, (counts.get(key) || 0) + 1);
+      var s = sums.get(key);
+      if (!s) { s = { r: 0, g: 0, b: 0, n: 0 }; sums.set(key, s); }
+      s.r += r; s.g += g; s.b += b; s.n++;
+    }
+  }
+  if (counts.size === 0) return null;
+
+  var bestKey = null, bestCnt = -1;
+  counts.forEach(function(c, k) { if (c > bestCnt) { bestCnt = c; bestKey = k; } });
+  var ss = sums.get(bestKey);
+  var rr = Math.round(ss.r / ss.n), gg = Math.round(ss.g / ss.n), bb = Math.round(ss.b / ss.n);
+
+  // 3) Nahezu weißes Teil auf reines Weiß schnappen.
+  if (rr >= SNAP && gg >= SNAP && bb >= SNAP) { rr = 255; gg = 255; bb = 255; }
+  return { r: rr, g: gg, b: bb };
+}
+
+/** RGB -> 6-stelliger Großbuchstaben-Hex ("FFCD00"). */
+function ciRgbToHex(r, g, b) {
+  var toHex = function(v) { return ('0' + v.toString(16)).slice(-2).toUpperCase(); };
+  return toHex(r) + toHex(g) + toHex(b);
+}
+
+/**
+ * Original-Datei-URLs für mehrere Dateien via MediaWiki-API holen.
+ * @param {string[]} filenames  Dateinamen ohne "File:"-Präfix
+ * @returns {Promise<Object>} Map Dateiname -> Original-URL
+ */
+async function ciFetchOriginalUrls(filenames) {
+  var BATCH = 50, urlMap = {};
+  for (var i = 0; i < filenames.length; i += BATCH) {
+    var chunk = filenames.slice(i, i + BATCH);
+    var titlesParam = chunk.map(function(f) { return 'File:' + f; }).join('|');
+    var apiUrl = 'https://commons.wikimedia.org/w/api.php?' + new URLSearchParams({
+      action: 'query', titles: titlesParam, prop: 'imageinfo',
+      iiprop: 'url', format: 'json', origin: '*'
+    });
+    try {
+      var resp = await fetch(apiUrl);
+      if (!resp.ok) throw new Error('API HTTP ' + resp.status);
+      var data = await resp.json();
+      var normalMap = {};
+      if (data.query && data.query.normalized) {
+        data.query.normalized.forEach(function(n) { normalMap[n.to] = n.from.replace(/^File:/, ''); });
+      }
+      if (data.query && data.query.pages) {
+        Object.values(data.query.pages).forEach(function(page) {
+          if (page.missing !== undefined) return;
+          var info = page.imageinfo && page.imageinfo[0];
+          if (!info || !info.url) return;
+          var apiName = page.title.replace(/^File:/, '');
+          urlMap[apiName] = info.url;
+          if (normalMap[page.title]) urlMap[normalMap[page.title]] = info.url;
+        });
+      }
+    } catch (err) {
+      console.error('[Schneider] URL-Batch-Fehler:', err);
+    }
+  }
+  return urlMap;
+}
+
+/** Original-URL zu einem Dateinamen aus der Map holen (Leerzeichen/Unterstrich-tolerant). */
+function ciResolveUrl(urlMap, fn) {
+  return urlMap[fn] || urlMap[fn.replace(/ /g, '_')] || urlMap[fn.replace(/_/g, ' ')] || null;
+}
+
+/** Eine formatierte Infobox-Zeile bauen (Padding auf 14 wie im Userscript). */
+function ciFormatLine(paramName, value) {
+  var padding = ' '.repeat(Math.max(1, 14 - paramName.length));
+  return '| ' + paramName + padding + '= ' + (value || '');
+}
+
+/**
+ * Kompletten Infobox-Code für ein Team-Element bauen.
+ * Liest die enthaltenen Kitsets und nummeriert sie nach Trikottyp
+ * (Heim=1, Auswärts=2, Ausweich=3, …) via CI_KIT_NUMBER.
+ * @param {HTMLElement} teamGroup  Container mit .kitset-card-Elementen
+ * @returns {Promise<string>} fertiger Zwischenablage-Text
+ */
+async function ciBuildInfoboxCode(teamGroup) {
+  var kitsetCards = Array.prototype.slice.call(teamGroup.querySelectorAll('.kitset-card'));
+  if (!kitsetCards.length) return '';
+
+  // 1) Alle Dateinamen einsammeln (für einen einzigen API-Aufruf).
+  var allFilenames = [];
+  var kits = kitsetCards.map(function(card) {
+    var byPart = {}; // 'la' -> filename
+    Array.prototype.slice.call(card.querySelectorAll('.file-card[data-file]')).forEach(function(fc) {
+      var fn = fc.getAttribute('data-file');
+      var part = ciPartFromFilename(fn);
+      if (part && !byPart[part]) { byPart[part] = fn; allFilenames.push(fn); }
+    });
+    return { type: card.getAttribute('data-kit-type'), parts: byPart };
+  });
+
+  // 2) Original-URLs holen und Farben je Datei parallel bestimmen.
+  // v6.1: Nur noch nicht gecachte Dateien anfragen; kitColorCache wird geteilt.
+  var needUrls = allFilenames.filter(function(fn) { return !(fn in kitColorCache); });
+  var urlMap = needUrls.length ? await ciFetchOriginalUrls(needUrls) : {};
+  var colorByFile = {};
+  await Promise.all(allFilenames.map(async function(fn) {
+    var hex = await kitPartColor(fn, urlMap); // nutzt/füllt kitColorCache
+    if (hex) colorByFile[fn] = hex;
+  }));
+  saveKitColorCache(); // v6.2.3: neu erkannte Farben persistieren
+
+  // 3) Zeilen je Kit zusammenbauen.
+  var lines = [];
+  kits.forEach(function(kit, idx) {
+    var byPart = kit.parts;
+    // v6.3.8: Kit-Nummer nach Trikottyp (Heim=1, Auswärts=2, Ausweich=3, …) statt nach
+    // Reihenfolge -> ein reines Auswärtsset bekommt korrekt "2".
+    var n = CI_KIT_NUMBER[kit.type] || (idx + 1);
+    var tokens = {};                        // pattern-Basisname -> token
+    var colors = {};                        // color-Basisname   -> hex
+    ['la', 'b', 'ra', 'sh', 'so'].forEach(function(part) {
+      var meta = CI_PART_META[part];
+      var fn = byPart[part];
+      tokens[meta.pattern] = fn ? ciTokenFromFilename(fn) : '';
+      colors[meta.color]   = fn ? (colorByFile[fn] || '') : '';
+    });
+    // Socken-Fallback: keine Socken-Datei -> Farbe des Trikots (body) übernehmen.
+    if (!byPart.so && colors.body) colors.socks = colors.body;
+
+    CI_LINE_ORDER.forEach(function(base) {
+      var isPattern = base.indexOf('pattern_') === 0;
+      var value = isPattern ? tokens[base] : colors[base];
+      lines.push(ciFormatLine(base + n, value));
+    });
+  });
+
+  return lines.join('\n');
+}
+
+/** Text robust in die Zwischenablage kopieren (mit Fallback für file://). */
+async function ciCopyToClipboard(text) {
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      await navigator.clipboard.writeText(text);
+      return true;
+    }
+  } catch (e) { /* Fallback unten */ }
+  try {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.top = '-1000px';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.focus(); ta.select();
+    var ok = document.execCommand('copy');
+    document.body.removeChild(ta);
+    return ok;
+  } catch (e) { return false; }
+}
+
+/**
+ * Klick-Handler des „Infobox-Code kopieren"-Buttons.
+ * Zeigt Lade-/Erfolgs-/Fehler-Zustand direkt am Button an.
+ */
+async function copyTeamInfobox(btn) {
+  // v6.4.0: Der Button sitzt jetzt pro Saison (season-block); Fallback team-group.
+  var teamGroup = btn.closest ? (btn.closest('.season-block') || btn.closest('.team-group')) : null;
+  if (!teamGroup) return;
+  var original = btn.textContent;
+  if (btn.dataset.busy === '1') return; // Doppelklick-Schutz
+  btn.dataset.busy = '1';
+  btn.disabled = true;
+  btn.textContent = t('btn.analyzingColors');
+  try {
+    var code = await ciBuildInfoboxCode(teamGroup);
+    if (!code) { throw new Error('Kein Kit-Code'); }
+    var ok = await ciCopyToClipboard(code);
+    btn.classList.toggle('copied', ok);
+    btn.textContent = ok ? t('btn.copied') : t('btn.copyFailed');
+    if (!ok) console.warn('[Schneider] Zwischenablage nicht verfügbar. Code:\n' + code);
+  } catch (e) {
+    console.error('[Schneider] Fehler:', e);
+    btn.textContent = t('btn.failed');
+  } finally {
+    setTimeout(function() {
+      btn.classList.remove('copied');
+      btn.textContent = original;
+      btn.disabled = false;
+      btn.dataset.busy = '0';
+    }, 1600);
+  }
+}
+
+// ================================================
+// === UNIFIED STORAGE SYSTEM v5.2.0 ===
+// ================================================
+const STORAGE_KEY = 'kitStorage_v5';
+const MAX_ENTRIES = 100000;
+
+// Globale Storage-Objekte (EINZIGER Abhak-Store, v6.4.0 konsolidiert)
+let completedItems = {
+  teams: {},      // teamId => { touched, files: [] }
+  kitsets: {},    // kitsetId => { touched }
+  files: {}       // filename => { touched, teamId }
+};
+
+let showCompletedItems = false;
+
+// === LADEN & SPEICHERN ===
+function loadStorage() {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      completedItems = JSON.parse(stored) || {};
+      // Robust gegen alte/teilweise Datenstände.
+      if (!completedItems.teams)   completedItems.teams = {};
+      if (!completedItems.kitsets) completedItems.kitsets = {};
+      if (!completedItems.files)   completedItems.files = {};
+    }
+  } catch (e) {
+    completedItems = { teams: {}, kitsets: {}, files: {} };
+  }
+}
+
+function saveStorage() {
+  try {
+    const total = Object.keys(completedItems.teams).length
+      + Object.keys(completedItems.kitsets).length
+      + Object.keys(completedItems.files).length;
+    if (total > MAX_ENTRIES) cleanupOldEntries();
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(completedItems));
+  } catch (e) { /* z.B. Quota – unkritisch */ }
+}
+
+function cleanupOldEntries() {
+  // Behalte die 80% neuesten Einträge
+  const maxKeep = Math.floor(MAX_ENTRIES * 0.8);
+
+  const allEntries = [
+    ...Object.entries(completedItems.teams).map(([k, v]) => ({type: 'team', key: k, ...v})),
+    ...Object.entries(completedItems.files).map(([k, v]) => ({type: 'file', key: k, ...v}))
+  ];
+
+  const kitsetEntries = Object.entries(completedItems.kitsets || {});
+  allEntries.sort((a, b) => new Date(b.touched) - new Date(a.touched));
+
+  completedItems = { teams: {}, kitsets: {}, files: {} };
+  kitsetEntries.forEach(([k, v]) => { completedItems.kitsets[k] = v; }); // Kitsets bleiben erhalten
+
+  allEntries.slice(0, maxKeep).forEach(entry => {
+    if (entry.type === 'team') {
+      completedItems.teams[entry.key] = { touched: entry.touched, files: entry.files || [] };
+    } else {
+      completedItems.files[entry.key] = { touched: entry.touched, teamId: entry.teamId };
+    }
+  });
+}
+
+// === TEAM-FUNKTIONEN ===
+function markTeamCompleted(teamId, filesList = []) {
+  const now = new Date().toISOString();
+
+  // Markiere Team
+  completedItems.teams[teamId] = {
+    touched: now,
+    files: filesList
+  };
+
+  // Markiere alle Dateien des Teams
+  filesList.forEach(filename => {
+    completedItems.files[filename] = {
+      touched: now,
+      teamId: teamId
+    };
+  });
+
+  saveStorage();
+  applyCompletedState();
+  updateStats();
+}
+
+function unmarkTeamCompleted(teamId) {
+  if (completedItems.teams[teamId]) {
+    const files = completedItems.teams[teamId].files || [];
+
+    // Entferne alle Dateien des Teams
+    files.forEach(filename => {
+      delete completedItems.files[filename];
+    });
+
+    delete completedItems.teams[teamId];
+    saveStorage();
+    applyCompletedState();
+    updateStats();
+  }
+}
+
+function isTeamCompleted(teamId) {
+  return !!completedItems.teams[teamId];
+}
+
+// === KITSET-FUNKTIONEN (v6.4.0) ===
+function markKitsetCompleted(kitsetId) {
+  completedItems.kitsets[kitsetId] = { touched: new Date().toISOString() };
+  saveStorage();
+  applyCompletedState();
+  updateStats();
+}
+
+function unmarkKitsetCompleted(kitsetId) {
+  if (completedItems.kitsets[kitsetId]) {
+    delete completedItems.kitsets[kitsetId];
+    saveStorage();
+    applyCompletedState();
+    updateStats();
+  }
+}
+
+function isKitsetCompleted(kitsetId) {
+  return !!completedItems.kitsets[kitsetId];
+}
+
+// === DATEI-FUNKTIONEN ===
+function markFileCompleted(filename, teamId = null) {
+  completedItems.files[filename] = {
+    touched: new Date().toISOString(),
+    teamId: teamId
+  };
+
+  saveStorage();
+  applyCompletedState();
+  updateStats();
+}
+
+function unmarkFileCompleted(filename) {
+  if (completedItems.files[filename]) {
+    delete completedItems.files[filename];
+    saveStorage();
+    applyCompletedState();
+    updateStats();
+  }
+}
+
+function isFileCompleted(filename) {
+  return !!completedItems.files[filename];
+}
+
+// === DOM-ANWENDUNG === (v6.4.0: Teams, Kitsets UND Dateien aus einem Store)
+function applyCompletedState() {
+  const hide = function(done) { return (done && !showCompletedItems) ? 'none' : ''; };
+
+  // Teams (ganze Team-Karte = alle Saisons)
+  document.querySelectorAll('.team-group').forEach(teamGroup => {
+    const teamBtn = teamGroup.querySelector('.team-check-btn');
+    const teamId = (teamBtn && teamBtn.dataset.teamId) || teamGroup.dataset.teamId;
+    if (!teamId) return;
+    const done = isTeamCompleted(teamId);
+    if (teamBtn) { teamBtn.classList.toggle('checked', done); teamBtn.setAttribute('aria-checked', done ? 'true' : 'false'); }
+    teamGroup.style.display = hide(done);
+  });
+
+  // Kitsets (ganze Kitset-Karte)
+  document.querySelectorAll('.kitset-card').forEach(card => {
+    const kBtn = card.querySelector('.kitset-check-btn');
+    const kid = card.dataset.kitsetId;
+    if (!kid) return;
+    const done = isKitsetCompleted(kid);
+    if (kBtn) { kBtn.classList.toggle('checked', done); kBtn.setAttribute('aria-checked', done ? 'true' : 'false'); }
+    card.style.display = hide(done);
+  });
+
+  // Einzelne Dateien
+  document.querySelectorAll('.file-card').forEach(card => {
+    const checkBtn = card.querySelector('.check-btn');
+    const filename = card.dataset.file || (checkBtn && checkBtn.dataset.filename);
+    if (!filename) return;
+    const done = isFileCompleted(filename);
+    if (checkBtn) { checkBtn.classList.toggle('checked', done); checkBtn.setAttribute('aria-checked', done ? 'true' : 'false'); }
+    card.style.display = hide(done);
+  });
+
+  checkEmptyState();
+}
+
+// === STATISTIK ===
+function updateStats() {
+  const teamCount = Object.keys(completedItems.teams).length;
+  const fileCount = Object.keys(completedItems.files).length;
+
+  const allTeams = document.querySelectorAll('.team-group').length;
+  const allFiles = document.querySelectorAll('.file-card').length;
+
+  // v6.5.1: tatsächliche Sichtbarkeit prüfen (offsetParent === null, wenn das Element
+  // ODER ein Vorfahr display:none hat) – Dateien in ausgeblendeten Teams zählen nicht mehr mit.
+  const isVisible = function(el) { return el.offsetParent !== null; };
+  const visibleTeams = [].filter.call(document.querySelectorAll('.team-group'), isVisible).length;
+  const visibleFiles = [].filter.call(document.querySelectorAll('.file-card'), isVisible).length;
+
+  const statsDiv = document.getElementById('unified-stats');
+  if (statsDiv) {
+    statsDiv.textContent = t('stats.line', {
+      vt: visibleTeams, at: allTeams, vf: visibleFiles, af: allFiles, tc: teamCount, fc: fileCount
+    });
+  }
+}
+
+// === TOGGLE ===
+function toggleShowCompleted() {
+  showCompletedItems = !showCompletedItems;
+  applyCompletedState();
+  updateStats();
+  refreshCompletedToggleLabel();
+}
+// v6.6.0: Button-Beschriftung passend zu Zustand UND Sprache (auch nach Sprachwechsel).
+function refreshCompletedToggleLabel() {
+  var btn = document.getElementById('btnToggleCompleted');
+  if (btn) btn.textContent = (typeof showCompletedItems !== 'undefined' && showCompletedItems)
+    ? t('btn.hideCompleted') : t('btn.showCompleted');
+}
+
+// === INITIALISIERUNG ===
+loadStorage();
+
+
+
+// ========================================
+// AUTO-COLLAPSE HEADER
+// ========================================
+
+let lastScrollTop = 0;
+let scrollTimeout = null;
+let headerExpanded = true;
+const header = document.querySelector('header');
+
+function collapseHeader() {
+  if (headerExpanded && window.scrollY > 100) {
+    header.classList.add('collapsed');
+    headerExpanded = false;
+  }
+}
+
+function expandHeader() {
+  header.classList.remove('collapsed');
+  headerExpanded = true;
+}
+
+window.addEventListener('scroll', () => {
+  const scrollTop = window.scrollY;
+
+  if (scrollTop > lastScrollTop && scrollTop > 50) {
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(collapseHeader, 800);
+  }
+
+  lastScrollTop = scrollTop;
+});
+
+header.addEventListener('click', (e) => {
+  if (!headerExpanded) {
+    expandHeader();
+  }
+});
+
+header.addEventListener('mouseenter', () => {
+  clearTimeout(scrollTimeout);
+});
+
+
+
+
+
+// Filter Toggle Funktion
+function toggleFilters() {
+  const panel = document.getElementById('filterPanel');
+  const icon = document.getElementById('filterIcon');
+  if (panel && icon) {
+    panel.classList.toggle('collapsed');
+    icon.textContent = panel.classList.contains('collapsed') ? '▼' : '▲';
+  }
+}
+
+
+// === LocalStorage: Filter-Werte speichern und laden ===
+
+function saveFilterValues() {
+  const after = document.getElementById('after');
+  const limit = document.getElementById('limit');
+  const depth = document.getElementById('depth');
+  const width = document.getElementById('width');
+  const filterTrikotTeile = document.getElementById('filterTrikotTeile');
+  const seasonFilter = document.getElementById('seasonFilter');
+  const kitTypeFilter = document.getElementById('kitTypeFilter');
+  const viewMode = document.getElementById('viewMode');
+
+  if (after) localStorage.setItem('filter_after', after.value);
+  if (limit) localStorage.setItem('filter_limit', limit.value);
+  if (depth) localStorage.setItem('filter_depth', depth.value);
+  if (width) localStorage.setItem('filter_width', width.value);
+  if (filterTrikotTeile) localStorage.setItem('filter_trikotTeile', filterTrikotTeile.checked);
+  const hideUpdates = document.getElementById('filterHideUpdates');
+  if (hideUpdates) localStorage.setItem('filter_hideUpdates', hideUpdates.checked);
+  if (seasonFilter) localStorage.setItem('filter_season', seasonFilter.value);
+  if (kitTypeFilter) localStorage.setItem('filter_kitType', kitTypeFilter.value);
+  if (viewMode) localStorage.setItem('filter_viewMode', viewMode.value);
+}
+
+function loadFilterValues() {
+  const after = document.getElementById('after');
+  const limit = document.getElementById('limit');
+  const depth = document.getElementById('depth');
+  const width = document.getElementById('width');
+  const filterTrikotTeile = document.getElementById('filterTrikotTeile');
+  const seasonFilter = document.getElementById('seasonFilter');
+  const viewMode = document.getElementById('viewMode');
+
+  // Datum: gespeicherter Wert oder gestern
+  if (after) {
+    const saved = localStorage.getItem('filter_after');
+    after.value = saved || yesterday();
+  }
+
+  // Andere Werte wiederherstellen (falls vorhanden)
+  if (limit && localStorage.getItem('filter_limit')) {
+    limit.value = localStorage.getItem('filter_limit');
+  }
+  if (depth && localStorage.getItem('filter_depth')) {
+    depth.value = localStorage.getItem('filter_depth');
+  }
+  if (width && localStorage.getItem('filter_width')) {
+    width.value = localStorage.getItem('filter_width');
+  }
+
+  // Checkbox: gespeicherter Wert oder Standard (checked)
+  if (filterTrikotTeile) {
+    const saved = localStorage.getItem('filter_trikotTeile');
+    if (saved !== null) {
+      filterTrikotTeile.checked = saved === 'true';
+    }
+    // Sonst bleibt checked-Attribut aus HTML
+  }
+
+  // v6.7.0: „Datei-Updates ausblenden" – gespeicherter Wert, sonst Standard = an.
+  // Explizit setzen (nicht auf das HTML-Attribut verlassen: Browser stellen beim
+  // Reload teils den vorherigen Formularzustand wieder her).
+  const hideUpdates = document.getElementById('filterHideUpdates');
+  if (hideUpdates) {
+    const savedHU = localStorage.getItem('filter_hideUpdates');
+    hideUpdates.checked = (savedHU === null) ? true : (savedHU === 'true');
+  }
+
+  if (seasonFilter && localStorage.getItem('filter_season')) {
+    seasonFilter.value = localStorage.getItem('filter_season');
+  }
+  const kitTypeFilter = document.getElementById('kitTypeFilter');
+  if (kitTypeFilter && localStorage.getItem('filter_kitType')) {
+    kitTypeFilter.value = localStorage.getItem('filter_kitType');
+  }
+  if (viewMode && localStorage.getItem('filter_viewMode')) {
+    viewMode.value = localStorage.getItem('filter_viewMode');
+  }
+}
+
+// v6.0.2: Client-seitige Filter live anwenden (ohne Neu-Laden von der API).
+// Aktualisiert abhängige Dropdowns (Saison/Trikottyp – Auswahl bleibt erhalten)
+// und rendert die Liste neu. Programmatisches Setzen von select.value löst KEIN
+// 'change'-Event aus -> keine Endlosschleife.
+function applyFilters() {
+  if (!isDataLoaded) return;
+  populateSeasonFilter();
+  populateKitTypeFilter();
+  renderFiles();
+  // Abhak-Status/Statistik nach dem Neu-Rendern wieder anwenden.
+  setTimeout(function() {
+    if (typeof applyCompletedState === 'function') applyCompletedState();
+    if (typeof updateStats === 'function') updateStats();
+  }, 200);
+}
+
+function attachFilterListeners() {
+  // Client-seitige Filter: nur neu rendern.
+  const clientFilters = ['width', 'filterTrikotTeile', 'filterHideUpdates', 'seasonFilter', 'viewMode', 'kitTypeFilter'];
+  clientFilters.forEach(id => {
+    const elem = document.getElementById(id);
+    if (elem) {
+      elem.addEventListener('change', () => { saveFilterValues(); applyFilters(); });
+    }
+  });
+
+  // v6.0.2: Query-Filter (PetScan-Parameter) erfordern ein echtes Neu-Laden.
+  const queryFilters = ['after', 'limit', 'depth'];
+  queryFilters.forEach(id => {
+    const elem = document.getElementById(id);
+    if (elem) {
+      elem.addEventListener('change', () => { saveFilterValues(); if (isDataLoaded) fetchData(); });
+    }
+  });
+}
+
+// Beim Laden der Seite
+window.addEventListener('load', function() {
+  loadFilterValues();
+  attachFilterListeners();
+  // v6.6.0: Theme + Sprache anwenden (Theme wurde bereits im <head> vor-gesetzt).
+  applyTheme();
+  applyLanguage();
+});
+
+
+
+// === GlobalUsage Feature ===
+
+async function fetchGlobalUsage(filename) {
+  // v5.4.2: Cache-Key-Version erhöht (v2), damit alte, rein globale Einträge
+  // (ohne lokale Commons-Verwendung) nicht weiter ausgeliefert werden.
+  const cacheKey = 'usage_v2_' + filename;
+  const cached = localStorage.getItem(cacheKey);
+
+  if (cached) {
+    try {
+      const data = JSON.parse(cached);
+      if (Date.now() - data.timestamp < 24 * 60 * 60 * 1000) {
+        return data.usage;
+      }
+    } catch (e) {}
+  }
+
+  // v5.4.2: `prop=globalusage` liefert NUR die Verwendung auf ANDEREN Wikis –
+  // die lokale Commons-Verwendung (Abschnitt "Dateiverwendung", z. B. Galerie-
+  // seiten) fehlt dort. `prop=fileusage` ergänzt genau diese lokalen Seiten.
+  const url = 'https://commons.wikimedia.org/w/api.php?' +
+    'action=query&prop=globalusage|fileusage&titles=File:' + encodeURIComponent(filename) +
+    '&format=json&origin=*&gulimit=500&fulimit=500';
+
+  const response = await fetch(url);
+  const data = await response.json();
+
+  const pages = (data.query && data.query.pages) || {};
+  const pageId = Object.keys(pages)[0];
+  const page = (pageId !== undefined ? pages[pageId] : {}) || {};
+
+  // Globale Verwendung (andere Wikis): { title, url, wiki }
+  const globalUsage = (page.globalusage || []).map(function(u) {
+    return { title: u.title, url: u.url, wiki: u.wiki };
+  });
+
+  // Lokale Commons-Verwendung: fileusage liefert { pageid, ns, title } ohne URL/Wiki.
+  const localUsage = (page.fileusage || []).map(function(u) {
+    return {
+      title: u.title,
+      url: 'https://commons.wikimedia.org/wiki/' + encodeURIComponent(u.title.replace(/ /g, '_')),
+      wiki: 'commons.wikimedia.org'
+    };
+  });
+
+  // Lokale Treffer zuerst, danach globale.
+  const usage = localUsage.concat(globalUsage);
+
+  localStorage.setItem(cacheKey, JSON.stringify({
+    usage: usage,
+    timestamp: Date.now()
+  }));
+
+  return usage;
+}
+
+function showUsageModal(filename) {
+  const modal = document.getElementById('usageModal');
+  const body = document.getElementById('usageBody');
+
+  if (!modal || !body) return;
+
+  modal.classList.add('active');
+
+  // Event Listener für ESC und Click-Outside (nur wenn noch nicht registriert)
+  if (!modal.hasAttribute('data-listeners-attached')) {
+    modal.setAttribute('data-listeners-attached', 'true');
+
+    // ESC-Taste
+    const escHandler = function(e) {
+      if ((e.key === 'Escape' || e.key === 'Esc') && modal.classList.contains('active')) {
+        closeUsageModal();
+        e.preventDefault();
+      }
+    };
+    document.addEventListener('keydown', escHandler);
+    modal._escHandler = escHandler;
+
+    // Click-Outside
+    const clickHandler = function(e) {
+      if (e.target === modal && modal.classList.contains('active')) {
+        closeUsageModal();
+      }
+    };
+    document.addEventListener('click', clickHandler);
+    modal._clickHandler = clickHandler;
+  }
+  document.body.style.overflow = 'hidden';
+
+  body.innerHTML = '<div class="usage-loading">' + t('usage.loading') + '</div>';
+
+  fetchGlobalUsage(filename)
+    .then(usage => {
+      if (usage.length === 0) {
+        body.innerHTML = '<div class="usage-empty">' + t('usage.empty') + '</div>';
+        return;
+      }
+
+      const byWiki = {};
+      usage.forEach(item => {
+        if (!byWiki[item.wiki]) byWiki[item.wiki] = [];
+        byWiki[item.wiki].push(item);
+      });
+
+      let html = '<ul class="usage-list">';
+      Object.keys(byWiki).sort().forEach(wiki => {
+        const pages = byWiki[wiki];
+        html += '<li class="usage-wiki">';
+        html += '<div class="usage-wiki-name">📖 ' + wiki + ' (' + pages.length + ')</div>';
+        html += '<ul class="usage-pages">';
+        pages.forEach(page => {
+          html += '<li><a href="' + page.url + '" target="_blank" rel="noopener">' + page.title + '</a></li>';
+        });
+        html += '</ul></li>';
+      });
+      html += '</ul>';
+      body.innerHTML = html;
+    })
+    .catch(error => {
+      body.innerHTML = '<div class="usage-error">' + t('usage.error') + '</div>';
+    });
+}
+
+function closeUsageModal() {
+  const modal = document.getElementById('usageModal');
+  if (modal) {
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+}
+
+
+
+
+
+
+</script>
+
+  <!-- GlobalUsage Modal -->
+  <div id="usageModal" class="usage-modal">
+    <div class="usage-content">
+      <div class="usage-header">
+        <h2>📊 <span data-de="Verwendung auf Wikipedia" data-en="Usage on Wikipedia">Verwendung auf Wikipedia</span></h2>
+        <button class="usage-close" onclick="closeUsageModal()">×</button>
+      </div>
+      <div id="usageBody" class="usage-body"></div>
+    </div>
+  </div>
+
+
+<script>
+// === Abhak-Buttons anlegen (v6.4.0) ===
+// Fügt Team-/Kitset-/Datei-Checkbuttons hinzu. Klick-Logik + Speicherung liegen
+// zentral im Unified-Storage-System oben (markTeam/Kitset/File...). KEIN eigener Store mehr.
+(function() {
+  function mkBtn(cls) { var b = document.createElement('button'); b.className = cls; return b; }
+  function addButtons() {
+    document.querySelectorAll('.team-group').forEach(function(card) {
+      if (card.querySelector('.team-check-btn')) return; // renderTeams liefert ihn i.d.R. schon
+      var header = card.querySelector('.team-header');
+      if (header) header.insertBefore(mkBtn('team-check-btn'), header.firstChild);
+    });
+    document.querySelectorAll('.kitset-card').forEach(function(card) {
+      if (card.querySelector('.kitset-check-btn')) return;
+      var header = card.querySelector('.kitset-header');
+      if (header) header.insertBefore(mkBtn('kitset-check-btn'), header.firstChild);
+    });
+    document.querySelectorAll('.file-card').forEach(function(card) {
+      if (card.querySelector('.check-btn')) return;
+      card.insertBefore(mkBtn('check-btn'), card.firstChild);
+    });
+  }
+  // Buttons nach jedem (Neu-)Rendern nachziehen.
+  // v6.5.1: entprellt – große Renderings lösen viele Mutationen aus; ohne Debounce
+  // liefe addButtons() (inkl. querySelectorAll übers ganze DOM) hunderte Male pro Render.
+  var addButtonsTimer = null;
+  new MutationObserver(function() {
+    if (addButtonsTimer) return;
+    addButtonsTimer = setTimeout(function() { addButtonsTimer = null; addButtons(); }, 100);
+  }).observe(document.body, { childList: true, subtree: true });
+  setTimeout(function() {
+    addButtons();
+    if (typeof applyCompletedState === 'function') applyCompletedState();
+  }, 300);
+})();
+
+
+// ================================================
+// === EVENT HANDLERS v5.2.0 ===
+// ================================================
+
+// Delegierte Event-Handler für dynamische Buttons
+// v6.6.0: Klick auf das Vorschaubild öffnet die Commons-Dateiseite in einem
+// Hintergrund-Tab. Der Dateiname kommt stabil aus dem umgebenden .file-card
+// (data-file), da das lazy-thumb-Attribut data-filename nach dem Laden entfällt.
+function openCommonsFilePage(title) {
+  if (!title) return;
+  var url = 'https://commons.wikimedia.org/wiki/File:' + encodeURIComponent(title.replace(/ /g, '_'));
+  // Anker + Strg/Cmd-Klick: Firefox/Chrome öffnen so einen Hintergrund-Tab,
+  // ohne den aktuellen Tab zu verlassen. Läuft innerhalb der User-Geste (Klick).
+  var a = document.createElement('a');
+  a.href = url; a.target = '_blank'; a.rel = 'noopener noreferrer';
+  document.body.appendChild(a);
+  a.dispatchEvent(new MouseEvent('click', { bubbles: false, cancelable: true, ctrlKey: true, metaKey: true }));
+  a.remove();
+}
+document.addEventListener('click', function(e) {
+  // Vorschaubild angeklickt -> Commons-Dateiseite im Hintergrund-Tab
+  var thumbImg = e.target.closest('img.lazy-thumb');
+  if (thumbImg) {
+    e.preventDefault(); e.stopPropagation();
+    var tcard = thumbImg.closest('.file-card');
+    var tTitle = (tcard && tcard.dataset.file) || thumbImg.getAttribute('data-filename') || '';
+    openCommonsFilePage(tTitle);
+    return false;
+  }
+
+  // Team-Check-Button -> hidet die ganze Team-Karte (alle Saisons)
+  var teamBtn = e.target.closest('.team-check-btn');
+  if (teamBtn) {
+    e.preventDefault(); e.stopPropagation();
+    var teamGroup = teamBtn.closest('.team-group');
+    var teamId = teamBtn.dataset.teamId || (teamGroup && teamGroup.dataset.teamId);
+    if (!teamId || !teamGroup) return false;
+    var filesList = Array.from(teamGroup.querySelectorAll('.file-card')).map(function(card) {
+      return card.dataset.file || (card.querySelector('.file-header a') && card.querySelector('.file-header a').textContent.trim()) || '';
+    }).filter(function(f) { return f; });
+    if (isTeamCompleted(teamId)) unmarkTeamCompleted(teamId); else markTeamCompleted(teamId, filesList);
+    return false;
+  }
+
+  // Kitset-Check-Button (v6.4.0)
+  var kBtn = e.target.closest('.kitset-check-btn');
+  if (kBtn) {
+    e.preventDefault(); e.stopPropagation();
+    var kcard = kBtn.closest('.kitset-card');
+    var kid = kcard && kcard.dataset.kitsetId;
+    if (!kid) return false;
+    if (isKitsetCompleted(kid)) unmarkKitsetCompleted(kid); else markKitsetCompleted(kid);
+    return false;
+  }
+
+  // Datei-Check-Button (einzelne Datei)
+  var fBtn = e.target.closest('.check-btn');
+  if (fBtn && !fBtn.classList.contains('team-check-btn') && !fBtn.classList.contains('kitset-check-btn')) {
+    e.preventDefault(); e.stopPropagation();
+    var card = fBtn.closest('.file-card');
+    if (!card) return false;
+    var filename = card.dataset.file || (card.querySelector('.file-header a') && card.querySelector('.file-header a').textContent.trim()) || '';
+    if (!filename) return false;
+    if (isFileCompleted(filename)) {
+      unmarkFileCompleted(filename);
+    } else {
+      var tg = card.closest('.team-group');
+      var tb = tg && tg.querySelector('.team-check-btn');
+      markFileCompleted(filename, (tb && tb.dataset.teamId) || null);
+    }
+    return false;
+  }
+});
+
+// Nach renderFiles() die States anwenden
+const originalRenderFiles = window.renderFiles || function() {};
+window.renderFiles = function() {
+  originalRenderFiles.apply(this, arguments);
+
+  setTimeout(() => {
+    applyCompletedState();
+    updateStats();
+  }, 100);
+};
+
+// ============================================================
+// v5.3.0 - THUMBNAIL LAZY LOADER via MediaWiki API
+// Behebt: OpaqueResponseBlocking (ORB) durch direkte upload.wikimedia.org-URLs.
+// thumb.php kann non-2xx zurückgeben → ORB blockiert. Die API (origin=*)
+// liefert direkte URLs mit CORS-Header und immer HTTP 200.
+// IntersectionObserver: Thumbnails nur laden wenn sichtbar (performance bei 20k+).
+// ============================================================
+
+var thumbObserver = null;
+
+/**
+ * Richtet den IntersectionObserver für Lazy-Loading ein.
+ * Ruft loadThumbnailBatch() nur für Bilder im sichtbaren Bereich auf.
+ */
+function setupThumbObserver() {
+  // Alten Observer stoppen (z.B. nach erneutem Rendern)
+  if (thumbObserver) {
+    thumbObserver.disconnect();
+    thumbObserver = null;
+  }
+
+  var imgs = Array.from(document.querySelectorAll('img.lazy-thumb[data-filename]'));
+  if (!imgs.length) return;
+
+  // Fallback für ältere Browser ohne IntersectionObserver
+  if (!('IntersectionObserver' in window)) {
+    loadThumbnailBatch(imgs);
+    return;
+  }
+
+  // Puffer: Bilder 400px vor Sichtbarkeit vorladen (sanftes Scrollen)
+  thumbObserver = new IntersectionObserver(function(entries) {
+    var toLoad = [];
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting && entry.target.dataset.filename) {
+        thumbObserver.unobserve(entry.target);
+        toLoad.push(entry.target);
+      }
+    });
+    if (toLoad.length) loadThumbnailBatch(toLoad);
+  }, { rootMargin: '400px 0px', threshold: 0 });
+
+  imgs.forEach(function(img) { thumbObserver.observe(img); });
+}
+
+/**
+ * Lädt Thumbnails für eine Gruppe von img-Elementen via MediaWiki API.
+ * Batcht max. 50 Dateien pro API-Aufruf.
+ * origin=* aktiviert CORS → kein ORB-Blocking von file://.
+ * @param {HTMLImageElement[]} imgs
+ */
+async function loadThumbnailBatch(imgs) {
+  if (!imgs || !imgs.length) return;
+
+  var width = (readControls().width) || 120;
+  var BATCH_SIZE = 50;
+  var DELAY_MS   = 120; // Pause zwischen Batches (Rate-Limit-Schutz)
+
+  for (var i = 0; i < imgs.length; i += BATCH_SIZE) {
+    // Nur noch ungeladene Bilder (data-filename noch vorhanden)
+    var batch = imgs.slice(i, i + BATCH_SIZE).filter(function(img) {
+      return !!img.dataset.filename;
+    });
+    if (!batch.length) continue;
+
+    var filenames  = batch.map(function(img) { return img.dataset.filename; });
+    var titlesParam = filenames.map(function(f) { return 'File:' + f; }).join('|');
+
+    // MediaWiki API: direkte Thumbnail-URLs abrufen
+    var apiUrl = 'https://commons.wikimedia.org/w/api.php?' + new URLSearchParams({
+      action:     'query',
+      titles:     titlesParam,
+      prop:       'imageinfo',
+      iiprop:     'url',
+      iiurlwidth: String(width),
+      format:     'json',
+      origin:     '*'   // Pflicht für CORS von file:// und anderen Origins
+    });
+
+    try {
+      var resp = await fetch(apiUrl);
+      if (!resp.ok) throw new Error('API HTTP ' + resp.status);
+      var data = await resp.json();
+
+      // Normalisierungsmap: API kann Leerzeichen ↔ Unterstriche angleichen
+      var normalMap = {};
+      if (data.query && data.query.normalized) {
+        data.query.normalized.forEach(function(n) {
+          normalMap[n.to] = n.from.replace(/^File:/, '');
+        });
+      }
+
+      // filename → thumburl Map aufbauen
+      var thumbMap = {};
+      if (data.query && data.query.pages) {
+        Object.values(data.query.pages).forEach(function(page) {
+          if (page.missing !== undefined) return; // Datei existiert nicht
+          var info = page.imageinfo && page.imageinfo[0];
+          if (!info || !info.thumburl) return;
+          var apiName = page.title.replace(/^File:/, '');
+          thumbMap[apiName] = info.thumburl;
+          // Auch unter Vor-Normalisierungs-Namen speichern
+          if (normalMap[page.title]) {
+            thumbMap[normalMap[page.title]] = info.thumburl;
+          }
+        });
+      }
+
+      // img.src setzen (exakter Match, dann Leerzeichen/Underscore-Varianten)
+      batch.forEach(function(img) {
+        var fn = img.dataset.filename;
+        if (!fn) return;
+        var url = thumbMap[fn]
+               || thumbMap[fn.replace(/ /g, '_')]
+               || thumbMap[fn.replace(/_/g, ' ')];
+
+        if (url) {
+          img.onload  = function() { this.style.opacity = '1'; };
+          img.onerror = function() { showThumbFallback(this); };
+          img.src = url;
+        } else {
+          showThumbFallback(img); // Kein Thumbnail verfügbar
+        }
+        // Verhindert Doppel-Laden
+        delete img.dataset.filename;
+      });
+
+    } catch (err) {
+      console.error('[ThumbLoader] Batch-Fehler:', err);
+      batch.forEach(function(img) { showThumbFallback(img); });
+    }
+
+    // Pause zwischen Batches (außer beim letzten)
+    if (i + BATCH_SIZE < imgs.length) {
+      await new Promise(function(r) { setTimeout(r, DELAY_MS); });
+    }
+  }
+}
+
+/**
+ * Zeigt "Keine Vorschau"-Platzhalter wenn Thumbnail-Laden fehlschlägt.
+ * @param {HTMLImageElement} img
+ */
+function showThumbFallback(img) {
+  var thumb = img.closest ? img.closest('.file-thumb') : null;
+  if (thumb) {
+    thumb.innerHTML = '<span style="color:var(--text-secondary);font-size:10px;' +
+      'text-align:center;padding:8px;display:block;line-height:1.4">' +
+      t('thumb.noPreview') + '</span>';
+  }
+}
+
+/**
+ * Zeigt eine Meldung wenn alle geladenen Einträge als erledigt ausgeblendet sind.
+ * Verhindert leeres Grid ohne Erklärung.
+ */
+function checkEmptyState() {
+  var grid = document.getElementById('grid-teams');
+  if (!grid) return;
+
+  // Alte Meldung entfernen
+  var old = grid.querySelector('.empty-completed-msg');
+  if (old) old.remove();
+
+  var allCards = grid.querySelectorAll('.team-group, .kitset-card');
+  if (!allCards.length) return;
+
+  var visibleCount = Array.from(allCards).filter(function(el) {
+    return el.style.display !== 'none';
+  }).length;
+
+  if (visibleCount === 0 && !showCompletedItems) {
+    var msg = document.createElement('div');
+    msg.className = 'empty-completed-msg';
+    msg.innerHTML =
+      '<div style="font-size:52px;margin-bottom:16px">✅</div>' +
+      '<div style="font-size:18px;font-weight:700;color:var(--text-primary);margin-bottom:8px">' +
+        t('empty.allDone', { n: allCards.length }) +
+      '</div>' +
+      '<div style="font-size:14px;margin-bottom:20px">' +
+        t('empty.hint') +
+      '</div>' +
+      '<button onclick="toggleShowCompleted()" ' +
+        'style="padding:10px 24px;background:linear-gradient(135deg,var(--pitch-bright),var(--pitch-highlight));' +
+        'color:#fff;border:2px solid var(--line-white);border-radius:8px;cursor:pointer;' +
+        'font-size:15px;font-weight:700">' +
+        t('btn.showCompletedPlain') +
+      '</button>';
+    grid.appendChild(msg);
+  }
+}
+
+</script>
+
+
+
+<!-- Changelog Modal (v5.3.2) -->
+<div id="clOverlay" class="cl-overlay" role="dialog" aria-modal="true" aria-label="Changelog">
+  <div class="cl-modal">
+	<button class="cl-close" onclick="closeChangelogModal()" aria-label="Schließen">&#x2715;</button>
+	<h2>&#x26BD; Changelog &mdash; Kitly</h2>
+	<div class="cl-version">
+	  <h3>v6.7.0 &mdash; 2026-08-09 &mdash; „Neuzugang"</h3>
+	  <ul>
+		<li>Neu: <strong>„Datei-Updates ausblenden"</strong> (standardmäßig aktiv). Dateien, die im gewählten Zeitraum nur eine <em>neue Version</em> erhielten, deren <strong>Erst-Upload</strong> aber davor liegt, werden ausgeblendet – es bleiben also nur echte Neu-Uploads. Umschaltbar ohne Neuladen.</li>
+		<li>Grundlage: Pro Datei wird jetzt zusätzlich der <strong>Erst-Upload</strong> über die MediaWiki-API ermittelt (älteste Dateiversion), nicht nur der jüngste Upload.</li>
+		<li>Das <strong>Limit</strong> lässt sich jetzt bis <strong>10000</strong> stellen (vorher 2000; Standard bleibt 1000) &ndash; für breite Zeiträume, in denen sonst Treffer abgeschnitten würden.</li>
+	  </ul>
+	</div>
+	<div class="cl-version">
+	  <h3>v6.6.0 &mdash; 2026-08-09 &mdash; „Kitly"</h3>
+	  <ul>
+		<li>Das Tool heißt jetzt <strong>Kitly</strong> – ein Name, der auch international funktioniert.</li>
+		<li>Neu: <strong>Sprachumschaltung DE/EN</strong> (🌐-Button). Die komplette Oberfläche gibt es jetzt auf Deutsch und Englisch; die Sprache wird gespeichert und beim ersten Start aus der Browsersprache erraten.</li>
+		<li>Neu: <strong>Hell-/Dunkelmodus mit Automatik</strong> (🌗-Button, Auto / Hell / Dunkel). „Auto" folgt dem Betriebssystem; die grüne Pitch-Identität bleibt in beiden Modi erhalten. Auswahl wird gespeichert.</li>
+		<li>Neu: Klick auf ein <strong>Vorschaubild</strong> öffnet die Commons-Dateiseite in einem neuen Hintergrund-Tab.</li>
+		<li>Saison-Spannen über mehrere Jahre werden jetzt als Bereich angezeigt: <code>8792</code> &rarr; „Saison 1987–1992" (statt „Saison 8792"), während aufeinanderfolgende Saisons weiter als <code>1987/88</code> erscheinen.</li>
+		<li>Zähler stehen jetzt im korrekten Singular/Plural („1 Team gefunden", „1 Teil" bzw. „1 team found", „1 part").</li>
+	  </ul>
+	</div>
+	<div class="cl-version">
+	  <h3>v6.5.1 &mdash; 2026-08-09 &mdash; „Feinschliff"</h3>
+	  <ul>
+		<li>Saison-Spannen korrekt erkannt: <code>1819</code>/<code>1920</code>/<code>2021</code> werden jetzt als „2018/19"/„2019/20"/„2020/21" angezeigt und sortiert – echte Einzeljahre (1923, 1975, 2026) bleiben unverändert.</li>
+		<li>Verbose-Dateinamen: alleinstehendes Jahr (z.&nbsp;B. <code>FC_Tokyo_2026_HOME</code>) wird nicht mehr in den Teamnamen übernommen.</li>
+		<li>Trikotset-Ansicht zeigt die Saison im Klartext (<code>2627</code> &rarr; „2026/27").</li>
+		<li>Trikottyp-Filter greift auch für Torhüter-Varianten (<code>gkd</code>/<code>g</code>) zuverlässig.</li>
+		<li>Statistik zählt Dateien in ausgeblendeten Teams nicht mehr als sichtbar; Abhak-Buttons werden entprellt nachgezogen (weniger DOM-Last bei großen Listen).</li>
+	  </ul>
+	</div>
+	<div class="cl-version">
+	  <h3>v6.5.0 &mdash; 2026-08-09 &mdash; „Aufgeräumte Kabine"</h3>
+	  <ul>
+		<li>Neu: <strong>Trikottyp-Filter</strong> (Dropdown Heim/Auswärts/Ausweich/Torhüter) in der Filter-Gruppe.</li>
+		<li>Die beiden parallelen Abhak-Systeme wurden zu <strong>einem</strong> zusammengeführt (ein einziger Speicher). Team-, Kitset- und Datei-Abhaken laufen jetzt über dieselbe Logik.</li>
+		<li>2-stellige Saison wird korrekt angezeigt: <code>02</code> &rarr; „Saison 2002".</li>
+		<li>Aufgeräumt: toter Auto-Refresh-Code, verwaiste Hilfsfunktionen, ein ungenutzter Zugriff und alle Debug-Ausgaben (console.log) entfernt.</li>
+	  </ul>
+	</div>
+	<div class="cl-version">
+	  <h3>v6.4.0 &mdash; 2026-08-08 &mdash; „Chronik"</h3>
+	  <ul>
+		<li>Alle Saisons eines Teams stehen jetzt unter <strong>einer</strong> Team-Karte, chronologisch sortiert (neueste Saison oben). Beispiel: „Gelp" mit 1996/98 über 1993/95.</li>
+		<li>Wird ein Team als erledigt abgehakt, verschwinden <strong>alle</strong> Saisons dieses Teams mit.</li>
+		<li>Der „Infobox-Code"-Button sitzt jetzt <strong>pro Saison</strong> (statt pro Team), damit die Kit-Nummern nicht über Saisons hinweg kollidieren.</li>
+	  </ul>
+	</div>
+	<div class="cl-version">
+	  <h3>v6.3.11 &mdash; 2026-08-08 &mdash; Saison-Filter angeglichen</h3>
+	  <ul>
+		<li>Der Saison-Filter zeigt jetzt exakt dieselbe Saison wie die Team-Anzeige (gemeinsame Logik). Ungewöhnliche Spannen wie „1993/95" oder „1998/2001" erscheinen im Dropdown genauso wie an den Teams.</li>
+	  </ul>
+	</div>
+	<div class="cl-version">
+	  <h3>v6.3.10 &mdash; 2026-08-08 &mdash; Saison-Spannen</h3>
+	  <ul>
+		<li>Nicht fortlaufende Saison-Spannen werden jetzt korrekt angezeigt: <code>9395</code> &rarr; „1993/95". Bei Jahrhundertwechsel wird das Endjahr 4-stellig gezeigt: <code>9801</code> &rarr; „1998/2001", <code>9900</code> &rarr; „1999/2000". Echte Einzeljahre (1923, 1975) bleiben unverändert.</li>
+	  </ul>
+	</div>
+	<div class="cl-version">
+	  <h3>v6.3.9 &mdash; 2026-08-08 &mdash; Bindestrich-Saisons</h3>
+	  <ul>
+		<li>Dateinamen mit Trennzeichen-Saison wie <code>Kit_body_spartak-vn-26-27-a.png</code> werden jetzt korrekt gelesen: Team („spartak-vn"), Saison („2026/27") und Typ (Auswärts). Heim und Auswärts landen im selben Team. Unterstützt „YY-YY", „YYYY-YY" und einzelne 4-stellige Jahresblöcke.</li>
+	  </ul>
+	</div>
+	<div class="cl-version">
+	  <h3>v6.3.8 &mdash; 2026-08-08 &mdash; Infobox-Nummerierung</h3>
+	  <ul>
+		<li>Der „Infobox-Code" nummeriert die Kits jetzt nach Typ statt nach Reihenfolge: Heim = 1, Auswärts = 2, Ausweich = 3, Viertes = 4. Ein reines Auswärtsset liefert also korrekt <code>…2</code> (statt fälschlich <code>…1</code>).</li>
+	  </ul>
+	</div>
+	<div class="cl-version">
+	  <h3>v6.3.7 &mdash; 2026-08-08 &mdash; Feinschliff</h3>
+	  <ul>
+		<li>In der Team-Zeile sind die Trikottypen jetzt einheitlich sortiert: Heim, Auswärts, Ausweich, dann Torwart – passend zur Reihenfolge der Kitset-Karten.</li>
+	  </ul>
+	</div>
+	<div class="cl-version">
+	  <h3>v6.3.6 &mdash; 2026-08-08 &mdash; Ausführliche Dateinamen</h3>
+	  <ul>
+		<li>Neues Namensschema erkannt: <code>Kit_body_FC_Tokyo_2026_-_27_AWAY_FP.png</code> &amp; Co. Team („FC Tokyo"), Saison („2026/27") und Typ werden jetzt korrekt gelesen; Heim und Auswärts landen im selben Team.</li>
+		<li><code>FP</code> = Feldspieler (&rarr; Heim/Auswärts/Ausweich), <code>GK</code> = Torwart (&rarr; Torhüter Heim/Auswärts). Bisher wurde stattdessen „fp" als Typ und der ganze Name als Team angezeigt.</li>
+	  </ul>
+	</div>
+	<div class="cl-version">
+	  <h3>v6.3.5 &mdash; 2026-08-03 &mdash; Torhüter Heim/Auswärts</h3>
+	  <ul>
+		<li>Torwart-Trikots werden jetzt nach Heim/Auswärts unterschieden: <code>gkh</code> &rarr; „Torhüter Heim", <code>gka</code> &rarr; „Torhüter Auswärts" (auch <code>gkt</code> &rarr; „Torhüter Ausweich"). Gilt für Anzeige, Kitset-Titel und Trikottyp-Filter.</li>
+	  </ul>
+	</div>
+	<div class="cl-version">
+	  <h3>v6.3.4 &mdash; 2026-08-03 &mdash; Fehlerbehebung</h3>
+	  <ul>
+		<li>Dateien mit 4-stelliger Jahreszahl ohne Typ-Kürzel (z.&thinsp;B. <code>Kit_body_River_1975.png</code>) werden jetzt korrekt erkannt: Saison = 1975, Typ = Heim (kein „h"/„a" am Ende bedeutet Heimtrikot). Bisher landeten sie unter „Keine Saison • unknown".</li>
+	  </ul>
+	</div>
+	<div class="cl-version">
+	  <h3>v6.3.3 &mdash; 2026-08-03 &mdash; Feinschliff</h3>
+	  <ul>
+		<li>Die Eingabefelder „Limit" (max. 2000) und „Tiefe" (max. 100) haben jetzt Obergrenzen, passend zu den Limits des kitproxy-Servers – so ist die Grenze direkt im Feld sichtbar.</li>
+	  </ul>
+	</div>
+	<div class="cl-version">
+	  <h3>v6.3.2 &mdash; 2026-08-03 &mdash; Aufräumen</h3>
+	  <ul>
+		<li>Kategorie-Abfrage verschlankt: „Association football kit templates" entfernt – sie ist eine direkte Unterkategorie beider Ober-Kategorien und bei Tiefe 50 ohnehin enthalten (empirisch geprüft, Ergebnismenge unverändert).</li>
+	  </ul>
+	</div>
+	<div class="cl-version">
+	  <h3>v6.3.1 &mdash; 2026-08-03 &mdash; „Ordnung"</h3>
+	  <ul>
+		<li>Erledigte Teams werden jetzt nur noch über <strong>einen</strong> Weg ein-/ausgeblendet: den „Erledigte anzeigen"-Button. Die doppelte Checkbox in der Filter-Gruppe wurde entfernt.</li>
+	  </ul>
+	</div>
+	<div class="cl-version">
+	  <h3>v6.3 &mdash; 2026-08-03 &mdash; „Ordnung"</h3>
+	  <ul>
+		<li>Die Einstellungen sind jetzt thematisch gruppiert: <strong>Datenabruf</strong> (Datum, Limit, Tiefe), <strong>Filter</strong> (Saison, Nur Trikot-Teile, Abgeschlossene Teams) und <strong>Darstellung</strong> (Ansicht, Thumb-Breite).</li>
+		<li>Die Checkbox „Abgeschlossene Teams" ist jetzt ein kompaktes Inline-Element (kein großer Kasten mehr) und passt zu „Nur Trikot-Teile".</li>
+	  </ul>
+	</div>
+	<div class="cl-version">
+	  <h3>v6.2.5 &mdash; 2026-08-03 &mdash; Kopfbereich</h3>
+	  <ul>
+		<li>Einheitliches Erscheinungsbild: die globale Eingabe-Basis (früher kräftiger 2px-Rahmen) ist jetzt dezent wie die Filterfelder.</li>
+		<li>Die Checkboxen „Nur Trikot-Teile" und „Abgeschlossene Teams anzeigen" passen jetzt farblich und in der Größe zum neuen Filter-Look.</li>
+	  </ul>
+	</div>
+	<div class="cl-version">
+	  <h3>v6.2.4 &mdash; 2026-08-03 &mdash; Kopfbereich</h3>
+	  <ul>
+		<li>Der obere Bereich wirkt aufgeräumter: schlankere, dezentere Filterfelder (feiner Rahmen statt kräftigem Weiß, mit sanftem Fokus-Rahmen) und kompaktere Buttons.</li>
+		<li>Die „Erledigte anzeigen"-Leiste ist jetzt schmaler und zurückhaltender.</li>
+		<li>Aufräumen: ungenutztes CSS (4 tote <code>.controls</code>-Blöcke, verwaiste Media-Queries) und eine unsichtbare, nicht mehr genutzte Statistik-Leiste entfernt.</li>
+	  </ul>
+	</div>
+	<div class="cl-version">
+	  <h3>v6.2.3 &mdash; 2026-08-03 &mdash; Aufräumen</h3>
+	  <ul>
+		<li>Fehlerbehebung: Ein alter, überflüssiger Code-Block warf bei jedem Laden einen Konsolenfehler (<code>completedTeams is not defined</code>). Der tote Alt-Code wurde vollständig entfernt.</li>
+		<li>Aufräumen: Dreifach vorhandener Thumbnail-Lade-Code auf eine Fassung reduziert; toter Code und ein ungenutztes Toast-Element entfernt (~650 Zeilen weniger).</li>
+		<li>Performance: Erkannte Trikot-Farben werden jetzt dauerhaft gespeichert (schneller nach Neuladen) und für sichtbare Figuren gebündelt statt einzeln abgefragt.</li>
+		<li>Barrierefreiheit: Die Kit-Figur hat jetzt ein sprechendes Label für Screenreader.</li>
+		<li>Kleinigkeit: Dateinamen mit „/" werden nicht mehr fälschlich ausgeschlossen (Kategorien werden ohnehin über die Datei-Endung erkannt).</li>
+	  </ul>
+	</div>
+	<div class="cl-version">
+	  <h3>v6.2.2 &mdash; 2026-08-02 &mdash; Feinschliff</h3>
+	  <ul>
+		<li>Die Abhak-Buttons (Team &amp; Kitset) fügen sich jetzt ins Design ein: dunkler, transparenter Hintergrund mit hellem Rahmen; abgehakt = grün mit weißem Haken. Das grelle Weiß und der graue Rahmen sind weg.</li>
+	  </ul>
+	</div>
+	<div class="cl-version">
+	  <h3>v6.2.1 &mdash; 2026-08-02 &mdash; „Reihe"</h3>
+	  <ul>
+		<li>Die Kitsets werden jetzt auch in der <strong>Trikotsets</strong>-Ansicht nebeneinander dargestellt (wie in der Teams-Ansicht).</li>
+	  </ul>
+	</div>
+	<div class="cl-version">
+	  <h3>v6.2 &mdash; 2026-08-02 &mdash; „Reihe"</h3>
+	  <ul>
+		<li>Die Kits eines Teams (Heim, Auswärts, Ausweich) werden jetzt <strong>nebeneinander</strong> dargestellt – wie in der Wikipedia-Infobox. Auf schmalen Bildschirmen brechen sie automatisch um.</li>
+		<li>Die Kit-Figur ist jetzt <strong>auf die tatsächlichen Teile zugeschnitten</strong> – kein großer Leerraum mehr um kleine Kits.</li>
+		<li>Das <strong>weiße Rechteck</strong> unter dem Trikot (Stutzen-Platzhalter) wurde entfernt: In der Figur werden nur noch vorhandene Teile gezeigt. (Der Infobox-Code füllt die Stutzenfarbe weiterhin mit der Trikot-Farbe.)</li>
+	  </ul>
+	</div>
+	<div class="cl-version">
+	  <h3>v6.1 &mdash; 2026-08-02 &mdash; „Aufstellung"</h3>
+	  <ul>
+		<li>Neu: In der <strong>Teams</strong>- und <strong>Trikotsets</strong>-Ansicht wird jedes Kitset jetzt als zusammengesetzte <strong>Trikot-Figur</strong> dargestellt &ndash; genau wie die Wikipedia-Vorlage <code>{{Football kit}}</code>: Ärmel + Trikot bilden das Shirt, darunter die Hose, darunter die Stutzen.</li>
+		<li>Die Farbflächen hinter den Mustern werden je Teil automatisch erkannt (gleiche Engine wie der Infobox-Kopierer). Fehlt ein Stutzen-Bild, erhält die Stutzen-Fläche die Trikot-Farbe.</li>
+		<li>Die Einzelteile bleiben darunter sichtbar (mit 📊-Verwendung und Abhaken). Die Figur-Größe folgt der <strong>Thumb-Breite</strong>.</li>
+		<li>Performance: Farben werden nur für sichtbare Figuren berechnet (Lazy-Loading) und zwischengespeichert.</li>
+	  </ul>
+	</div>
+	<div class="cl-version">
+	  <h3>v6.0.3 &mdash; 2026-08-02 &mdash; Fehlerbehebung</h3>
+	  <ul>
+		<li>Fehlerbehebung: <strong>Thumb-Breite</strong> ändert jetzt sichtbar die Vorschaugröße. Bisher wurde nur die geladene Bildauflösung angepasst, die Anzeige blieb wegen fester CSS-Maße gleich groß. Jetzt steuern Spaltenbreite und Vorschau-Höhe direkt der eingestellte Wert.</li>
+	  </ul>
+	</div>
+	<div class="cl-version">
+	  <h3>v6.0.2 &mdash; 2026-08-02 &mdash; Fehlerbehebung</h3>
+	  <ul>
+		<li>Fehlerbehebung: Filter wirken wieder sofort. Ändern von <strong>Saison</strong>, <strong>Thumb-Breite</strong>, <strong>Ansicht</strong> oder <strong>„Nur Trikot-Teile"</strong> aktualisiert die Liste jetzt direkt (bisher wurde der Wert nur gespeichert). <strong>Datum</strong>, <strong>Limit</strong> und <strong>Tiefe</strong> laden die Daten neu, da sie die Abfrage selbst betreffen.</li>
+	  </ul>
+	</div>
+	<div class="cl-version">
+	  <h3>v6.0.1 &mdash; 2026-08-02 &mdash; Fehlerbehebung</h3>
+	  <ul>
+		<li>Fehlerbehebung: Kategorien (z.&thinsp;B. <code>Football_kit_body/VARAMAN_specific_patterns</code>) tauchten fälschlich als „Datei" in den Ergebnissen auf. Es werden jetzt nur noch echte Mediendateien (mit Bild-Endung) angezeigt.</li>
+	  </ul>
+	</div>
+	<div class="cl-version">
+	  <h3>v6.0 &mdash; 2026-07-23 &mdash; „Der Schneider"</h3>
+	  <ul>
+		<li>Neu: Jede Team-Kachel hat jetzt den Button <strong>„📋 Infobox-Code"</strong>. Er kopiert den kompletten Wikipedia-Infobox-Block für <em>alle</em> Kits des Teams (Heim = 1, Auswärts = 2, …) direkt in die Zwischenablage.</li>
+		<li>Die <code>pattern_*</code>-Werte werden aus den Dateinamen abgeleitet (z.&thinsp;B. <code>Kit_body_kaizerchiefs2627h.png</code> &rarr; <code>_kaizerchiefs2627h</code>).</li>
+		<li>Die Farbwerte (<code>leftarm</code>, <code>body</code>, <code>rightarm</code>, <code>shorts</code>, <code>socks</code>) werden je Teil aus dem Originalbild erkannt &ndash; mit derselben Silhouetten-Farberkennung wie das Userscript „Wikipedia Football Kit Code Copier".</li>
+		<li>Fehlt ein Stutzen-Bild, bleibt <code>pattern_so</code> leer und die Stutzenfarbe übernimmt die Haupt-Farbe des Trikots (<code>body</code>).</li>
+	  </ul>
+	</div>
+	<div class="cl-version">
+	  <h3>v5.4.2 &mdash; 2026-07-02 &mdash; Fehlerbehebung</h3>
+	  <ul>
+		<li>Fehlerbehebung: „Verwendung anzeigen" zeigt jetzt auch die <strong>lokale Commons-Verwendung</strong> (z.&thinsp;B. Galerieseiten wie „2026–27 Swiss Super League kits"). Bisher wurde nur die Verwendung auf anderen Wikis (<code>globalusage</code>) geladen; die lokale Nutzung wird nun über <code>fileusage</code> ergänzt.</li>
+	  </ul>
+	</div>
+	<div class="cl-version">
+	  <h3>v5.4.1 &mdash; 2026-07-02 &mdash; Fehlerbehebung</h3>
+	  <ul>
+		<li>Fehlerbehebung: Fehlerhaft escapte Backticks in <code>showStatistics()</code> machten den ersten Skript-Block ungültig. Nach der Korrektur läuft dieser wieder vollständig.</li>
+	  </ul>
+	</div>
+	<div class="cl-version">
+	  <h3>v5.4.0 &mdash; 2026-07-02 &mdash; Echte Neuzugänge</h3>
+	  <ul>
+		<li>Neu: Es werden jetzt nur noch Trikot-Teile mit einem echten <strong>neuen Bild-Upload</strong> ab dem gewählten Datum angezeigt. Reine Text-/Metadaten-Änderungen an alten Dateien tauchen nicht mehr auf.</li>
+		<li>Grundlage: das tatsächliche Upload-Datum wird über die MediaWiki-API (<code>imageinfo</code>) ermittelt &ndash; statt des Seiten-Zeitstempels <code>touched</code>, der bei jeder Bearbeitung wechselt.</li>
+		<li>Die Datum-Anzeige auf den Karten zeigt nun das echte Upload-Datum; sortiert wird ebenfalls danach.</li>
+		<li>Fehlerbehebung: Das automatische Speichern der Filter (Datum, Limit &amp; Co.) funktioniert wieder &ndash; ein fehlendes Bedienelement hatte zuvor das Skript abgebrochen.</li>
+	  </ul>
+	</div>
+	<div class="cl-version">
+	  <h3>v5.3.2 &mdash; 2026-06-10 &mdash; Lesbare Zeitstempel</h3>
+	  <ul>
+		<li>Zeitstempel in der Datei-Metazeile (<code>file-meta</code>) werden jetzt im lesbaren Format angezeigt: <code>09.06.2026, 22:58</code> statt <code>20260609205821</code></li>
+		<li>Konvertierung: MediaWiki-UTC-Timestamp &rarr; lokale Browserzeit (z.&thinsp;B. CEST) im deutschen Format</li>
+		<li>Robustes Parsing mit Fallback auf Originalwert bei ungültigem Timestamp</li>
+	  </ul>
+	</div>
+		<div class="cl-version">
+	  <h3>v5.3.1 &mdash; 2026-04-27 &mdash; Historische Trikots</h3>
+	  <ul>
+		<li>Bugfix: Historische vierstellige Jahreszahlen korrekt (<code>tur1923h</code> &rarr; &bdquo;Saison 1923&ldquo; statt &bdquo;2019/2023&ldquo;)</li>
+		<li>Bugfix: Nummernvarianten <code>h1</code>, <code>h2</code>, <code>h2l</code> als Heim erkannt (<code>crc90h1</code>, <code>jacuipense26h2l</code>, <code>marciliodias26h2l</code>)</li>
+		<li>Bugfix: Saison bei nummerierten Kit-Suffixen korrekt geparst (nicht mehr &bdquo;Keine Saison&ldquo;)</li>
+		<li>Bugfix: Lange Stutzen mit Nummernvariant (<code>h2l</code>) korrekt als Heim + Langstutzen</li>
+		<li>Dropdown zeigt historische Einzeljahre (z.&thinsp;B. &bdquo;1923&ldquo;) korrekt an</li>
+		<li>Alle nummerierten Varianten normalisiert: <code>h2&rarr;h</code>, <code>a2&rarr;a</code>, <code>t2&rarr;t</code>, <code>gk2&rarr;gk</code></li>
+		<li>Changelog-Modal hinzugef&uuml;gt (Klick auf Versionsnummer)</li>
+	  </ul>
+	</div>
+	<div class="cl-version">
+	  <h3>v5.3.0 &mdash; Lazy Kit Loader</h3>
+	  <ul>
+		<li>Thumbnails per IntersectionObserver on-demand via MediaWiki-API (kein ORB-Blocking)</li>
+		<li>Batch-Loading bis zu 50 Dateien pro API-Aufruf</li>
+		<li>Rate-Limit-Schutz: 120&thinsp;ms Pause zwischen Batches</li>
+	  </ul>
+	</div>
+	<div class="cl-version">
+	  <h3>v5.2.0 &mdash; Unified Storage</h3>
+	  <ul>
+		<li>Einheitliches Speichersystem f&uuml;r Filter und Einstellungen</li>
+		<li>Kompakte Filter-Steuerleiste</li>
+	  </ul>
+	</div>
+  </div>
+</div>
+
+<script>
+
+
+// ── v5.3.2: Hilfsfunktion – MediaWiki-Timestamp in lesbares DE-Datum umwandeln
+// Eingabe: "yyyymmddhhmmss" (UTC) → Ausgabe: "09.06.2026, 22:58" (de-DE, lokale Zeit)
+// Robustheit: bei ungültigem/leerem Wert wird der Originalwert zurückgegeben.
+function formatMwTimestamp(ts) {
+  if (!ts || typeof ts !== 'string' || ts.length !== 14) return ts || '';
+  // Parse als UTC: yyyy, mm (0-basiert), dd, HH, MM
+  var y  = parseInt(ts.slice(0, 4),  10);
+  var mo = parseInt(ts.slice(4, 6),  10) - 1; // Monate 0-basiert
+  var d  = parseInt(ts.slice(6, 8),  10);
+  var h  = parseInt(ts.slice(8, 10), 10);
+  var m  = parseInt(ts.slice(10, 12),10);
+  var date = new Date(Date.UTC(y, mo, d, h, m, 0));
+  if (isNaN(date.getTime())) return ts; // Fallback bei ungültigem Datum
+  // Ausgabe in der lokalen Zeitzone des Browsers; Format folgt der aktiven Sprache.
+  return date.toLocaleString(t('locale.dateLocale'), {
+    day:    '2-digit',
+    month:  '2-digit',
+    year:   'numeric',
+    hour:   '2-digit',
+    minute: '2-digit',
+    hour12: false
+  });
+}
+// ── v5.4.0: MW-Zeitstempel ("yyyymmddhhmmss", UTC) -> Date-Objekt.
+// Robust: liefert bei ungültiger Eingabe ein Invalid-Date (NaN), das beim
+// Sortieren neutral bleibt. Behebt zugleich den früheren `new Date("2025…")`,
+// der für 14-stellige Strings stets Invalid war.
+function mwToDate(ts) {
+  if (!ts || typeof ts !== 'string' || ts.length !== 14) return new Date(NaN);
+  return new Date(Date.UTC(
+    parseInt(ts.slice(0, 4), 10),
+    parseInt(ts.slice(4, 6), 10) - 1,
+    parseInt(ts.slice(6, 8), 10),
+    parseInt(ts.slice(8, 10), 10),
+    parseInt(ts.slice(10, 12), 10),
+    parseInt(ts.slice(12, 14), 10)
+  ));
+}
+// ── Changelog Modal (v5.3.2) ─────────────────────────────────────────────
+function showChangelogModal() {
+  var el = document.getElementById('clOverlay');
+  if (el) el.classList.add('active');
+}
+function closeChangelogModal() {
+  var el = document.getElementById('clOverlay');
+  if (el) el.classList.remove('active');
+}
+(function() {
+  document.addEventListener('DOMContentLoaded', function() {
+	var overlay = document.getElementById('clOverlay');
+	if (!overlay) return;
+	overlay.addEventListener('click', function(e) {
+	  if (e.target === overlay) closeChangelogModal();
+	});
+	document.addEventListener('keydown', function(e) {
+	  if ((e.key === 'Escape' || e.key === 'Esc') && overlay.classList.contains('active'))
+		closeChangelogModal();
+	});
+  });
+})();
+
+</script>
+</body>
+</html>
