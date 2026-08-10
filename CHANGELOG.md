@@ -5,6 +5,15 @@ Alle nennenswerten Änderungen an *Kitly* – neueste Version zuerst. Die Eintr�
 Benannte Minor-Versionen (mit Codename) sind Funktions-Releases; Patches betreffen Fehlerbehebungen und Feinschliff.
 
 
+## v6.8.0 — 2026-08-09 — „Einsatz"
+
+- Neu: **Verwendung direkt im Kitset**. Unter jedem Trikotset steht jetzt „Verwendet in: …" mit Links zu den Seiten, auf denen die Teile bereits eingebunden sind – ohne Klick auf 📊. Die Angaben aller Teile werden zusammengefasst und dedupliziert.
+- Vor jeder Seite steht die **Länder-Flagge** der Wiki-Sprachvariante (bei Commons das **Commons-Logo**; ohne passende Flagge das Sprachkürzel). Reihenfolge: **de → en → pt → Commons → Rest**.
+- Wird **beim Scrollen** nachgeladen (nur sichtbare Kitsets fragen an) und 24 h zwischengespeichert – ein späterer Klick auf 📊 ist dadurch sofort da.
+- Neuer Schalter **„Verwendung einblenden"** (standardmäßig aktiv) zum Ab-/Anschalten.
+- Neuer Filter **„Ausblenden, wenn verwendet in …"**: per Flaggen-Chips ein oder mehrere Wikis aktivieren; jede Datei, die dort bereits eingebunden ist, wird ausgeblendet. So sieht man auf einen Blick, welche Trikot-Teile z. B. in der deutschen Wikipedia noch fehlen. Sets/Teams ohne verbleibende Teile verschwinden automatisch. (Prüft dazu einmalig die Verwendung aller Treffer, mit Fortschrittsanzeige und 24-h-Cache.)
+- Schnell & schonend: Der Verwendungs-Scan läuft **gebündelt** (bis zu 50 Dateien pro Anfrage statt eine pro Datei) im Hintergrund – die Oberfläche erscheint sofort. Zusätzlich **wiederholt der Thumbnail-Lader fehlgeschlagene Anfragen**, sodass Vorschaubilder erhalten bleiben, statt auf „Keine Vorschau" zu fallen.
+
 ## v6.7.0 — 2026-08-09 — „Neuzugang"
 
 - Neu: **„Datei-Updates ausblenden"** (standardmäßig aktiv). Dateien, die im gewählten Zeitraum nur eine *neue Version* erhielten, deren **Erst-Upload** aber davor liegt, werden ausgeblendet – es bleiben also nur echte Neu-Uploads. Umschaltbar ohne Neuladen.

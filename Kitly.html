@@ -1295,6 +1295,48 @@
     border-color: var(--pitch-bright);
   }
 
+  /* v6.8.0: Inline-Verwendung pro Kitset – kompakte Zeile am Fuß der Karte. */
+  .kitset-usage {
+    padding: 8px 12px;
+    border-top: 1px solid rgba(129, 166, 159, 0.2);
+    font-size: 11px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    word-break: break-word;
+  }
+  .kitset-usage:empty { display: none; }
+  .kitset-usage .ku-label { font-weight: 700; }
+  .kitset-usage .ku-none, .kitset-usage .ku-info { font-style: italic; opacity: 0.85; }
+  .kitset-usage a { color: var(--pitch-highlight); text-decoration: none; }
+  .kitset-usage a:hover { text-decoration: underline; }
+  .kitset-usage .ku-item { white-space: nowrap; }
+  .kitset-usage .ku-mark { margin-right: 4px; }
+  .kitset-usage .ku-flag { font-size: 12px; }
+  .kitset-usage img.ku-commons { height: 13px; width: auto; vertical-align: -2px; }
+  .kitset-usage .ku-wiki { font-size: 9px; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.3px; }
+
+  /* v6.8.0: „Ausblenden, wenn verwendet in …" – Flaggen-Chips zum Aktivieren. */
+  .uf-row { grid-column: 1 / -1; }
+  .usage-filter-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+  .uf-load, .uf-chip {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 5px 10px; border-radius: 999px;
+    border: 1px solid rgba(129, 166, 159, 0.35);
+    background: rgba(7, 38, 29, 0.4); color: var(--text-primary);
+    font-size: 11px; font-weight: 600; cursor: pointer; transition: .2s;
+  }
+  .uf-load:hover, .uf-chip:hover { border-color: var(--pitch-highlight); }
+  .uf-chip.uf-on { background: var(--pitch-bright); border-color: var(--pitch-bright); color: #fff; }
+  .uf-chip .uf-count { font-size: 9px; opacity: 0.85; }
+  .uf-chip .ku-mark, .uf-chip .ku-flag, .uf-chip img.ku-commons { margin-right: 0; }
+  .uf-empty { font-size: 11px; color: var(--text-secondary); opacity: 0.85; }
+  :root[data-theme="light"] .uf-load,
+  :root[data-theme="light"] .uf-chip {
+    background: rgba(255, 255, 255, 0.7);
+    border-color: rgba(12, 36, 27, 0.18);
+  }
+  :root[data-theme="light"] .uf-chip.uf-on { background: var(--pitch-bright); border-color: var(--pitch-bright); color: #fff; }
+
   </style>
   <script>
     /* v6.6.0: Theme so früh wie möglich setzen (verhindert Farb-Flackern beim Laden). */
@@ -1314,7 +1356,7 @@
   <h1>
     <span class="title-icon">⚽</span>
     <span class="title-main">Kitly</span>
-    <span class="title-badge" onclick="showChangelogModal()" style="cursor:pointer" title="Changelog anzeigen">v6.7.0</span>
+    <span class="title-badge" onclick="showChangelogModal()" style="cursor:pointer" title="Changelog anzeigen">v6.8.0</span>
   </h1>
   
   <div class="header-actions">
@@ -1370,6 +1412,16 @@
             <input type="checkbox" id="filterHideUpdates" checked>
             <span data-de="Datei-Updates ausblenden" data-en="Hide file updates">Datei-Updates ausblenden</span>
           </label>
+          <label class="filter-check" title="Zeigt pro Kitset direkt an, auf welchen Seiten die Dateien bereits verwendet werden (lädt beim Scrollen).">
+            <input type="checkbox" id="filterShowUsage" checked>
+            <span data-de="Verwendung einblenden" data-en="Show usage inline">Verwendung einblenden</span>
+          </label>
+          <div class="uf-row">
+            <label data-de="🌍 Ausblenden, wenn verwendet in" data-en="🌍 Hide if already used in">🌍 Ausblenden, wenn verwendet in</label>
+            <div id="usageFilterChips" class="usage-filter-chips">
+              <button type="button" id="usageFilterLoad" class="uf-load" onclick="loadUsageCountries()">🌍 <span data-de="Länder laden" data-en="Load countries">Länder laden</span></button>
+            </div>
+          </div>
         </div>
       </fieldset>
 
@@ -1441,6 +1493,11 @@ var I18N = {
     "usage.loading": "⏳ Lädt Verwendungen...",
     "usage.empty": "📭 Diese Datei wird noch nicht verwendet.",
     "usage.error": "❌ Fehler beim Laden.",
+    "usage.inlineLabel": "Verwendet in:",
+    "usage.inlineNone": "Noch nicht verwendet",
+    "usage.inlineLoading": "Verwendung wird geladen…",
+    "usage.scanning": "Prüfe Verwendung … {n}/{total}",
+    "usage.filterNone": "Keine Verwendungen gefunden.",
     "notice.proxyUrl": "PetScan-Proxy-URL: <a href=\"{link}\" target=\"_blank\">öffnen</a> — bitte warten…",
     "notice.noTeamsFiltered": "Keine Teams entsprechen den Filterkriterien.",
     "notice.noTeamsFound": "Keine Teams gefunden.",
@@ -1507,6 +1564,11 @@ var I18N = {
     "usage.loading": "⏳ Loading usages…",
     "usage.empty": "📭 This file is not used yet.",
     "usage.error": "❌ Error while loading.",
+    "usage.inlineLabel": "Used in:",
+    "usage.inlineNone": "Not used yet",
+    "usage.inlineLoading": "Loading usage…",
+    "usage.scanning": "Checking usage … {n}/{total}",
+    "usage.filterNone": "No usages found.",
     "notice.proxyUrl": "PetScan proxy URL: <a href=\"{link}\" target=\"_blank\">open</a> — please wait…",
     "notice.noTeamsFiltered": "No teams match the filter criteria.",
     "notice.noTeamsFound": "No teams found.",
@@ -1602,6 +1664,7 @@ function applyLanguage() {
   if (typeof isDataLoaded !== 'undefined' && isDataLoaded && typeof renderFiles === 'function') renderFiles();
   if (typeof updateStats === 'function') updateStats();
   if (typeof refreshCompletedToggleLabel === 'function') refreshCompletedToggleLabel();
+  if (typeof populateUsageChips === 'function') populateUsageChips();
 }
 
 // --- Theme (Auto / Hell / Dunkel) ---
@@ -1664,6 +1727,7 @@ function readControls() {
 	width: document.getElementById("width").value,
 	filterTrikotTeile: document.getElementById("filterTrikotTeile").checked,
 	hideUpdates: (function(){ var el = document.getElementById("filterHideUpdates"); return el ? el.checked : true; })(),
+	showUsage: (function(){ var el = document.getElementById("filterShowUsage"); return el ? el.checked : true; })(),
 	seasonFilter: document.getElementById("seasonFilter").value,
 	viewMode: document.getElementById("viewMode").value,
 	kitTypeFilters: getSelectedKitTypes()
@@ -1879,7 +1943,8 @@ function analyzeKitFilename(filename) {
   result.set_id = result.team + "_unknown_unknown";
   return result;
 }
-function getFilteredFiles() {
+// Alle Filter AUSSER dem „Ausblenden-wenn-verwendet"-Filter (dieser braucht den Usage-Scan).
+function getBaseFilteredFiles() {
   var ctrl = readControls();
   var filtered = allFiles.slice();
   if (ctrl.filterTrikotTeile) filtered = filtered.filter(function(f) { return isTrikotTeil(f.title); });
@@ -1896,6 +1961,21 @@ function getFilteredFiles() {
   }
   if (ctrl.kitTypeFilters && ctrl.kitTypeFilters.length > 0) {
 	filtered = filtered.filter(function(f) { var a = analyzeKitFilename(f.title); var t = normKitType(a.kit_type); return t && ctrl.kitTypeFilters.indexOf(t) !== -1; });
+  }
+  return filtered;
+}
+function getFilteredFiles() {
+  var filtered = getBaseFilteredFiles();
+  // v6.8.0: Dateien AUSBLENDEN, die in einem der aktivierten Wikis bereits verwendet werden.
+  // (Grundlage: usageWikiMap aus scanAllUsage; unbekannte/ungescannte Dateien -> behalten.)
+  var activeKeys = Object.keys(activeUsageWikis);
+  if (activeKeys.length && usageScanDone) {
+    filtered = filtered.filter(function(f) {
+      var wikis = usageWikiMap[f.title] || usageWikiMap[f.title.replace(/_/g, ' ')] || usageWikiMap[f.title.replace(/ /g, '_')];
+      if (!wikis) return true; // unbekannt/ungescannt -> behalten
+      for (var i = 0; i < activeKeys.length; i++) { if (wikis[activeKeys[i]]) return false; }
+      return true;
+    });
   }
   return filtered;
 }
@@ -1993,6 +2073,7 @@ function renderTeams() {
   grid.innerHTML = "";
   if (teams.length === 0) { setNotice(isDataLoaded ? t('notice.noTeamsFiltered') : t('notice.noTeamsFound')); return; }
   setNotice(tp('notice.teamsFound', teams.length));
+  var showUsage = readControls().showUsage; // v6.8.0: Inline-Verwendung pro Kitset
   var kitTypeOrder = { h: 1, a: 2, t: 3, gkh: 4, gka: 5, gkt: 6, gk: 7, gkd: 7 };
   var partOrder = ['body', 'left_arm', 'right_arm', 'shorts', 'socks'];
   function seasonLabel(code) {
@@ -2010,7 +2091,7 @@ function renderTeams() {
       if (part.analysis.part === 'socks' && part.analysis.is_long_socks) pn = t('part.socksLong');
       return "<div class=\"file-card\" data-file=\"" + part.file.title.replace(/"/g, '&quot;') + "\"><button class=\"usage-btn\" onclick=\"event.stopPropagation(); showUsageModal('" + part.file.title.replace(/'/g, "\\'") + "');\" title=\"" + t('btn.showUsage') + "\">📊</button><div class=\"file-header\"><a href=\"https://commons.wikimedia.org/wiki/File:" + encodeURIComponent(part.file.title) + "\" target=\"_blank\" rel=\"noopener noreferrer\">" + pn + "</a></div><div class=\"file-thumb\"><img class=\"lazy-thumb\" data-filename=\"" + part.file.title.replace(/\"/g, '&quot;') + "\" alt=\"\"></div><div class=\"file-meta\">" + part.file.len + " Bytes • " + formatMwTimestamp(part.file.uploadTs || part.file.touched) + "</div></div>";
     }).join('');
-    return "<div class=\"kitset-card\" data-kitset-id=\"" + safeTeam + "-" + safeSeason + "-" + kitType + "\" data-kit-type=\"" + kitType + "\"><div class=\"kitset-header\"><div class=\"kitset-title\">" + displayName + "</div><div class=\"kitset-subtitle\">" + tp('label.parts', kitset.parts.length) + "</div></div>" + buildKitFigureHtml(kitset.parts) + "<div class=\"kitset-parts\">" + partsHtml + "</div></div>";
+    return "<div class=\"kitset-card\" data-kitset-id=\"" + safeTeam + "-" + safeSeason + "-" + kitType + "\" data-kit-type=\"" + kitType + "\"><div class=\"kitset-header\"><div class=\"kitset-title\">" + displayName + "</div><div class=\"kitset-subtitle\">" + tp('label.parts', kitset.parts.length) + "</div></div>" + buildKitFigureHtml(kitset.parts) + "<div class=\"kitset-parts\">" + partsHtml + "</div>" + (showUsage ? "<div class=\"kitset-usage\" data-usage-pending=\"1\"></div>" : "") + "</div>";
   }
   teams.forEach(function(team) {
     var safeTeam = safeId(team.team);
@@ -2044,6 +2125,7 @@ function renderKitsets() {
   grid.innerHTML = "";
   if (kitsets.length === 0) { setNotice(isDataLoaded ? t('notice.noKitsetsFiltered') : t('notice.noKitsetsFound')); return; }
   setNotice(tp('notice.kitsetsFound', kitsets.length));
+  var showUsage = readControls().showUsage; // v6.8.0: Inline-Verwendung pro Kitset
   var partOrder = ['body', 'left_arm', 'right_arm', 'shorts', 'socks'];
   kitsets.forEach(function(kitset) {
 	var title = (kitset.team ? kitset.team.charAt(0).toUpperCase() + kitset.team.slice(1) : t('label.unknown')) + (kitset.season ? " " + formatSeasonLabel(kitset.season) : "") + (kitset.kit_type ? " " + (kitTypeName(kitset.kit_type) || kitset.kit_type) : "");
@@ -2055,7 +2137,7 @@ function renderKitsets() {
 	  if (part.analysis.part === 'socks' && part.analysis.is_long_socks) pn = t('part.socksLong');
 	  return "<div class=\"file-card\" data-file=\"" + part.file.title.replace(/"/g, '&quot;') + "\"><button class=\"usage-btn\" onclick=\"event.stopPropagation(); showUsageModal('" + part.file.title.replace(/'/g, "\\'") + "');\" title=\"" + t('btn.showUsage') + "\">📊</button><div class=\"file-header\"><a href=\"https://commons.wikimedia.org/wiki/File:" + encodeURIComponent(part.file.title) + "\" target=\"_blank\" rel=\"noopener noreferrer\">" + pn + "</a></div><div class=\"file-thumb\"><img class=\"lazy-thumb\" data-filename=\"" + part.file.title.replace(/\"/g, '&quot;') + "\" alt=\"\"></div><div class=\"file-meta\">" + part.file.len + " Bytes • " + formatMwTimestamp(part.file.uploadTs || part.file.touched) + "</div></div>";
 	}).join('');
-	card.innerHTML = "<div class=\"kitset-header\"><div class=\"kitset-title\">" + title + "</div><div class=\"kitset-subtitle\">" + tp('label.parts', kitset.parts.length) + "</div></div>" + buildKitFigureHtml(kitset.parts) + "<div class=\"kitset-parts\">" + partsHtml + "</div>";
+	card.innerHTML = "<div class=\"kitset-header\"><div class=\"kitset-title\">" + title + "</div><div class=\"kitset-subtitle\">" + tp('label.parts', kitset.parts.length) + "</div></div>" + buildKitFigureHtml(kitset.parts) + "<div class=\"kitset-parts\">" + partsHtml + "</div>" + (showUsage ? "<div class=\"kitset-usage\" data-usage-pending=\"1\"></div>" : "");
 	grid.appendChild(card);
   });
 }
@@ -2220,6 +2302,188 @@ function setupKitColorObserver() {
   figs.forEach(function(f) { kitColorObserver.observe(f); });
 }
 
+// v6.8.0: Länder-Flagge (Regional-Indicator-Emoji) aus 2-Buchstaben-Ländercode.
+function flagEmoji(cc) {
+  if (!cc || cc.length !== 2) return '';
+  var A = 0x1F1E6, base = 65; // 'A'
+  return String.fromCodePoint(A + cc.charCodeAt(0) - base, A + cc.charCodeAt(1) - base);
+}
+// Wikipedia-Sprachcode -> repräsentativer Ländercode (Sprache ≠ Land, daher bewusste Wahl).
+var KIT_LANG_CC = {
+  de: 'DE', en: 'GB', pt: 'PT', es: 'ES', fr: 'FR', it: 'IT', nl: 'NL', pl: 'PL',
+  ru: 'RU', sr: 'RS', uk: 'UA', tr: 'TR', cs: 'CZ', sk: 'SK', hu: 'HU', ro: 'RO',
+  bg: 'BG', el: 'GR', sv: 'SE', da: 'DK', fi: 'FI', nb: 'NO', nn: 'NO', no: 'NO',
+  is: 'IS', ja: 'JP', ko: 'KR', zh: 'CN', he: 'IL', fa: 'IR', hi: 'IN', id: 'ID',
+  th: 'TH', vi: 'VN', hr: 'HR', sl: 'SI', et: 'EE', lv: 'LV', lt: 'LT', ka: 'GE',
+  hy: 'AM', az: 'AZ', kk: 'KZ', be: 'BY', mk: 'MK', sq: 'AL', ga: 'IE', mt: 'MT'
+};
+var COMMONS_LOGO_URL = 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Commons-logo.svg/20px-Commons-logo.svg.png';
+// Sprachcode aus einem Wiki-Host (z. B. "de.wikipedia.org" -> "de"); leer für Commons.
+function usageLangOf(w) { var m = w && w.match(/^([a-z]{2,3}(?:-[a-z]+)?)\./i); return m ? m[1].toLowerCase() : ''; }
+function usageEscAttr(s) { return String(s).replace(/[&<>"]/g, function(c) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]; }); }
+// Marker (Länder-Flagge / Commons-Logo / Kürzel) für ein Wiki – vor dem Seitennamen und im Filter.
+function usageWikiMarker(w) {
+  if (w && w.indexOf('commons.') === 0) return '<img class="ku-mark ku-commons" src="' + COMMONS_LOGO_URL + '" alt="Commons" title="Wikimedia Commons">';
+  var lang = usageLangOf(w), cc = KIT_LANG_CC[lang];
+  if (cc) return '<span class="ku-mark ku-flag" title="' + usageEscAttr(w || '') + '">' + flagEmoji(cc) + '</span>';
+  var code = lang ? lang.toUpperCase() : (w ? w.replace(/\.org$/, '') : '?');
+  return '<span class="ku-mark ku-wiki" title="' + usageEscAttr(w || '') + '">' + usageEscAttr(code) + '</span>';
+}
+// Reihenfolge de → en → pt → Commons → Rest.
+function usageWikiRank(w) {
+  if (w === 'de.wikipedia.org') return 0;
+  if (w === 'en.wikipedia.org') return 1;
+  if (w === 'pt.wikipedia.org') return 2;
+  if (w && w.indexOf('commons.') === 0) return 3;
+  return 4;
+}
+// v6.8.0 „Ausblenden-wenn-verwendet"-Filter: Zustand.
+var usageWikiMap = {};     // Dateiname -> { wikiHost: true, ... }
+var usageScanDone = false; // wurde die Verwendung für die aktuelle Ergebnisliste gescannt?
+var activeUsageWikis = {}; // wikiHost -> true: in diesen Wikis bereits verwendete Dateien AUSBLENDEN
+// v6.8.0: Inline-Verwendung pro Kitset – lazy beim Sichtbarwerden (wie Thumbnails/Farben).
+var usageObserver = null;
+function setupUsageObserver() {
+  if (usageObserver) { usageObserver.disconnect(); usageObserver = null; }
+  var slots = Array.prototype.slice.call(document.querySelectorAll('.kitset-usage[data-usage-pending]'));
+  if (!slots.length) return;
+  usageObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (!e.isIntersecting) return;
+      var card = e.target;
+      usageObserver.unobserve(card);
+      // Der Slot selbst ist leer (und via :empty display:none) und wirft daher KEINE
+      // Box – deshalb die KARTE beobachten und den Slot darin füllen.
+      var slot = card.querySelector('.kitset-usage[data-usage-pending]');
+      if (slot) { slot.removeAttribute('data-usage-pending'); fillKitsetUsage(slot); }
+    });
+  }, { rootMargin: '200px 0px', threshold: 0 });
+  slots.forEach(function(s) { usageObserver.observe(s.closest('.kitset-card') || s); });
+}
+// Verwendung ALLER Teile eines Kitsets sammeln, deduplizieren und als Links anzeigen.
+function fillKitsetUsage(el) {
+  var card = el.closest ? el.closest('.kitset-card') : null;
+  if (!card) return;
+  var files = Array.prototype.slice.call(card.querySelectorAll('.file-card[data-file]'))
+                .map(function(c) { return c.getAttribute('data-file'); })
+                .filter(Boolean);
+  if (!files.length) { el.innerHTML = ''; return; }
+  var esc = function(s) { return String(s).replace(/[&<>"]/g, function(c) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]; }); };
+  el.innerHTML = '<span class="ku-info">' + t('usage.inlineLoading') + '</span>';
+  Promise.all(files.map(function(f) { return fetchGlobalUsage(f).catch(function() { return []; }); }))
+    .then(function(results) {
+      var seen = {}, pages = [];
+      results.forEach(function(list) {
+        (list || []).forEach(function(u) {
+          if (u && u.url && !seen[u.url]) { seen[u.url] = 1; pages.push(u); }
+        });
+      });
+      if (!pages.length) { el.innerHTML = '<span class="ku-none">📊 ' + t('usage.inlineNone') + '</span>'; return; }
+      pages = pages.map(function(u, i) { return { u: u, i: i }; })
+                   .sort(function(a, b) { return (usageWikiRank(a.u.wiki) - usageWikiRank(b.u.wiki)) || (a.i - b.i); })
+                   .map(function(x) { return x.u; });
+      var links = pages.map(function(u) {
+        return '<span class="ku-item">' + usageWikiMarker(u.wiki)
+             + '<a href="' + esc(u.url) + '" target="_blank" rel="noopener noreferrer">' + esc(u.title.replace(/_/g, ' ')) + '</a></span>';
+      }).join(', ');
+      el.innerHTML = '<span class="ku-label">📊 ' + t('usage.inlineLabel') + '</span> ' + links;
+    })
+    .catch(function() { el.innerHTML = '<span class="ku-none">' + t('usage.error') + '</span>'; });
+}
+
+// ── v6.8.0: „Ausblenden, wenn verwendet in …" ──────────────────────────────
+// Scannt die Verwendung ALLER (basis-gefilterten) Dateien GEBÜNDELT: bis zu 50
+// Dateien pro API-Aufruf (prop=globalusage|fileusage), nacheinander. So werden aus
+// hunderten Anfragen eine Handvoll – schnell und ohne den Thumbnail-Lader zu stören.
+// Nebeneffekt: füllt den 24-h-Cache, den auch 📊 und die Inline-Anzeige nutzen.
+var usageScanRunning = false;
+async function scanAllUsage() {
+  var files = getBaseFilteredFiles();
+  var total = files.length;
+  usageWikiMap = {};
+  if (!total) { usageScanDone = true; return; }
+  usageScanRunning = true;
+  var BATCH = 50, done = 0;
+  setNotice(t('usage.scanning', { n: 0, total: total }));
+  for (var i = 0; i < total; i += BATCH) {
+    var batch = files.slice(i, i + BATCH);
+    var titlesParam = batch.map(function(f) { return 'File:' + f.title; }).join('|');
+    var apiUrl = 'https://commons.wikimedia.org/w/api.php?' + new URLSearchParams({
+      action: 'query', titles: titlesParam, prop: 'globalusage|fileusage',
+      gulimit: '500', fulimit: '500', format: 'json', origin: '*'
+    });
+    try {
+      var data = await apiFetchJsonRetry(apiUrl, 3);
+      var normalMap = {};
+      if (data.query.normalized) data.query.normalized.forEach(function(n) { normalMap[n.to] = n.from; });
+      Object.values(data.query.pages).forEach(function(page) {
+        if (page.missing !== undefined) return;
+        var localUsage = (page.fileusage || []).map(function(u) {
+          return { title: u.title, url: 'https://commons.wikimedia.org/wiki/' + encodeURIComponent(u.title.replace(/ /g, '_')), wiki: 'commons.wikimedia.org' };
+        });
+        var globalUsage = (page.globalusage || []).map(function(u) { return { title: u.title, url: u.url, wiki: u.wiki }; });
+        var usage = localUsage.concat(globalUsage);
+        var m = {};
+        usage.forEach(function(u) { if (u.wiki) m[u.wiki] = true; });
+        // unter beiden Namensvarianten ablegen (API normalisiert _ ↔ Leerzeichen)
+        [page.title, normalMap[page.title]].forEach(function(full) {
+          if (!full) return;
+          var name = full.replace(/^File:/, '');
+          usageWikiMap[name] = m;
+          usageWikiMap[name.replace(/ /g, '_')] = m;
+          usageWikiMap[name.replace(/_/g, ' ')] = m;
+          try { localStorage.setItem('usage_v2_' + name, JSON.stringify({ usage: usage, timestamp: Date.now() })); } catch (e) {}
+        });
+      });
+    } catch (e) { console.error('[UsageScan] Batch-Fehler:', e); }
+    done = Math.min(i + BATCH, total);
+    setNotice(t('usage.scanning', { n: done, total: total }));
+    if (i + BATCH < total) await new Promise(function(r) { setTimeout(r, 120); });
+  }
+  usageScanDone = true;
+  usageScanRunning = false;
+}
+// Sicherstellen, dass ein Scan für die aktuelle Ergebnisliste vorliegt.
+async function ensureUsageScan() { if (!usageScanDone && !usageScanRunning) await scanAllUsage(); }
+// Chips aus den tatsächlich gefundenen Wikis bauen (sortiert de → en → pt → Commons → Rest).
+function populateUsageChips() {
+  var box = document.getElementById('usageFilterChips');
+  if (!box) return;
+  if (!usageScanDone) {
+    box.innerHTML = '<button type="button" id="usageFilterLoad" class="uf-load" onclick="loadUsageCountries()">'
+      + '🌍 <span data-de="Länder laden" data-en="Load countries">' + (currentLang === 'en' ? 'Load countries' : 'Länder laden') + '</span></button>';
+    return;
+  }
+  var counts = {};
+  Object.keys(usageWikiMap).forEach(function(title) {
+    Object.keys(usageWikiMap[title]).forEach(function(w) { counts[w] = (counts[w] || 0) + 1; });
+  });
+  var wikis = Object.keys(counts).sort(function(a, b) { return (usageWikiRank(a) - usageWikiRank(b)) || a.localeCompare(b); });
+  if (!wikis.length) { box.innerHTML = '<span class="uf-empty">' + t('usage.filterNone') + '</span>'; return; }
+  box.innerHTML = wikis.map(function(w) {
+    var on = activeUsageWikis[w] ? ' uf-on' : '';
+    return '<button type="button" class="uf-chip' + on + '" data-wiki="' + usageEscAttr(w)
+      + '" title="' + usageEscAttr(w) + '" onclick="toggleUsageWiki(this.getAttribute(\'data-wiki\'))">'
+      + usageWikiMarker(w) + '<span class="uf-count">' + counts[w] + '</span></button>';
+  }).join('');
+}
+// Button „Länder laden": Scan starten, dann Chips zeigen.
+async function loadUsageCountries() {
+  if (!isDataLoaded) return;
+  var box = document.getElementById('usageFilterChips');
+  if (box) box.innerHTML = '<span class="uf-empty">⏳ …</span>';
+  await ensureUsageScan();
+  populateUsageChips();
+  setNotice(''); applyFilters();
+}
+// Chip an/aus: Wiki in die Ausschlussliste aufnehmen/entfernen.
+function toggleUsageWiki(w) {
+  if (activeUsageWikis[w]) delete activeUsageWikis[w]; else activeUsageWikis[w] = true;
+  try { localStorage.setItem('filter_usageWikis', JSON.stringify(Object.keys(activeUsageWikis))); } catch (e) {}
+  populateUsageChips();
+  applyFilters();
+}
+
 function renderFiles() {
   var viewMode = readControls().viewMode;
   // v6.0.3: Eingestellte Thumb-Breite als CSS-Variable setzen -> steuert die
@@ -2240,6 +2504,8 @@ function renderFiles() {
   setupThumbObserver();
   // v6.1: Kit-Figuren-Farben lazy erkennen (nur Teams-/Trikotsets-Ansicht hat Figuren).
   setupKitColorObserver();
+  // v6.8.0: Inline-Verwendung pro Kitset lazy nachladen (nur wenn Option aktiv).
+  setupUsageObserver();
 }
 /**
  * v5.4.0 – Behält nur Dateien, deren jüngster ECHTER Datei-Upload am/nach dem
@@ -2362,13 +2628,25 @@ async function fetchData() {
 	  allFiles = await filterByRealUpload(allFiles, ctrl.after);
 	}
 	isDataLoaded = true;
+	// v6.8.0: Usage-Scan für die neue Ergebnisliste zurücksetzen.
+	usageScanDone = false; usageWikiMap = {};
+	// ZUERST rendern (nicht auf den Scan warten!), sonst blockiert ein aktiver
+	// Ausschluss-Filter das gesamte Laden ("Lade Daten…" hängt).
 	populateSeasonFilter();
 	populateKitTypeFilter();
+	populateUsageChips();
 	renderFiles();
 	setTimeout(function() {
 	  if (typeof applyCompletedState === 'function') applyCompletedState();
 	  if (typeof updateStats === 'function') updateStats();
 	}, 200);
+	// Bei aktivem Ausschluss-Filter die Verwendung IM HINTERGRUND scannen und
+	// danach neu filtern – die Oberfläche bleibt sofort nutzbar.
+	if (Object.keys(activeUsageWikis).length) {
+	  scanAllUsage()
+	    .then(function() { setNotice(''); populateUsageChips(); applyFilters(); })
+	    .catch(function(err) { console.error('[UsageScan]', err); usageScanDone = true; });
+	}
   } catch (e) {
 	console.error("Fehler in fetchData:", e);
 	setNotice(t('notice.error', { msg: e.message }));
@@ -3002,6 +3280,8 @@ function saveFilterValues() {
   if (filterTrikotTeile) localStorage.setItem('filter_trikotTeile', filterTrikotTeile.checked);
   const hideUpdates = document.getElementById('filterHideUpdates');
   if (hideUpdates) localStorage.setItem('filter_hideUpdates', hideUpdates.checked);
+  const showUsage = document.getElementById('filterShowUsage');
+  if (showUsage) localStorage.setItem('filter_showUsage', showUsage.checked);
   if (seasonFilter) localStorage.setItem('filter_season', seasonFilter.value);
   if (kitTypeFilter) localStorage.setItem('filter_kitType', kitTypeFilter.value);
   if (viewMode) localStorage.setItem('filter_viewMode', viewMode.value);
@@ -3051,6 +3331,20 @@ function loadFilterValues() {
     hideUpdates.checked = (savedHU === null) ? true : (savedHU === 'true');
   }
 
+  // v6.8.0: „Verwendung einblenden" – gespeicherter Wert, sonst Standard = an.
+  const showUsage = document.getElementById('filterShowUsage');
+  if (showUsage) {
+    const savedSU = localStorage.getItem('filter_showUsage');
+    showUsage.checked = (savedSU === null) ? true : (savedSU === 'true');
+  }
+
+  // v6.8.0: aktive Ausschluss-Wikis („Ausblenden, wenn verwendet in …") wiederherstellen.
+  try {
+    var savedUW = JSON.parse(localStorage.getItem('filter_usageWikis') || '[]');
+    activeUsageWikis = {};
+    if (Array.isArray(savedUW)) savedUW.forEach(function(w) { activeUsageWikis[w] = true; });
+  } catch (e) { activeUsageWikis = {}; }
+
   if (seasonFilter && localStorage.getItem('filter_season')) {
     seasonFilter.value = localStorage.getItem('filter_season');
   }
@@ -3081,7 +3375,7 @@ function applyFilters() {
 
 function attachFilterListeners() {
   // Client-seitige Filter: nur neu rendern.
-  const clientFilters = ['width', 'filterTrikotTeile', 'filterHideUpdates', 'seasonFilter', 'viewMode', 'kitTypeFilter'];
+  const clientFilters = ['width', 'filterTrikotTeile', 'filterHideUpdates', 'filterShowUsage', 'seasonFilter', 'viewMode', 'kitTypeFilter'];
   clientFilters.forEach(id => {
     const elem = document.getElementById(id);
     if (elem) {
@@ -3433,6 +3727,24 @@ function setupThumbObserver() {
  * origin=* aktiviert CORS → kein ORB-Blocking von file://.
  * @param {HTMLImageElement[]} imgs
  */
+// v6.8.0: fetch()+json() mit Wiederholung und Backoff. Wirft erst nach allen
+// Versuchen. Verlangt ein `query`-Objekt (fängt Fehler-Antworten mit HTTP 200 ab).
+async function apiFetchJsonRetry(url, tries) {
+  var attempts = tries || 3, lastErr;
+  for (var a = 0; a < attempts; a++) {
+    try {
+      var resp = await fetch(url);
+      if (!resp.ok) throw new Error('HTTP ' + resp.status);
+      var data = await resp.json();
+      if (!data || !data.query) throw new Error('kein query im Ergebnis');
+      return data;
+    } catch (e) {
+      lastErr = e;
+      if (a < attempts - 1) await new Promise(function(r) { setTimeout(r, 400 * (a + 1) * (a + 1)); });
+    }
+  }
+  throw lastErr;
+}
 async function loadThumbnailBatch(imgs) {
   if (!imgs || !imgs.length) return;
 
@@ -3462,9 +3774,10 @@ async function loadThumbnailBatch(imgs) {
     });
 
     try {
-      var resp = await fetch(apiUrl);
-      if (!resp.ok) throw new Error('API HTTP ' + resp.status);
-      var data = await resp.json();
+      // v6.8.0: Mit Wiederholung (Backoff). Unter Last (z. B. während des
+      // Verwendungs-Scans) kann eine einzelne API-Anfrage scheitern; ohne Retry
+      // landete früher der GANZE 50er-Batch dauerhaft auf „Keine Vorschau".
+      var data = await apiFetchJsonRetry(apiUrl, 3);
 
       // Normalisierungsmap: API kann Leerzeichen ↔ Unterstriche angleichen
       var normalMap = {};
@@ -3583,6 +3896,17 @@ function checkEmptyState() {
   <div class="cl-modal">
 	<button class="cl-close" onclick="closeChangelogModal()" aria-label="Schließen">&#x2715;</button>
 	<h2>&#x26BD; Changelog &mdash; Kitly</h2>
+	<div class="cl-version">
+	  <h3>v6.8.0 &mdash; 2026-08-09 &mdash; „Einsatz"</h3>
+	  <ul>
+		<li>Neu: <strong>Verwendung direkt im Kitset</strong>. Unter jedem Trikotset steht jetzt „Verwendet in: …" mit Links zu den Seiten, auf denen die Teile bereits eingebunden sind &ndash; ohne Klick auf 📊. Die Angaben aller Teile werden zusammengefasst und dedupliziert.</li>
+		<li>Vor jeder Seite steht die <strong>Länder-Flagge</strong> der Wiki-Sprachvariante (bei Commons das <strong>Commons-Logo</strong>; ohne passende Flagge das Sprachkürzel). Reihenfolge: <strong>de → en → pt → Commons → Rest</strong>.</li>
+		<li>Wird <strong>beim Scrollen</strong> nachgeladen (nur sichtbare Kitsets fragen an) und 24&nbsp;h zwischengespeichert &ndash; ein späterer Klick auf 📊 ist dadurch sofort da.</li>
+		<li>Neuer Schalter <strong>„Verwendung einblenden"</strong> (standardmäßig aktiv) zum Ab-/Anschalten.</li>
+		<li>Neuer Filter <strong>„Ausblenden, wenn verwendet in …"</strong>: per Flaggen-Chips ein oder mehrere Wikis aktivieren; jede Datei, die dort bereits eingebunden ist, wird ausgeblendet. So sieht man auf einen Blick, welche Trikot-Teile z.&nbsp;B. in der deutschen Wikipedia noch fehlen. Sets/Teams ohne verbleibende Teile verschwinden automatisch. (Prüft dazu einmalig die Verwendung aller Treffer, mit Fortschrittsanzeige und 24-h-Cache.)</li>
+		<li>Schnell &amp; schonend: Der Verwendungs-Scan läuft <strong>gebündelt</strong> (bis zu 50 Dateien pro Anfrage statt eine pro Datei) im Hintergrund – die Oberfläche erscheint sofort. Zusätzlich <strong>wiederholt der Thumbnail-Lader fehlgeschlagene Anfragen</strong>, sodass Vorschaubilder erhalten bleiben, statt auf „Keine Vorschau" zu fallen.</li>
+	  </ul>
+	</div>
 	<div class="cl-version">
 	  <h3>v6.7.0 &mdash; 2026-08-09 &mdash; „Neuzugang"</h3>
 	  <ul>

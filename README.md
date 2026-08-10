@@ -94,7 +94,7 @@ Die komplette Oberfläche gibt es auf **Deutsch und Englisch**; beim ersten Star
 
 ## 📦 Version & Changelog
 
-Aktuelle Version: **v6.7.0 „Neuzugang"**. Den vollständigen Verlauf findest du in der [CHANGELOG.md](CHANGELOG.md) sowie direkt im Tool über das **⚽**-Versionsabzeichen.
+Aktuelle Version: **v6.8.0 „Einsatz"**. Den vollständigen Verlauf findest du in der [CHANGELOG.md](CHANGELOG.md) sowie direkt im Tool über das **⚽**-Versionsabzeichen.
 
 ## 📄 Lizenz
 
