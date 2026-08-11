@@ -4,7 +4,7 @@
 
 # Kitly
 
-### the football-kit browser for Wikimedia Commons
+### The football-kit browser for Wikimedia Commons
 
 **Finds newly uploaded football-kit files on Wikimedia Commons, automatically groups them by team → season → kit set, assembles the individual parts into the Wikipedia kit figure and copies the ready-to-use infobox code. All in a single HTML file – no installation, with an English and German interface plus light/dark mode.**
 
