@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="de">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <!-- Favicon v3.4.0 - Zentriertes Trikot mit Checkmark -->
@@ -302,7 +302,7 @@
 
 
     header.collapsed::after {
-      content: '▼ Klicken zum Erweitern';
+      content: '▼ Click to expand';
       position: absolute;
       right: 20px;
       top: 50%;
@@ -312,8 +312,8 @@
       font-weight: 600;
       animation: pulse 2s ease infinite;
     }
-    /* v6.6.0: englische Variante des Aufklapp-Hinweises (lang wird per JS gesetzt). */
-    :root[lang="en"] header.collapsed::after { content: '▼ Click to expand'; }
+    /* v6.8.2: Englisch ist Standard; deutsche Variante des Aufklapp-Hinweises. */
+    :root[lang="de"] header.collapsed::after { content: '▼ Klicken zum Erweitern'; }
 
     h1 {
       margin: 0 0 16px 0;
@@ -1356,26 +1356,26 @@
   <h1>
     <span class="title-icon">⚽</span>
     <span class="title-main">Kitly</span>
-    <span class="title-badge" onclick="showChangelogModal()" style="cursor:pointer" title="Changelog anzeigen">v6.8.0</span>
+    <span class="title-badge" onclick="showChangelogModal()" style="cursor:pointer" title="Show changelog">v6.8.2</span>
   </h1>
   
   <div class="header-actions">
-    <button onclick="fetchData();" class="primary-btn">🔄 <span data-de="Aktualisieren" data-en="Refresh">Aktualisieren</span></button>
+    <button onclick="fetchData();" class="primary-btn">🔄 <span data-de="Aktualisieren" data-en="Refresh">Refresh</span></button>
     <button onclick="toggleFilters()" class="secondary-btn">
-      <span id="filterIcon">▼</span> <span data-de="Filter" data-en="Filters">Filter</span>
+      <span id="filterIcon">▼</span> <span data-de="Filter" data-en="Filters">Filters</span>
     </button>
-    <button id="themeToggle" onclick="cycleTheme()" class="secondary-btn icon-btn" title="Design: Auto / Hell / Dunkel" aria-label="Theme umschalten">🌗 <span id="themeLabel"></span></button>
-    <button id="langToggle" onclick="cycleLanguage()" class="secondary-btn icon-btn" title="Sprache / Language" aria-label="Sprache umschalten">🌐 <span id="langLabel">DE</span></button>
+    <button id="themeToggle" onclick="cycleTheme()" class="secondary-btn icon-btn" title="Theme: Auto / Light / Dark" aria-label="Toggle theme">🌗 <span id="themeLabel"></span></button>
+    <button id="langToggle" onclick="cycleLanguage()" class="secondary-btn icon-btn" title="Sprache / Language" aria-label="Toggle language">🌐 <span id="langLabel">DE</span></button>
   </div>
 
   <div id="filterPanel" class="filter-panel collapsed">
     <div class="filter-groups">
 
       <fieldset class="filter-group">
-        <legend data-de="📥 Datenabruf" data-en="📥 Data retrieval">📥 Datenabruf</legend>
+        <legend data-de="📥 Datenabruf" data-en="📥 Data retrieval">📥 Data retrieval</legend>
         <div class="filter-grid">
           <div>
-            <label data-de="📅 Datum (nach)" data-en="📅 Date (after)">📅 Datum (nach)</label>
+            <label data-de="📅 Datum (nach)" data-en="📅 Date (after)">📅 Date (after)</label>
             <input type="date" id="after">
           </div>
           <div>
@@ -1383,7 +1383,7 @@
             <input type="number" id="limit" value="1000" min="1" max="10000">
           </div>
           <div>
-            <label data-de="📊 Tiefe" data-en="📊 Depth">📊 Tiefe</label>
+            <label data-de="📊 Tiefe" data-en="📊 Depth">📊 Depth</label>
             <input type="number" id="depth" value="50" min="1" max="100">
           </div>
         </div>
@@ -1393,51 +1393,51 @@
         <legend data-de="🔎 Filter" data-en="🔎 Filter">🔎 Filter</legend>
         <div class="filter-grid">
           <div>
-            <label data-de="⚽ Saison" data-en="⚽ Season">⚽ Saison</label>
+            <label data-de="⚽ Saison" data-en="⚽ Season">⚽ Season</label>
             <select id="seasonFilter">
-              <option value="" data-de="Alle Saisons" data-en="All seasons">Alle Saisons</option>
+              <option value="" data-de="Alle Saisons" data-en="All seasons">All seasons</option>
             </select>
           </div>
           <div>
-            <label data-de="👕 Trikottyp" data-en="👕 Kit type">👕 Trikottyp</label>
+            <label data-de="👕 Trikottyp" data-en="👕 Kit type">👕 Kit type</label>
             <select id="kitTypeFilter">
-              <option value="" data-de="Alle Trikottypen" data-en="All kit types">Alle Trikottypen</option>
+              <option value="" data-de="Alle Trikottypen" data-en="All kit types">All kit types</option>
             </select>
           </div>
           <label class="filter-check">
             <input type="checkbox" id="filterTrikotTeile" checked>
-            <span data-de="Nur Trikot-Teile" data-en="Kit parts only">Nur Trikot-Teile</span>
+            <span data-de="Nur Trikot-Teile" data-en="Kit parts only">Kit parts only</span>
           </label>
-          <label class="filter-check" title="Blendet Dateien aus, die im Zeitraum nur eine neue Version bekamen (Erst-Upload liegt davor).">
+          <label class="filter-check" title="Hides files that only received a new version in the period (first upload predates it).">
             <input type="checkbox" id="filterHideUpdates" checked>
-            <span data-de="Datei-Updates ausblenden" data-en="Hide file updates">Datei-Updates ausblenden</span>
+            <span data-de="Datei-Updates ausblenden" data-en="Hide file updates">Hide file updates</span>
           </label>
-          <label class="filter-check" title="Zeigt pro Kitset direkt an, auf welchen Seiten die Dateien bereits verwendet werden (lädt beim Scrollen).">
+          <label class="filter-check" title="Shows per kit set where the files are already used (loads on scroll).">
             <input type="checkbox" id="filterShowUsage" checked>
-            <span data-de="Verwendung einblenden" data-en="Show usage inline">Verwendung einblenden</span>
+            <span data-de="Verwendung einblenden" data-en="Show usage inline">Show usage inline</span>
           </label>
           <div class="uf-row">
-            <label data-de="🌍 Ausblenden, wenn verwendet in" data-en="🌍 Hide if already used in">🌍 Ausblenden, wenn verwendet in</label>
+            <label data-de="🌍 Ausblenden, wenn verwendet in" data-en="🌍 Hide if already used in">🌍 Hide if already used in</label>
             <div id="usageFilterChips" class="usage-filter-chips">
-              <button type="button" id="usageFilterLoad" class="uf-load" onclick="loadUsageCountries()">🌍 <span data-de="Länder laden" data-en="Load countries">Länder laden</span></button>
+              <button type="button" id="usageFilterLoad" class="uf-load" onclick="loadUsageCountries()">🌍 <span data-de="Länder laden" data-en="Load countries">Load countries</span></button>
             </div>
           </div>
         </div>
       </fieldset>
 
       <fieldset class="filter-group">
-        <legend data-de="🖥️ Darstellung" data-en="🖥️ Display">🖥️ Darstellung</legend>
+        <legend data-de="🖥️ Darstellung" data-en="🖥️ Display">🖥️ Display</legend>
         <div class="filter-grid">
           <div>
-            <label data-de="👁️ Ansicht" data-en="👁️ View">👁️ Ansicht</label>
+            <label data-de="👁️ Ansicht" data-en="👁️ View">👁️ View</label>
             <select id="viewMode">
               <option value="teams" data-de="Teams" data-en="Teams">Teams</option>
-              <option value="kitsets" data-de="Trikotsets" data-en="Kit sets">Trikotsets</option>
-              <option value="single" data-de="Einzeln" data-en="Single">Einzeln</option>
+              <option value="kitsets" data-de="Trikotsets" data-en="Kit sets">Kit sets</option>
+              <option value="single" data-de="Einzeln" data-en="Single">Single</option>
             </select>
           </div>
           <div>
-            <label data-de="🖼️ Thumb-Breite" data-en="🖼️ Thumb width">🖼️ Thumb-Breite</label>
+            <label data-de="🖼️ Thumb-Breite" data-en="🖼️ Thumb width">🖼️ Thumb width</label>
             <input type="number" id="width" value="120" min="50">
           </div>
         </div>
@@ -1449,8 +1449,8 @@
   <div id="notice"></div>
   <!-- v5.2.0 Unified Storage Controls (compact) -->
   <div class="unified-storage-bar">
-    <button id="btnToggleCompleted" onclick="toggleShowCompleted()" class="unified-toggle-btn" data-de="👁️ Erledigte anzeigen" data-en="👁️ Show completed">👁️ Erledigte anzeigen</button>
-    <div id="unified-stats" class="unified-stats-text" data-de="Klicke auf &quot;Aktualisieren&quot; um Daten zu laden" data-en="Click &quot;Refresh&quot; to load data">Klicke auf "Aktualisieren" um Daten zu laden</div>
+    <button id="btnToggleCompleted" onclick="toggleShowCompleted()" class="unified-toggle-btn" data-de="👁️ Erledigte anzeigen" data-en="👁️ Show completed">👁️ Show completed</button>
+    <div id="unified-stats" class="unified-stats-text" data-de="Klicke auf &quot;Aktualisieren&quot; um Daten zu laden" data-en="Click &quot;Refresh&quot; to load data">Click "Refresh" to load data</div>
   </div>
 </header>
 
@@ -1459,7 +1459,7 @@
 </div>
 
 <div class="loading" id="loading">
-  <div class="box"><span data-de="Lade Daten…" data-en="Loading data…">Lade Daten…</span></div>
+  <div class="box"><span data-de="Lade Daten…" data-en="Loading data…">Loading data…</span></div>
 </div>
 
 <script>
@@ -1611,17 +1611,20 @@ var I18N = {
     "locale.dateLocale": "en-GB"
   }
 };
+// Englisch ist die Hauptsprache/der Fallback des Projekts. Nur bei deutscher
+// Browsersprache wird auf Deutsch umgeschaltet; alles andere -> Englisch.
+var FALLBACK_LANG = 'en';
 var currentLang = (function () {
   try {
     var saved = localStorage.getItem('kitly_lang');
     if (saved === 'de' || saved === 'en') return saved;
   } catch (e) {}
-  return ((navigator.language || 'de').toLowerCase().indexOf('de') === 0) ? 'de' : 'en';
+  return ((navigator.language || 'en').toLowerCase().indexOf('de') === 0) ? 'de' : 'en';
 })();
 // t('key', {placeholder: value}) – Übersetzung + Platzhalter-Ersetzung.
 function t(key, vars) {
-  var dict = I18N[currentLang] || I18N.de;
-  var s = (dict[key] != null) ? dict[key] : (I18N.de[key] != null ? I18N.de[key] : key);
+  var dict = I18N[currentLang] || I18N[FALLBACK_LANG];
+  var s = (dict[key] != null) ? dict[key] : (I18N[FALLBACK_LANG][key] != null ? I18N[FALLBACK_LANG][key] : key);
   if (vars) { for (var k in vars) { s = s.replace(new RegExp('\\{' + k + '\\}', 'g'), vars[k]); } }
   return s;
 }
@@ -1630,8 +1633,8 @@ function t(key, vars) {
 function tp(key, n, vars) {
   var v = vars || {}; v.n = n;
   var oneKey = key + '.one';
-  var dict = I18N[currentLang] || I18N.de;
-  if (n === 1 && (dict[oneKey] != null || I18N.de[oneKey] != null)) return t(oneKey, v);
+  var dict = I18N[currentLang] || I18N[FALLBACK_LANG];
+  if (n === 1 && (dict[oneKey] != null || I18N[FALLBACK_LANG][oneKey] != null)) return t(oneKey, v);
   return t(key, v);
 }
 // Übersetzte Anzeige-Namen für Trikotteile und Trikottypen (überall wiederverwendet).
@@ -1896,6 +1899,24 @@ function analyzeKitFilename(filename) {
     else                                     result.kit_type = sRaw; // h,a,t,f,gk,gkh,gka,gkt
     result.set_id = result.team + "_" + result.season + "_" + result.kit_type;
     return result;
+  }
+  // v6.8.1: Kompakte Saison mit Bindestrich DIREKT an Team und Typ, ohne Trenner
+  // davor, z.B. "cskasofia26-27a" -> Team "cskasofia", Saison "2627", Typ "a".
+  // (Das getrennte Schema oben verlangt einen Trenner VOR dem ersten Jahr und
+  // greift hier daher nicht.)
+  var hyphenSeason = workingName.match(/^(.+?)(\d{2})[-–\/](\d{2})([a-z][a-z0-9]*)?$/i);
+  if (hyphenSeason && !/^(nike|adidas|puma|umbro|kappa)/i.test(hyphenSeason[1])) {
+	result.team = hyphenSeason[1].replace(/[\s_\-–\/]+$/, '').replace(/^[\s_\-–\/]+/, '').trim();
+	result.season = hyphenSeason[2] + hyphenSeason[3]; // "26"+"27" -> "2627"
+	var hkt = (hyphenSeason[4] || 'h').toLowerCase().replace(/([a-z]+)\d+$/i, '$1'); // Variantenziffer weg
+	if (result.part === 'socks' && hkt.length > 1 && hkt.slice(-1) === 'l' && /^[haetf]l$/.test(hkt)) { result.is_long_socks = true; hkt = hkt.slice(0, -1); }
+	if (hkt === '' || hkt === 'home')      result.kit_type = 'h';
+	else if (hkt === 'away')               result.kit_type = 'a';
+	else if (hkt === 'third')              result.kit_type = 't';
+	else if (hkt === 'g' || hkt === 'gkd') result.kit_type = 'gk';
+	else                                   result.kit_type = hkt;
+	result.set_id = result.team + "_" + result.season + "_" + result.kit_type;
+	return result;
   }
   var fourDigitMatch = workingName.match(/^(.+?)(\d{4})([a-z][a-z0-9]*)$/i);
   if (fourDigitMatch && !/^(nike|adidas|puma|umbro|kappa)/i.test(fourDigitMatch[1])) {
@@ -3546,7 +3567,7 @@ function closeUsageModal() {
   <div id="usageModal" class="usage-modal">
     <div class="usage-content">
       <div class="usage-header">
-        <h2>📊 <span data-de="Verwendung auf Wikipedia" data-en="Usage on Wikipedia">Verwendung auf Wikipedia</span></h2>
+        <h2>📊 <span data-de="Verwendung auf Wikipedia" data-en="Usage on Wikipedia">Usage on Wikipedia</span></h2>
         <button class="usage-close" onclick="closeUsageModal()">×</button>
       </div>
       <div id="usageBody" class="usage-body"></div>
@@ -3894,274 +3915,287 @@ function checkEmptyState() {
 <!-- Changelog Modal (v5.3.2) -->
 <div id="clOverlay" class="cl-overlay" role="dialog" aria-modal="true" aria-label="Changelog">
   <div class="cl-modal">
-	<button class="cl-close" onclick="closeChangelogModal()" aria-label="Schließen">&#x2715;</button>
+	<button class="cl-close" onclick="closeChangelogModal()" aria-label="Close">&#x2715;</button>
 	<h2>&#x26BD; Changelog &mdash; Kitly</h2>
+	<div class="cl-version">
+	  <h3>v6.8.2 &mdash; 2026-08-11 &mdash; English by default</h3>
+	  <ul>
+		<li><strong>English is now the project's main language.</strong> The interface still auto-detects your browser language and switches to German for German browsers, but the default and fallback is now always English (previously German).</li>
+		<li>The GitHub docs (README and this changelog) are now in English.</li>
+	  </ul>
+	</div>
+	<div class="cl-version">
+	  <h3>v6.8.1 &mdash; 2026-08-10 &mdash; Hyphenated season on the team</h3>
+	  <ul>
+		<li>Filenames with a hyphenated season attached directly to the team (e.g. <code>Kit_body_cskasofia26-27a.png</code>) are now recognized correctly: team = &bdquo;Cskasofia&ldquo;, season = &bdquo;2026/27&ldquo; (instead of team &bdquo;Cskasofia26-&ldquo; and &bdquo;Season 2027&ldquo;).</li>
+	  </ul>
+	</div>
 	<div class="cl-version">
 	  <h3>v6.8.0 &mdash; 2026-08-09 &mdash; „Einsatz"</h3>
 	  <ul>
-		<li>Neu: <strong>Verwendung direkt im Kitset</strong>. Unter jedem Trikotset steht jetzt „Verwendet in: …" mit Links zu den Seiten, auf denen die Teile bereits eingebunden sind &ndash; ohne Klick auf 📊. Die Angaben aller Teile werden zusammengefasst und dedupliziert.</li>
-		<li>Vor jeder Seite steht die <strong>Länder-Flagge</strong> der Wiki-Sprachvariante (bei Commons das <strong>Commons-Logo</strong>; ohne passende Flagge das Sprachkürzel). Reihenfolge: <strong>de → en → pt → Commons → Rest</strong>.</li>
-		<li>Wird <strong>beim Scrollen</strong> nachgeladen (nur sichtbare Kitsets fragen an) und 24&nbsp;h zwischengespeichert &ndash; ein späterer Klick auf 📊 ist dadurch sofort da.</li>
-		<li>Neuer Schalter <strong>„Verwendung einblenden"</strong> (standardmäßig aktiv) zum Ab-/Anschalten.</li>
-		<li>Neuer Filter <strong>„Ausblenden, wenn verwendet in …"</strong>: per Flaggen-Chips ein oder mehrere Wikis aktivieren; jede Datei, die dort bereits eingebunden ist, wird ausgeblendet. So sieht man auf einen Blick, welche Trikot-Teile z.&nbsp;B. in der deutschen Wikipedia noch fehlen. Sets/Teams ohne verbleibende Teile verschwinden automatisch. (Prüft dazu einmalig die Verwendung aller Treffer, mit Fortschrittsanzeige und 24-h-Cache.)</li>
-		<li>Schnell &amp; schonend: Der Verwendungs-Scan läuft <strong>gebündelt</strong> (bis zu 50 Dateien pro Anfrage statt eine pro Datei) im Hintergrund – die Oberfläche erscheint sofort. Zusätzlich <strong>wiederholt der Thumbnail-Lader fehlgeschlagene Anfragen</strong>, sodass Vorschaubilder erhalten bleiben, statt auf „Keine Vorschau" zu fallen.</li>
+		<li>New: <strong>Usage shown directly in the kit set</strong>. Below each kit set there is now &bdquo;Used in: …&ldquo; with links to the pages where the parts are already embedded &ndash; without clicking 📊. The details of all parts are combined and deduplicated.</li>
+		<li>In front of each page is the <strong>country flag</strong> of the wiki language variant (for Commons the <strong>Commons logo</strong>; without a matching flag the language code). Order: <strong>de → en → pt → Commons → rest</strong>.</li>
+		<li>Loaded <strong>as you scroll</strong> (only visible kit sets are queried) and cached for 24&nbsp;h &ndash; so a later click on 📊 is instant.</li>
+		<li>New toggle <strong>&bdquo;Show usage&ldquo;</strong> (on by default) to switch it off/on.</li>
+		<li>New filter <strong>&bdquo;Hide if used in …&ldquo;</strong>: activate one or more wikis via flag chips; every file already embedded there is hidden. This shows at a glance which kit parts are still missing in, for example, the German Wikipedia. Sets/teams with no remaining parts disappear automatically. (For this it checks the usage of all matches once, with a progress indicator and 24-h cache.)</li>
+		<li>Fast &amp; gentle: The usage scan runs <strong>in batches</strong> (up to 50 files per request instead of one per file) in the background – the interface appears immediately. In addition, <strong>the thumbnail loader retries failed requests</strong>, so previews are preserved instead of falling back to &bdquo;No preview&ldquo;.</li>
 	  </ul>
 	</div>
 	<div class="cl-version">
 	  <h3>v6.7.0 &mdash; 2026-08-09 &mdash; „Neuzugang"</h3>
 	  <ul>
-		<li>Neu: <strong>„Datei-Updates ausblenden"</strong> (standardmäßig aktiv). Dateien, die im gewählten Zeitraum nur eine <em>neue Version</em> erhielten, deren <strong>Erst-Upload</strong> aber davor liegt, werden ausgeblendet – es bleiben also nur echte Neu-Uploads. Umschaltbar ohne Neuladen.</li>
-		<li>Grundlage: Pro Datei wird jetzt zusätzlich der <strong>Erst-Upload</strong> über die MediaWiki-API ermittelt (älteste Dateiversion), nicht nur der jüngste Upload.</li>
-		<li>Das <strong>Limit</strong> lässt sich jetzt bis <strong>10000</strong> stellen (vorher 2000; Standard bleibt 1000) &ndash; für breite Zeiträume, in denen sonst Treffer abgeschnitten würden.</li>
+		<li>New: <strong>&bdquo;Hide file updates&ldquo;</strong> (on by default). Files that only received a <em>new version</em> within the selected period, but whose <strong>first upload</strong> predates it, are hidden – so only genuine new uploads remain. Toggleable without reloading.</li>
+		<li>Foundation: For each file, the <strong>first upload</strong> is now additionally determined via the MediaWiki API (oldest file version), not just the most recent upload.</li>
+		<li>The <strong>limit</strong> can now be set up to <strong>10000</strong> (previously 2000; default stays 1000) &ndash; for wide time spans where matches would otherwise be cut off.</li>
 	  </ul>
 	</div>
 	<div class="cl-version">
 	  <h3>v6.6.0 &mdash; 2026-08-09 &mdash; „Kitly"</h3>
 	  <ul>
-		<li>Das Tool heißt jetzt <strong>Kitly</strong> – ein Name, der auch international funktioniert.</li>
-		<li>Neu: <strong>Sprachumschaltung DE/EN</strong> (🌐-Button). Die komplette Oberfläche gibt es jetzt auf Deutsch und Englisch; die Sprache wird gespeichert und beim ersten Start aus der Browsersprache erraten.</li>
-		<li>Neu: <strong>Hell-/Dunkelmodus mit Automatik</strong> (🌗-Button, Auto / Hell / Dunkel). „Auto" folgt dem Betriebssystem; die grüne Pitch-Identität bleibt in beiden Modi erhalten. Auswahl wird gespeichert.</li>
-		<li>Neu: Klick auf ein <strong>Vorschaubild</strong> öffnet die Commons-Dateiseite in einem neuen Hintergrund-Tab.</li>
-		<li>Saison-Spannen über mehrere Jahre werden jetzt als Bereich angezeigt: <code>8792</code> &rarr; „Saison 1987–1992" (statt „Saison 8792"), während aufeinanderfolgende Saisons weiter als <code>1987/88</code> erscheinen.</li>
-		<li>Zähler stehen jetzt im korrekten Singular/Plural („1 Team gefunden", „1 Teil" bzw. „1 team found", „1 part").</li>
+		<li>The tool is now called <strong>Kitly</strong> – a name that also works internationally.</li>
+		<li>New: <strong>DE/EN language switch</strong> (🌐 button). The entire interface is now available in German and English; the language is saved and, on first launch, guessed from the browser language.</li>
+		<li>New: <strong>Light/dark mode with automatic option</strong> (🌗 button, Auto / Light / Dark). &bdquo;Auto&ldquo; follows the operating system; the green pitch identity is preserved in both modes. The choice is saved.</li>
+		<li>New: Clicking a <strong>thumbnail</strong> opens the Commons file page in a new background tab.</li>
+		<li>Season spans across multiple years are now shown as a range: <code>8792</code> &rarr; &bdquo;Season 1987–1992&ldquo; (instead of &bdquo;Season 8792&ldquo;), while consecutive seasons still appear as <code>1987/88</code>.</li>
+		<li>Counters now use the correct singular/plural (&bdquo;1 team found&ldquo;, &bdquo;1 part&ldquo; or &bdquo;1 team found&ldquo;, &bdquo;1 part&ldquo;).</li>
 	  </ul>
 	</div>
 	<div class="cl-version">
 	  <h3>v6.5.1 &mdash; 2026-08-09 &mdash; „Feinschliff"</h3>
 	  <ul>
-		<li>Saison-Spannen korrekt erkannt: <code>1819</code>/<code>1920</code>/<code>2021</code> werden jetzt als „2018/19"/„2019/20"/„2020/21" angezeigt und sortiert – echte Einzeljahre (1923, 1975, 2026) bleiben unverändert.</li>
-		<li>Verbose-Dateinamen: alleinstehendes Jahr (z.&nbsp;B. <code>FC_Tokyo_2026_HOME</code>) wird nicht mehr in den Teamnamen übernommen.</li>
-		<li>Trikotset-Ansicht zeigt die Saison im Klartext (<code>2627</code> &rarr; „2026/27").</li>
-		<li>Trikottyp-Filter greift auch für Torhüter-Varianten (<code>gkd</code>/<code>g</code>) zuverlässig.</li>
-		<li>Statistik zählt Dateien in ausgeblendeten Teams nicht mehr als sichtbar; Abhak-Buttons werden entprellt nachgezogen (weniger DOM-Last bei großen Listen).</li>
+		<li>Season spans recognized correctly: <code>1819</code>/<code>1920</code>/<code>2021</code> are now shown and sorted as &bdquo;2018/19&ldquo;/&bdquo;2019/20&ldquo;/&bdquo;2020/21&ldquo; – genuine single years (1923, 1975, 2026) stay unchanged.</li>
+		<li>Verbose filenames: a standalone year (e.g. <code>FC_Tokyo_2026_HOME</code>) is no longer taken into the team name.</li>
+		<li>The kit set view shows the season in plain text (<code>2627</code> &rarr; &bdquo;2026/27&ldquo;).</li>
+		<li>The kit type filter also works reliably for goalkeeper variants (<code>gkd</code>/<code>g</code>).</li>
+		<li>Statistics no longer count files in hidden teams as visible; check-off buttons are updated with debouncing (less DOM load on large lists).</li>
 	  </ul>
 	</div>
 	<div class="cl-version">
 	  <h3>v6.5.0 &mdash; 2026-08-09 &mdash; „Aufgeräumte Kabine"</h3>
 	  <ul>
-		<li>Neu: <strong>Trikottyp-Filter</strong> (Dropdown Heim/Auswärts/Ausweich/Torhüter) in der Filter-Gruppe.</li>
-		<li>Die beiden parallelen Abhak-Systeme wurden zu <strong>einem</strong> zusammengeführt (ein einziger Speicher). Team-, Kitset- und Datei-Abhaken laufen jetzt über dieselbe Logik.</li>
-		<li>2-stellige Saison wird korrekt angezeigt: <code>02</code> &rarr; „Saison 2002".</li>
-		<li>Aufgeräumt: toter Auto-Refresh-Code, verwaiste Hilfsfunktionen, ein ungenutzter Zugriff und alle Debug-Ausgaben (console.log) entfernt.</li>
+		<li>New: <strong>Kit type filter</strong> (dropdown home/away/third/goalkeeper) in the filter group.</li>
+		<li>The two parallel check-off systems were merged into <strong>one</strong> (a single store). Checking off teams, kit sets, and files now runs through the same logic.</li>
+		<li>2-digit seasons are shown correctly: <code>02</code> &rarr; &bdquo;Season 2002&ldquo;.</li>
+		<li>Cleaned up: dead auto-refresh code, orphaned helper functions, one unused access, and all debug output (console.log) removed.</li>
 	  </ul>
 	</div>
 	<div class="cl-version">
 	  <h3>v6.4.0 &mdash; 2026-08-08 &mdash; „Chronik"</h3>
 	  <ul>
-		<li>Alle Saisons eines Teams stehen jetzt unter <strong>einer</strong> Team-Karte, chronologisch sortiert (neueste Saison oben). Beispiel: „Gelp" mit 1996/98 über 1993/95.</li>
-		<li>Wird ein Team als erledigt abgehakt, verschwinden <strong>alle</strong> Saisons dieses Teams mit.</li>
-		<li>Der „Infobox-Code"-Button sitzt jetzt <strong>pro Saison</strong> (statt pro Team), damit die Kit-Nummern nicht über Saisons hinweg kollidieren.</li>
+		<li>All seasons of a team are now shown under <strong>one</strong> team card, sorted chronologically (newest season on top). Example: &bdquo;Gelp&ldquo; with 1996/98 above 1993/95.</li>
+		<li>When a team is checked off as completed, <strong>all</strong> seasons of that team disappear with it.</li>
+		<li>The &bdquo;Infobox code&ldquo; button now sits <strong>per season</strong> (instead of per team), so the kit numbers don't collide across seasons.</li>
 	  </ul>
 	</div>
 	<div class="cl-version">
-	  <h3>v6.3.11 &mdash; 2026-08-08 &mdash; Saison-Filter angeglichen</h3>
+	  <h3>v6.3.11 &mdash; 2026-08-08 &mdash; Season filter aligned</h3>
 	  <ul>
-		<li>Der Saison-Filter zeigt jetzt exakt dieselbe Saison wie die Team-Anzeige (gemeinsame Logik). Ungewöhnliche Spannen wie „1993/95" oder „1998/2001" erscheinen im Dropdown genauso wie an den Teams.</li>
+		<li>The season filter now shows exactly the same season as the team display (shared logic). Unusual spans like &bdquo;1993/95&ldquo; or &bdquo;1998/2001&ldquo; appear in the dropdown just as they do on the teams.</li>
 	  </ul>
 	</div>
 	<div class="cl-version">
-	  <h3>v6.3.10 &mdash; 2026-08-08 &mdash; Saison-Spannen</h3>
+	  <h3>v6.3.10 &mdash; 2026-08-08 &mdash; Season spans</h3>
 	  <ul>
-		<li>Nicht fortlaufende Saison-Spannen werden jetzt korrekt angezeigt: <code>9395</code> &rarr; „1993/95". Bei Jahrhundertwechsel wird das Endjahr 4-stellig gezeigt: <code>9801</code> &rarr; „1998/2001", <code>9900</code> &rarr; „1999/2000". Echte Einzeljahre (1923, 1975) bleiben unverändert.</li>
+		<li>Non-consecutive season spans are now shown correctly: <code>9395</code> &rarr; &bdquo;1993/95&ldquo;. At a century boundary the end year is shown with 4 digits: <code>9801</code> &rarr; &bdquo;1998/2001&ldquo;, <code>9900</code> &rarr; &bdquo;1999/2000&ldquo;. Genuine single years (1923, 1975) stay unchanged.</li>
 	  </ul>
 	</div>
 	<div class="cl-version">
-	  <h3>v6.3.9 &mdash; 2026-08-08 &mdash; Bindestrich-Saisons</h3>
+	  <h3>v6.3.9 &mdash; 2026-08-08 &mdash; Hyphenated seasons</h3>
 	  <ul>
-		<li>Dateinamen mit Trennzeichen-Saison wie <code>Kit_body_spartak-vn-26-27-a.png</code> werden jetzt korrekt gelesen: Team („spartak-vn"), Saison („2026/27") und Typ (Auswärts). Heim und Auswärts landen im selben Team. Unterstützt „YY-YY", „YYYY-YY" und einzelne 4-stellige Jahresblöcke.</li>
+		<li>Filenames with a separator season like <code>Kit_body_spartak-vn-26-27-a.png</code> are now read correctly: team (&bdquo;spartak-vn&ldquo;), season (&bdquo;2026/27&ldquo;) and type (away). Home and away land in the same team. Supports &bdquo;YY-YY&ldquo;, &bdquo;YYYY-YY&ldquo; and single 4-digit year blocks.</li>
 	  </ul>
 	</div>
 	<div class="cl-version">
-	  <h3>v6.3.8 &mdash; 2026-08-08 &mdash; Infobox-Nummerierung</h3>
+	  <h3>v6.3.8 &mdash; 2026-08-08 &mdash; Infobox numbering</h3>
 	  <ul>
-		<li>Der „Infobox-Code" nummeriert die Kits jetzt nach Typ statt nach Reihenfolge: Heim = 1, Auswärts = 2, Ausweich = 3, Viertes = 4. Ein reines Auswärtsset liefert also korrekt <code>…2</code> (statt fälschlich <code>…1</code>).</li>
+		<li>The &bdquo;Infobox code&ldquo; now numbers the kits by type instead of by order: home = 1, away = 2, third = 3, fourth = 4. So an away-only set correctly yields <code>…2</code> (instead of incorrectly <code>…1</code>).</li>
 	  </ul>
 	</div>
 	<div class="cl-version">
 	  <h3>v6.3.7 &mdash; 2026-08-08 &mdash; Feinschliff</h3>
 	  <ul>
-		<li>In der Team-Zeile sind die Trikottypen jetzt einheitlich sortiert: Heim, Auswärts, Ausweich, dann Torwart – passend zur Reihenfolge der Kitset-Karten.</li>
+		<li>In the team row the kit types are now sorted consistently: home, away, third, then goalkeeper – matching the order of the kit set cards.</li>
 	  </ul>
 	</div>
 	<div class="cl-version">
-	  <h3>v6.3.6 &mdash; 2026-08-08 &mdash; Ausführliche Dateinamen</h3>
+	  <h3>v6.3.6 &mdash; 2026-08-08 &mdash; Verbose filenames</h3>
 	  <ul>
-		<li>Neues Namensschema erkannt: <code>Kit_body_FC_Tokyo_2026_-_27_AWAY_FP.png</code> &amp; Co. Team („FC Tokyo"), Saison („2026/27") und Typ werden jetzt korrekt gelesen; Heim und Auswärts landen im selben Team.</li>
-		<li><code>FP</code> = Feldspieler (&rarr; Heim/Auswärts/Ausweich), <code>GK</code> = Torwart (&rarr; Torhüter Heim/Auswärts). Bisher wurde stattdessen „fp" als Typ und der ganze Name als Team angezeigt.</li>
+		<li>New naming scheme recognized: <code>Kit_body_FC_Tokyo_2026_-_27_AWAY_FP.png</code> &amp; co. Team (&bdquo;FC Tokyo&ldquo;), season (&bdquo;2026/27&ldquo;) and type are now read correctly; home and away land in the same team.</li>
+		<li><code>FP</code> = field player (&rarr; home/away/third), <code>GK</code> = goalkeeper (&rarr; goalkeeper home/away). Previously &bdquo;fp&ldquo; was shown as the type and the whole name as the team.</li>
 	  </ul>
 	</div>
 	<div class="cl-version">
-	  <h3>v6.3.5 &mdash; 2026-08-03 &mdash; Torhüter Heim/Auswärts</h3>
+	  <h3>v6.3.5 &mdash; 2026-08-03 &mdash; Goalkeeper home/away</h3>
 	  <ul>
-		<li>Torwart-Trikots werden jetzt nach Heim/Auswärts unterschieden: <code>gkh</code> &rarr; „Torhüter Heim", <code>gka</code> &rarr; „Torhüter Auswärts" (auch <code>gkt</code> &rarr; „Torhüter Ausweich"). Gilt für Anzeige, Kitset-Titel und Trikottyp-Filter.</li>
+		<li>Goalkeeper kits are now distinguished by home/away: <code>gkh</code> &rarr; &bdquo;Goalkeeper home&ldquo;, <code>gka</code> &rarr; &bdquo;Goalkeeper away&ldquo; (also <code>gkt</code> &rarr; &bdquo;Goalkeeper third&ldquo;). Applies to the display, kit set titles and the kit type filter.</li>
 	  </ul>
 	</div>
 	<div class="cl-version">
-	  <h3>v6.3.4 &mdash; 2026-08-03 &mdash; Fehlerbehebung</h3>
+	  <h3>v6.3.4 &mdash; 2026-08-03 &mdash; Bug fix</h3>
 	  <ul>
-		<li>Dateien mit 4-stelliger Jahreszahl ohne Typ-Kürzel (z.&thinsp;B. <code>Kit_body_River_1975.png</code>) werden jetzt korrekt erkannt: Saison = 1975, Typ = Heim (kein „h"/„a" am Ende bedeutet Heimtrikot). Bisher landeten sie unter „Keine Saison • unknown".</li>
+		<li>Files with a 4-digit year and no type code (e.g.&thinsp;<code>Kit_body_River_1975.png</code>) are now recognized correctly: season = 1975, type = home (no &bdquo;h&ldquo;/&bdquo;a&ldquo; at the end means home kit). Previously they ended up under &bdquo;No season • unknown&ldquo;.</li>
 	  </ul>
 	</div>
 	<div class="cl-version">
 	  <h3>v6.3.3 &mdash; 2026-08-03 &mdash; Feinschliff</h3>
 	  <ul>
-		<li>Die Eingabefelder „Limit" (max. 2000) und „Tiefe" (max. 100) haben jetzt Obergrenzen, passend zu den Limits des kitproxy-Servers – so ist die Grenze direkt im Feld sichtbar.</li>
+		<li>The &bdquo;Limit&ldquo; (max. 2000) and &bdquo;Depth&ldquo; (max. 100) input fields now have upper bounds, matching the limits of the kitproxy server – so the limit is visible directly in the field.</li>
 	  </ul>
 	</div>
 	<div class="cl-version">
-	  <h3>v6.3.2 &mdash; 2026-08-03 &mdash; Aufräumen</h3>
+	  <h3>v6.3.2 &mdash; 2026-08-03 &mdash; Cleanup</h3>
 	  <ul>
-		<li>Kategorie-Abfrage verschlankt: „Association football kit templates" entfernt – sie ist eine direkte Unterkategorie beider Ober-Kategorien und bei Tiefe 50 ohnehin enthalten (empirisch geprüft, Ergebnismenge unverändert).</li>
+		<li>Category query streamlined: &bdquo;Association football kit templates&ldquo; removed – it is a direct subcategory of both parent categories and is included anyway at depth 50 (verified empirically, result set unchanged).</li>
 	  </ul>
 	</div>
 	<div class="cl-version">
 	  <h3>v6.3.1 &mdash; 2026-08-03 &mdash; „Ordnung"</h3>
 	  <ul>
-		<li>Erledigte Teams werden jetzt nur noch über <strong>einen</strong> Weg ein-/ausgeblendet: den „Erledigte anzeigen"-Button. Die doppelte Checkbox in der Filter-Gruppe wurde entfernt.</li>
+		<li>Completed teams are now shown/hidden via just <strong>one</strong> route: the &bdquo;Show completed&ldquo; button. The duplicate checkbox in the filter group has been removed.</li>
 	  </ul>
 	</div>
 	<div class="cl-version">
 	  <h3>v6.3 &mdash; 2026-08-03 &mdash; „Ordnung"</h3>
 	  <ul>
-		<li>Die Einstellungen sind jetzt thematisch gruppiert: <strong>Datenabruf</strong> (Datum, Limit, Tiefe), <strong>Filter</strong> (Saison, Nur Trikot-Teile, Abgeschlossene Teams) und <strong>Darstellung</strong> (Ansicht, Thumb-Breite).</li>
-		<li>Die Checkbox „Abgeschlossene Teams" ist jetzt ein kompaktes Inline-Element (kein großer Kasten mehr) und passt zu „Nur Trikot-Teile".</li>
+		<li>The settings are now grouped by topic: <strong>Data retrieval</strong> (date, limit, depth), <strong>Filter</strong> (season, kit parts only, completed teams) and <strong>Display</strong> (view, thumb width).</li>
+		<li>The &bdquo;Completed teams&ldquo; checkbox is now a compact inline element (no longer a big box) and matches &bdquo;Kit parts only&ldquo;.</li>
 	  </ul>
 	</div>
 	<div class="cl-version">
-	  <h3>v6.2.5 &mdash; 2026-08-03 &mdash; Kopfbereich</h3>
+	  <h3>v6.2.5 &mdash; 2026-08-03 &mdash; Header area</h3>
 	  <ul>
-		<li>Einheitliches Erscheinungsbild: die globale Eingabe-Basis (früher kräftiger 2px-Rahmen) ist jetzt dezent wie die Filterfelder.</li>
-		<li>Die Checkboxen „Nur Trikot-Teile" und „Abgeschlossene Teams anzeigen" passen jetzt farblich und in der Größe zum neuen Filter-Look.</li>
+		<li>Consistent appearance: the global input base (previously a bold 2px border) is now subtle like the filter fields.</li>
+		<li>The &bdquo;Kit parts only&ldquo; and &bdquo;Show completed teams&ldquo; checkboxes now match the new filter look in color and size.</li>
 	  </ul>
 	</div>
 	<div class="cl-version">
-	  <h3>v6.2.4 &mdash; 2026-08-03 &mdash; Kopfbereich</h3>
+	  <h3>v6.2.4 &mdash; 2026-08-03 &mdash; Header area</h3>
 	  <ul>
-		<li>Der obere Bereich wirkt aufgeräumter: schlankere, dezentere Filterfelder (feiner Rahmen statt kräftigem Weiß, mit sanftem Fokus-Rahmen) und kompaktere Buttons.</li>
-		<li>Die „Erledigte anzeigen"-Leiste ist jetzt schmaler und zurückhaltender.</li>
-		<li>Aufräumen: ungenutztes CSS (4 tote <code>.controls</code>-Blöcke, verwaiste Media-Queries) und eine unsichtbare, nicht mehr genutzte Statistik-Leiste entfernt.</li>
+		<li>The top area looks tidier: slimmer, more subtle filter fields (fine border instead of bold white, with a soft focus ring) and more compact buttons.</li>
+		<li>The &bdquo;Show completed&ldquo; bar is now narrower and more restrained.</li>
+		<li>Cleanup: unused CSS (4 dead <code>.controls</code> blocks, orphaned media queries) and an invisible, no-longer-used statistics bar removed.</li>
 	  </ul>
 	</div>
 	<div class="cl-version">
-	  <h3>v6.2.3 &mdash; 2026-08-03 &mdash; Aufräumen</h3>
+	  <h3>v6.2.3 &mdash; 2026-08-03 &mdash; Cleanup</h3>
 	  <ul>
-		<li>Fehlerbehebung: Ein alter, überflüssiger Code-Block warf bei jedem Laden einen Konsolenfehler (<code>completedTeams is not defined</code>). Der tote Alt-Code wurde vollständig entfernt.</li>
-		<li>Aufräumen: Dreifach vorhandener Thumbnail-Lade-Code auf eine Fassung reduziert; toter Code und ein ungenutztes Toast-Element entfernt (~650 Zeilen weniger).</li>
-		<li>Performance: Erkannte Trikot-Farben werden jetzt dauerhaft gespeichert (schneller nach Neuladen) und für sichtbare Figuren gebündelt statt einzeln abgefragt.</li>
-		<li>Barrierefreiheit: Die Kit-Figur hat jetzt ein sprechendes Label für Screenreader.</li>
-		<li>Kleinigkeit: Dateinamen mit „/" werden nicht mehr fälschlich ausgeschlossen (Kategorien werden ohnehin über die Datei-Endung erkannt).</li>
+		<li>Bug fix: An old, superfluous code block threw a console error on every load (<code>completedTeams is not defined</code>). The dead legacy code was removed entirely.</li>
+		<li>Cleanup: Thumbnail loading code that existed three times was reduced to one version; dead code and an unused toast element removed (~650 fewer lines).</li>
+		<li>Performance: Detected kit colors are now stored permanently (faster after a reload) and queried in batches for visible figures instead of individually.</li>
+		<li>Accessibility: The kit figure now has a descriptive label for screen readers.</li>
+		<li>Minor: Filenames with &bdquo;/&ldquo; are no longer incorrectly excluded (categories are recognized via the file extension anyway).</li>
 	  </ul>
 	</div>
 	<div class="cl-version">
 	  <h3>v6.2.2 &mdash; 2026-08-02 &mdash; Feinschliff</h3>
 	  <ul>
-		<li>Die Abhak-Buttons (Team &amp; Kitset) fügen sich jetzt ins Design ein: dunkler, transparenter Hintergrund mit hellem Rahmen; abgehakt = grün mit weißem Haken. Das grelle Weiß und der graue Rahmen sind weg.</li>
+		<li>The check-off buttons (team &amp; kit set) now blend into the design: dark, transparent background with a light border; checked = green with a white check mark. The glaring white and the gray border are gone.</li>
 	  </ul>
 	</div>
 	<div class="cl-version">
 	  <h3>v6.2.1 &mdash; 2026-08-02 &mdash; „Reihe"</h3>
 	  <ul>
-		<li>Die Kitsets werden jetzt auch in der <strong>Trikotsets</strong>-Ansicht nebeneinander dargestellt (wie in der Teams-Ansicht).</li>
+		<li>The kit sets are now displayed side by side in the <strong>Kit sets</strong> view too (as in the Teams view).</li>
 	  </ul>
 	</div>
 	<div class="cl-version">
 	  <h3>v6.2 &mdash; 2026-08-02 &mdash; „Reihe"</h3>
 	  <ul>
-		<li>Die Kits eines Teams (Heim, Auswärts, Ausweich) werden jetzt <strong>nebeneinander</strong> dargestellt – wie in der Wikipedia-Infobox. Auf schmalen Bildschirmen brechen sie automatisch um.</li>
-		<li>Die Kit-Figur ist jetzt <strong>auf die tatsächlichen Teile zugeschnitten</strong> – kein großer Leerraum mehr um kleine Kits.</li>
-		<li>Das <strong>weiße Rechteck</strong> unter dem Trikot (Stutzen-Platzhalter) wurde entfernt: In der Figur werden nur noch vorhandene Teile gezeigt. (Der Infobox-Code füllt die Stutzenfarbe weiterhin mit der Trikot-Farbe.)</li>
+		<li>A team's kits (home, away, third) are now displayed <strong>side by side</strong> – like in the Wikipedia infobox. On narrow screens they wrap automatically.</li>
+		<li>The kit figure is now <strong>cropped to the actual parts</strong> – no more large empty space around small kits.</li>
+		<li>The <strong>white rectangle</strong> below the shirt (socks placeholder) was removed: the figure now shows only the parts that exist. (The infobox code still fills the socks color with the shirt color.)</li>
 	  </ul>
 	</div>
 	<div class="cl-version">
 	  <h3>v6.1 &mdash; 2026-08-02 &mdash; „Aufstellung"</h3>
 	  <ul>
-		<li>Neu: In der <strong>Teams</strong>- und <strong>Trikotsets</strong>-Ansicht wird jedes Kitset jetzt als zusammengesetzte <strong>Trikot-Figur</strong> dargestellt &ndash; genau wie die Wikipedia-Vorlage <code>{{Football kit}}</code>: Ärmel + Trikot bilden das Shirt, darunter die Hose, darunter die Stutzen.</li>
-		<li>Die Farbflächen hinter den Mustern werden je Teil automatisch erkannt (gleiche Engine wie der Infobox-Kopierer). Fehlt ein Stutzen-Bild, erhält die Stutzen-Fläche die Trikot-Farbe.</li>
-		<li>Die Einzelteile bleiben darunter sichtbar (mit 📊-Verwendung und Abhaken). Die Figur-Größe folgt der <strong>Thumb-Breite</strong>.</li>
-		<li>Performance: Farben werden nur für sichtbare Figuren berechnet (Lazy-Loading) und zwischengespeichert.</li>
+		<li>New: In the <strong>Teams</strong> and <strong>Kit sets</strong> views each kit set is now displayed as a composed <strong>kit figure</strong> &ndash; exactly like the Wikipedia template <code>{{Football kit}}</code>: sleeves + shirt form the top, below it the shorts, below that the socks.</li>
+		<li>The color areas behind the patterns are detected automatically per part (same engine as the infobox copier). If a socks image is missing, the socks area takes the shirt color.</li>
+		<li>The individual parts remain visible below (with 📊 usage and check-off). The figure size follows the <strong>thumb width</strong>.</li>
+		<li>Performance: Colors are computed only for visible figures (lazy loading) and cached.</li>
 	  </ul>
 	</div>
 	<div class="cl-version">
-	  <h3>v6.0.3 &mdash; 2026-08-02 &mdash; Fehlerbehebung</h3>
+	  <h3>v6.0.3 &mdash; 2026-08-02 &mdash; Bug fix</h3>
 	  <ul>
-		<li>Fehlerbehebung: <strong>Thumb-Breite</strong> ändert jetzt sichtbar die Vorschaugröße. Bisher wurde nur die geladene Bildauflösung angepasst, die Anzeige blieb wegen fester CSS-Maße gleich groß. Jetzt steuern Spaltenbreite und Vorschau-Höhe direkt der eingestellte Wert.</li>
+		<li>Bug fix: <strong>Thumb width</strong> now visibly changes the preview size. Previously only the loaded image resolution was adjusted, while the display stayed the same size due to fixed CSS dimensions. Now the column width and preview height are driven directly by the configured value.</li>
 	  </ul>
 	</div>
 	<div class="cl-version">
-	  <h3>v6.0.2 &mdash; 2026-08-02 &mdash; Fehlerbehebung</h3>
+	  <h3>v6.0.2 &mdash; 2026-08-02 &mdash; Bug fix</h3>
 	  <ul>
-		<li>Fehlerbehebung: Filter wirken wieder sofort. Ändern von <strong>Saison</strong>, <strong>Thumb-Breite</strong>, <strong>Ansicht</strong> oder <strong>„Nur Trikot-Teile"</strong> aktualisiert die Liste jetzt direkt (bisher wurde der Wert nur gespeichert). <strong>Datum</strong>, <strong>Limit</strong> und <strong>Tiefe</strong> laden die Daten neu, da sie die Abfrage selbst betreffen.</li>
+		<li>Bug fix: Filters take effect immediately again. Changing <strong>Season</strong>, <strong>Thumb width</strong>, <strong>View</strong> or <strong>&bdquo;Kit parts only&ldquo;</strong> now updates the list directly (previously the value was only saved). <strong>Date</strong>, <strong>Limit</strong> and <strong>Depth</strong> reload the data, since they affect the query itself.</li>
 	  </ul>
 	</div>
 	<div class="cl-version">
-	  <h3>v6.0.1 &mdash; 2026-08-02 &mdash; Fehlerbehebung</h3>
+	  <h3>v6.0.1 &mdash; 2026-08-02 &mdash; Bug fix</h3>
 	  <ul>
-		<li>Fehlerbehebung: Kategorien (z.&thinsp;B. <code>Football_kit_body/VARAMAN_specific_patterns</code>) tauchten fälschlich als „Datei" in den Ergebnissen auf. Es werden jetzt nur noch echte Mediendateien (mit Bild-Endung) angezeigt.</li>
+		<li>Bug fix: Categories (e.g.&thinsp;<code>Football_kit_body/VARAMAN_specific_patterns</code>) incorrectly showed up as a &bdquo;file&ldquo; in the results. Now only real media files (with an image extension) are shown.</li>
 	  </ul>
 	</div>
 	<div class="cl-version">
 	  <h3>v6.0 &mdash; 2026-07-23 &mdash; „Der Schneider"</h3>
 	  <ul>
-		<li>Neu: Jede Team-Kachel hat jetzt den Button <strong>„📋 Infobox-Code"</strong>. Er kopiert den kompletten Wikipedia-Infobox-Block für <em>alle</em> Kits des Teams (Heim = 1, Auswärts = 2, …) direkt in die Zwischenablage.</li>
-		<li>Die <code>pattern_*</code>-Werte werden aus den Dateinamen abgeleitet (z.&thinsp;B. <code>Kit_body_kaizerchiefs2627h.png</code> &rarr; <code>_kaizerchiefs2627h</code>).</li>
-		<li>Die Farbwerte (<code>leftarm</code>, <code>body</code>, <code>rightarm</code>, <code>shorts</code>, <code>socks</code>) werden je Teil aus dem Originalbild erkannt &ndash; mit derselben Silhouetten-Farberkennung wie das Userscript „Wikipedia Football Kit Code Copier".</li>
-		<li>Fehlt ein Stutzen-Bild, bleibt <code>pattern_so</code> leer und die Stutzenfarbe übernimmt die Haupt-Farbe des Trikots (<code>body</code>).</li>
+		<li>New: Each team tile now has the <strong>&bdquo;📋 Infobox code&ldquo;</strong> button. It copies the complete Wikipedia infobox block for <em>all</em> of the team's kits (home = 1, away = 2, …) directly to the clipboard.</li>
+		<li>The <code>pattern_*</code> values are derived from the filenames (e.g.&thinsp;<code>Kit_body_kaizerchiefs2627h.png</code> &rarr; <code>_kaizerchiefs2627h</code>).</li>
+		<li>The color values (<code>leftarm</code>, <code>body</code>, <code>rightarm</code>, <code>shorts</code>, <code>socks</code>) are detected per part from the original image &ndash; using the same silhouette color detection as the userscript &bdquo;Wikipedia Football Kit Code Copier&ldquo;.</li>
+		<li>If a socks image is missing, <code>pattern_so</code> stays empty and the socks color takes the main color of the shirt (<code>body</code>).</li>
 	  </ul>
 	</div>
 	<div class="cl-version">
-	  <h3>v5.4.2 &mdash; 2026-07-02 &mdash; Fehlerbehebung</h3>
+	  <h3>v5.4.2 &mdash; 2026-07-02 &mdash; Bug fix</h3>
 	  <ul>
-		<li>Fehlerbehebung: „Verwendung anzeigen" zeigt jetzt auch die <strong>lokale Commons-Verwendung</strong> (z.&thinsp;B. Galerieseiten wie „2026–27 Swiss Super League kits"). Bisher wurde nur die Verwendung auf anderen Wikis (<code>globalusage</code>) geladen; die lokale Nutzung wird nun über <code>fileusage</code> ergänzt.</li>
+		<li>Bug fix: &bdquo;Show usage&ldquo; now also shows the <strong>local Commons usage</strong> (e.g.&thinsp;gallery pages like &bdquo;2026–27 Swiss Super League kits&ldquo;). Previously only usage on other wikis (<code>globalusage</code>) was loaded; local usage is now added via <code>fileusage</code>.</li>
 	  </ul>
 	</div>
 	<div class="cl-version">
-	  <h3>v5.4.1 &mdash; 2026-07-02 &mdash; Fehlerbehebung</h3>
+	  <h3>v5.4.1 &mdash; 2026-07-02 &mdash; Bug fix</h3>
 	  <ul>
-		<li>Fehlerbehebung: Fehlerhaft escapte Backticks in <code>showStatistics()</code> machten den ersten Skript-Block ungültig. Nach der Korrektur läuft dieser wieder vollständig.</li>
+		<li>Bug fix: Incorrectly escaped backticks in <code>showStatistics()</code> made the first script block invalid. After the fix it runs fully again.</li>
 	  </ul>
 	</div>
 	<div class="cl-version">
-	  <h3>v5.4.0 &mdash; 2026-07-02 &mdash; Echte Neuzugänge</h3>
+	  <h3>v5.4.0 &mdash; 2026-07-02 &mdash; Genuine new arrivals</h3>
 	  <ul>
-		<li>Neu: Es werden jetzt nur noch Trikot-Teile mit einem echten <strong>neuen Bild-Upload</strong> ab dem gewählten Datum angezeigt. Reine Text-/Metadaten-Änderungen an alten Dateien tauchen nicht mehr auf.</li>
-		<li>Grundlage: das tatsächliche Upload-Datum wird über die MediaWiki-API (<code>imageinfo</code>) ermittelt &ndash; statt des Seiten-Zeitstempels <code>touched</code>, der bei jeder Bearbeitung wechselt.</li>
-		<li>Die Datum-Anzeige auf den Karten zeigt nun das echte Upload-Datum; sortiert wird ebenfalls danach.</li>
-		<li>Fehlerbehebung: Das automatische Speichern der Filter (Datum, Limit &amp; Co.) funktioniert wieder &ndash; ein fehlendes Bedienelement hatte zuvor das Skript abgebrochen.</li>
+		<li>New: Only kit parts with a genuine <strong>new image upload</strong> from the selected date onward are now shown. Pure text/metadata changes to old files no longer appear.</li>
+		<li>Foundation: the actual upload date is determined via the MediaWiki API (<code>imageinfo</code>) &ndash; instead of the page timestamp <code>touched</code>, which changes with every edit.</li>
+		<li>The date shown on the cards now displays the real upload date; sorting is by that too.</li>
+		<li>Bug fix: Automatic saving of the filters (date, limit &amp; co.) works again &ndash; a missing control had previously aborted the script.</li>
 	  </ul>
 	</div>
 	<div class="cl-version">
-	  <h3>v5.3.2 &mdash; 2026-06-10 &mdash; Lesbare Zeitstempel</h3>
+	  <h3>v5.3.2 &mdash; 2026-06-10 &mdash; Readable timestamps</h3>
 	  <ul>
-		<li>Zeitstempel in der Datei-Metazeile (<code>file-meta</code>) werden jetzt im lesbaren Format angezeigt: <code>09.06.2026, 22:58</code> statt <code>20260609205821</code></li>
-		<li>Konvertierung: MediaWiki-UTC-Timestamp &rarr; lokale Browserzeit (z.&thinsp;B. CEST) im deutschen Format</li>
-		<li>Robustes Parsing mit Fallback auf Originalwert bei ungültigem Timestamp</li>
+		<li>Timestamps in the file meta line (<code>file-meta</code>) are now shown in a readable format: <code>09.06.2026, 22:58</code> instead of <code>20260609205821</code></li>
+		<li>Conversion: MediaWiki UTC timestamp &rarr; local browser time (e.g.&thinsp;CEST) in German format</li>
+		<li>Robust parsing with a fallback to the original value on an invalid timestamp</li>
 	  </ul>
 	</div>
 		<div class="cl-version">
-	  <h3>v5.3.1 &mdash; 2026-04-27 &mdash; Historische Trikots</h3>
+	  <h3>v5.3.1 &mdash; 2026-04-27 &mdash; Historical kits</h3>
 	  <ul>
-		<li>Bugfix: Historische vierstellige Jahreszahlen korrekt (<code>tur1923h</code> &rarr; &bdquo;Saison 1923&ldquo; statt &bdquo;2019/2023&ldquo;)</li>
-		<li>Bugfix: Nummernvarianten <code>h1</code>, <code>h2</code>, <code>h2l</code> als Heim erkannt (<code>crc90h1</code>, <code>jacuipense26h2l</code>, <code>marciliodias26h2l</code>)</li>
-		<li>Bugfix: Saison bei nummerierten Kit-Suffixen korrekt geparst (nicht mehr &bdquo;Keine Saison&ldquo;)</li>
-		<li>Bugfix: Lange Stutzen mit Nummernvariant (<code>h2l</code>) korrekt als Heim + Langstutzen</li>
-		<li>Dropdown zeigt historische Einzeljahre (z.&thinsp;B. &bdquo;1923&ldquo;) korrekt an</li>
-		<li>Alle nummerierten Varianten normalisiert: <code>h2&rarr;h</code>, <code>a2&rarr;a</code>, <code>t2&rarr;t</code>, <code>gk2&rarr;gk</code></li>
-		<li>Changelog-Modal hinzugef&uuml;gt (Klick auf Versionsnummer)</li>
+		<li>Bugfix: Historical four-digit years correct (<code>tur1923h</code> &rarr; &bdquo;Season 1923&ldquo; instead of &bdquo;2019/2023&ldquo;)</li>
+		<li>Bugfix: Number variants <code>h1</code>, <code>h2</code>, <code>h2l</code> recognized as home (<code>crc90h1</code>, <code>jacuipense26h2l</code>, <code>marciliodias26h2l</code>)</li>
+		<li>Bugfix: Season parsed correctly for numbered kit suffixes (no longer &bdquo;No season&ldquo;)</li>
+		<li>Bugfix: Long socks with a number variant (<code>h2l</code>) correctly recognized as home + long socks</li>
+		<li>Dropdown shows historical single years (e.g.&thinsp;&bdquo;1923&ldquo;) correctly</li>
+		<li>All numbered variants normalized: <code>h2&rarr;h</code>, <code>a2&rarr;a</code>, <code>t2&rarr;t</code>, <code>gk2&rarr;gk</code></li>
+		<li>Changelog modal added (click the version number)</li>
 	  </ul>
 	</div>
 	<div class="cl-version">
 	  <h3>v5.3.0 &mdash; Lazy Kit Loader</h3>
 	  <ul>
-		<li>Thumbnails per IntersectionObserver on-demand via MediaWiki-API (kein ORB-Blocking)</li>
-		<li>Batch-Loading bis zu 50 Dateien pro API-Aufruf</li>
-		<li>Rate-Limit-Schutz: 120&thinsp;ms Pause zwischen Batches</li>
+		<li>Thumbnails loaded on demand via IntersectionObserver through the MediaWiki API (no ORB blocking)</li>
+		<li>Batch loading up to 50 files per API call</li>
+		<li>Rate-limit protection: 120&thinsp;ms pause between batches</li>
 	  </ul>
 	</div>
 	<div class="cl-version">
 	  <h3>v5.2.0 &mdash; Unified Storage</h3>
 	  <ul>
-		<li>Einheitliches Speichersystem f&uuml;r Filter und Einstellungen</li>
-		<li>Kompakte Filter-Steuerleiste</li>
+		<li>Unified storage system for filters and settings</li>
+		<li>Compact filter control bar</li>
 	  </ul>
 	</div>
   </div>

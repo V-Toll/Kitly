@@ -1,202 +1,211 @@
 # Changelog
 
-Alle nennenswerten Änderungen an *Kitly* – neueste Version zuerst. Die Einträge sind auch direkt im Tool über das **⚽**-Versionsabzeichen einsehbar.
+All notable changes to *Kitly* – newest version first. These entries are also available directly in the tool via the **⚽** version badge.
 
-Benannte Minor-Versionen (mit Codename) sind Funktions-Releases; Patches betreffen Fehlerbehebungen und Feinschliff.
+Named minor versions (with a codename) are feature releases; patches cover bug fixes and polish.
 
+
+## v6.8.2 — 2026-08-11 — English by default
+
+- **English is now the project's main language.** The interface still auto-detects your browser language and switches to German for German browsers, but the default and fallback is now always English (previously German).
+- The GitHub docs (README and this changelog) are now in English.
+
+## v6.8.1 — 2026-08-10 — Hyphenated season on the team
+
+- Filenames with a hyphenated season attached directly to the team (e.g. `Kit_body_cskasofia26-27a.png`) are now recognized correctly: team = „Cskasofia“, season = „2026/27“ (instead of team „Cskasofia26-“ and „Season 2027“).
 
 ## v6.8.0 — 2026-08-09 — „Einsatz"
 
-- Neu: **Verwendung direkt im Kitset**. Unter jedem Trikotset steht jetzt „Verwendet in: …" mit Links zu den Seiten, auf denen die Teile bereits eingebunden sind – ohne Klick auf 📊. Die Angaben aller Teile werden zusammengefasst und dedupliziert.
-- Vor jeder Seite steht die **Länder-Flagge** der Wiki-Sprachvariante (bei Commons das **Commons-Logo**; ohne passende Flagge das Sprachkürzel). Reihenfolge: **de → en → pt → Commons → Rest**.
-- Wird **beim Scrollen** nachgeladen (nur sichtbare Kitsets fragen an) und 24 h zwischengespeichert – ein späterer Klick auf 📊 ist dadurch sofort da.
-- Neuer Schalter **„Verwendung einblenden"** (standardmäßig aktiv) zum Ab-/Anschalten.
-- Neuer Filter **„Ausblenden, wenn verwendet in …"**: per Flaggen-Chips ein oder mehrere Wikis aktivieren; jede Datei, die dort bereits eingebunden ist, wird ausgeblendet. So sieht man auf einen Blick, welche Trikot-Teile z. B. in der deutschen Wikipedia noch fehlen. Sets/Teams ohne verbleibende Teile verschwinden automatisch. (Prüft dazu einmalig die Verwendung aller Treffer, mit Fortschrittsanzeige und 24-h-Cache.)
-- Schnell & schonend: Der Verwendungs-Scan läuft **gebündelt** (bis zu 50 Dateien pro Anfrage statt eine pro Datei) im Hintergrund – die Oberfläche erscheint sofort. Zusätzlich **wiederholt der Thumbnail-Lader fehlgeschlagene Anfragen**, sodass Vorschaubilder erhalten bleiben, statt auf „Keine Vorschau" zu fallen.
+- New: **Usage shown directly in the kit set**. Below each kit set there is now „Used in: …“ with links to the pages where the parts are already embedded – without clicking 📊. The details of all parts are combined and deduplicated.
+- In front of each page is the **country flag** of the wiki language variant (for Commons the **Commons logo**; without a matching flag the language code). Order: **de → en → pt → Commons → rest**.
+- Loaded **as you scroll** (only visible kit sets are queried) and cached for 24 h – so a later click on 📊 is instant.
+- New toggle **„Show usage“** (on by default) to switch it off/on.
+- New filter **„Hide if used in …“**: activate one or more wikis via flag chips; every file already embedded there is hidden. This shows at a glance which kit parts are still missing in, for example, the German Wikipedia. Sets/teams with no remaining parts disappear automatically. (For this it checks the usage of all matches once, with a progress indicator and 24-h cache.)
+- Fast & gentle: The usage scan runs **in batches** (up to 50 files per request instead of one per file) in the background – the interface appears immediately. In addition, **the thumbnail loader retries failed requests**, so previews are preserved instead of falling back to „No preview“.
 
 ## v6.7.0 — 2026-08-09 — „Neuzugang"
 
-- Neu: **„Datei-Updates ausblenden"** (standardmäßig aktiv). Dateien, die im gewählten Zeitraum nur eine *neue Version* erhielten, deren **Erst-Upload** aber davor liegt, werden ausgeblendet – es bleiben also nur echte Neu-Uploads. Umschaltbar ohne Neuladen.
-- Grundlage: Pro Datei wird jetzt zusätzlich der **Erst-Upload** über die MediaWiki-API ermittelt (älteste Dateiversion), nicht nur der jüngste Upload.
-- Das **Limit** lässt sich jetzt bis **10000** stellen (vorher 2000; Standard bleibt 1000) – für breite Zeiträume, in denen sonst Treffer abgeschnitten würden.
+- New: **„Hide file updates“** (on by default). Files that only received a *new version* within the selected period, but whose **first upload** predates it, are hidden – so only genuine new uploads remain. Toggleable without reloading.
+- Foundation: For each file, the **first upload** is now additionally determined via the MediaWiki API (oldest file version), not just the most recent upload.
+- The **limit** can now be set up to **10000** (previously 2000; default stays 1000) – for wide time spans where matches would otherwise be cut off.
 
 ## v6.6.0 — 2026-08-09 — „Kitly"
 
-- Das Tool heißt jetzt **Kitly** – ein Name, der auch international funktioniert.
-- Neu: **Sprachumschaltung DE/EN** (🌐-Button). Die komplette Oberfläche gibt es jetzt auf Deutsch und Englisch; die Sprache wird gespeichert und beim ersten Start aus der Browsersprache erraten.
-- Neu: **Hell-/Dunkelmodus mit Automatik** (🌗-Button, Auto / Hell / Dunkel). „Auto" folgt dem Betriebssystem; die grüne Pitch-Identität bleibt in beiden Modi erhalten. Auswahl wird gespeichert.
-- Neu: Klick auf ein **Vorschaubild** öffnet die Commons-Dateiseite in einem neuen Hintergrund-Tab.
-- Saison-Spannen über mehrere Jahre werden jetzt als Bereich angezeigt: `8792` → „Saison 1987–1992" (statt „Saison 8792"), während aufeinanderfolgende Saisons weiter als `1987/88` erscheinen.
-- Zähler stehen jetzt im korrekten Singular/Plural („1 Team gefunden", „1 Teil" bzw. „1 team found", „1 part").
+- The tool is now called **Kitly** – a name that also works internationally.
+- New: **DE/EN language switch** (🌐 button). The entire interface is now available in German and English; the language is saved and, on first launch, guessed from the browser language.
+- New: **Light/dark mode with automatic option** (🌗 button, Auto / Light / Dark). „Auto“ follows the operating system; the green pitch identity is preserved in both modes. The choice is saved.
+- New: Clicking a **thumbnail** opens the Commons file page in a new background tab.
+- Season spans across multiple years are now shown as a range: `8792` → „Season 1987–1992“ (instead of „Season 8792“), while consecutive seasons still appear as `1987/88`.
+- Counters now use the correct singular/plural („1 team found“, „1 part“ or „1 team found“, „1 part“).
 
 ## v6.5.1 — 2026-08-09 — „Feinschliff"
 
-- Saison-Spannen korrekt erkannt: `1819`/`1920`/`2021` werden jetzt als „2018/19"/„2019/20"/„2020/21" angezeigt und sortiert – echte Einzeljahre (1923, 1975, 2026) bleiben unverändert.
-- Verbose-Dateinamen: alleinstehendes Jahr (z. B. `FC_Tokyo_2026_HOME`) wird nicht mehr in den Teamnamen übernommen.
-- Trikotset-Ansicht zeigt die Saison im Klartext (`2627` → „2026/27").
-- Trikottyp-Filter greift auch für Torhüter-Varianten (`gkd`/`g`) zuverlässig.
-- Statistik zählt Dateien in ausgeblendeten Teams nicht mehr als sichtbar; Abhak-Buttons werden entprellt nachgezogen (weniger DOM-Last bei großen Listen).
+- Season spans recognized correctly: `1819`/`1920`/`2021` are now shown and sorted as „2018/19“/„2019/20“/„2020/21“ – genuine single years (1923, 1975, 2026) stay unchanged.
+- Verbose filenames: a standalone year (e.g. `FC_Tokyo_2026_HOME`) is no longer taken into the team name.
+- The kit set view shows the season in plain text (`2627` → „2026/27“).
+- The kit type filter also works reliably for goalkeeper variants (`gkd`/`g`).
+- Statistics no longer count files in hidden teams as visible; check-off buttons are updated with debouncing (less DOM load on large lists).
 
 ## v6.5.0 — 2026-08-09 — „Aufgeräumte Kabine"
 
-- Neu: **Trikottyp-Filter** (Dropdown Heim/Auswärts/Ausweich/Torhüter) in der Filter-Gruppe.
-- Die beiden parallelen Abhak-Systeme wurden zu **einem** zusammengeführt (ein einziger Speicher). Team-, Kitset- und Datei-Abhaken laufen jetzt über dieselbe Logik.
-- 2-stellige Saison wird korrekt angezeigt: `02` → „Saison 2002".
-- Aufgeräumt: toter Auto-Refresh-Code, verwaiste Hilfsfunktionen, ein ungenutzter Zugriff und alle Debug-Ausgaben (console.log) entfernt.
+- New: **Kit type filter** (dropdown home/away/third/goalkeeper) in the filter group.
+- The two parallel check-off systems were merged into **one** (a single store). Checking off teams, kit sets, and files now runs through the same logic.
+- 2-digit seasons are shown correctly: `02` → „Season 2002“.
+- Cleaned up: dead auto-refresh code, orphaned helper functions, one unused access, and all debug output (console.log) removed.
 
 ## v6.4.0 — 2026-08-08 — „Chronik"
 
-- Alle Saisons eines Teams stehen jetzt unter **einer** Team-Karte, chronologisch sortiert (neueste Saison oben). Beispiel: „Gelp" mit 1996/98 über 1993/95.
-- Wird ein Team als erledigt abgehakt, verschwinden **alle** Saisons dieses Teams mit.
-- Der „Infobox-Code"-Button sitzt jetzt **pro Saison** (statt pro Team), damit die Kit-Nummern nicht über Saisons hinweg kollidieren.
+- All seasons of a team are now shown under **one** team card, sorted chronologically (newest season on top). Example: „Gelp“ with 1996/98 above 1993/95.
+- When a team is checked off as completed, **all** seasons of that team disappear with it.
+- The „Infobox code“ button now sits **per season** (instead of per team), so the kit numbers don't collide across seasons.
 
-## v6.3.11 — 2026-08-08 — Saison-Filter angeglichen
+## v6.3.11 — 2026-08-08 — Season filter aligned
 
-- Der Saison-Filter zeigt jetzt exakt dieselbe Saison wie die Team-Anzeige (gemeinsame Logik). Ungewöhnliche Spannen wie „1993/95" oder „1998/2001" erscheinen im Dropdown genauso wie an den Teams.
+- The season filter now shows exactly the same season as the team display (shared logic). Unusual spans like „1993/95“ or „1998/2001“ appear in the dropdown just as they do on the teams.
 
-## v6.3.10 — 2026-08-08 — Saison-Spannen
+## v6.3.10 — 2026-08-08 — Season spans
 
-- Nicht fortlaufende Saison-Spannen werden jetzt korrekt angezeigt: `9395` → „1993/95". Bei Jahrhundertwechsel wird das Endjahr 4-stellig gezeigt: `9801` → „1998/2001", `9900` → „1999/2000". Echte Einzeljahre (1923, 1975) bleiben unverändert.
+- Non-consecutive season spans are now shown correctly: `9395` → „1993/95“. At a century boundary the end year is shown with 4 digits: `9801` → „1998/2001“, `9900` → „1999/2000“. Genuine single years (1923, 1975) stay unchanged.
 
-## v6.3.9 — 2026-08-08 — Bindestrich-Saisons
+## v6.3.9 — 2026-08-08 — Hyphenated seasons
 
-- Dateinamen mit Trennzeichen-Saison wie `Kit_body_spartak-vn-26-27-a.png` werden jetzt korrekt gelesen: Team („spartak-vn"), Saison („2026/27") und Typ (Auswärts). Heim und Auswärts landen im selben Team. Unterstützt „YY-YY", „YYYY-YY" und einzelne 4-stellige Jahresblöcke.
+- Filenames with a separator season like `Kit_body_spartak-vn-26-27-a.png` are now read correctly: team („spartak-vn“), season („2026/27“) and type (away). Home and away land in the same team. Supports „YY-YY“, „YYYY-YY“ and single 4-digit year blocks.
 
-## v6.3.8 — 2026-08-08 — Infobox-Nummerierung
+## v6.3.8 — 2026-08-08 — Infobox numbering
 
-- Der „Infobox-Code" nummeriert die Kits jetzt nach Typ statt nach Reihenfolge: Heim = 1, Auswärts = 2, Ausweich = 3, Viertes = 4. Ein reines Auswärtsset liefert also korrekt `…2` (statt fälschlich `…1`).
+- The „Infobox code“ now numbers the kits by type instead of by order: home = 1, away = 2, third = 3, fourth = 4. So an away-only set correctly yields `…2` (instead of incorrectly `…1`).
 
 ## v6.3.7 — 2026-08-08 — Feinschliff
 
-- In der Team-Zeile sind die Trikottypen jetzt einheitlich sortiert: Heim, Auswärts, Ausweich, dann Torwart – passend zur Reihenfolge der Kitset-Karten.
+- In the team row the kit types are now sorted consistently: home, away, third, then goalkeeper – matching the order of the kit set cards.
 
-## v6.3.6 — 2026-08-08 — Ausführliche Dateinamen
+## v6.3.6 — 2026-08-08 — Verbose filenames
 
-- Neues Namensschema erkannt: `Kit_body_FC_Tokyo_2026_-_27_AWAY_FP.png` & Co. Team („FC Tokyo"), Saison („2026/27") und Typ werden jetzt korrekt gelesen; Heim und Auswärts landen im selben Team.
-- `FP` = Feldspieler (→ Heim/Auswärts/Ausweich), `GK` = Torwart (→ Torhüter Heim/Auswärts). Bisher wurde stattdessen „fp" als Typ und der ganze Name als Team angezeigt.
+- New naming scheme recognized: `Kit_body_FC_Tokyo_2026_-_27_AWAY_FP.png` & co. Team („FC Tokyo“), season („2026/27“) and type are now read correctly; home and away land in the same team.
+- `FP` = field player (→ home/away/third), `GK` = goalkeeper (→ goalkeeper home/away). Previously „fp“ was shown as the type and the whole name as the team.
 
-## v6.3.5 — 2026-08-03 — Torhüter Heim/Auswärts
+## v6.3.5 — 2026-08-03 — Goalkeeper home/away
 
-- Torwart-Trikots werden jetzt nach Heim/Auswärts unterschieden: `gkh` → „Torhüter Heim", `gka` → „Torhüter Auswärts" (auch `gkt` → „Torhüter Ausweich"). Gilt für Anzeige, Kitset-Titel und Trikottyp-Filter.
+- Goalkeeper kits are now distinguished by home/away: `gkh` → „Goalkeeper home“, `gka` → „Goalkeeper away“ (also `gkt` → „Goalkeeper third“). Applies to the display, kit set titles and the kit type filter.
 
-## v6.3.4 — 2026-08-03 — Fehlerbehebung
+## v6.3.4 — 2026-08-03 — Bug fix
 
-- Dateien mit 4-stelliger Jahreszahl ohne Typ-Kürzel (z. B. `Kit_body_River_1975.png`) werden jetzt korrekt erkannt: Saison = 1975, Typ = Heim (kein „h"/„a" am Ende bedeutet Heimtrikot). Bisher landeten sie unter „Keine Saison • unknown".
+- Files with a 4-digit year and no type code (e.g. `Kit_body_River_1975.png`) are now recognized correctly: season = 1975, type = home (no „h“/„a“ at the end means home kit). Previously they ended up under „No season • unknown“.
 
 ## v6.3.3 — 2026-08-03 — Feinschliff
 
-- Die Eingabefelder „Limit" (max. 2000) und „Tiefe" (max. 100) haben jetzt Obergrenzen, passend zu den Limits des kitproxy-Servers – so ist die Grenze direkt im Feld sichtbar.
+- The „Limit“ (max. 2000) and „Depth“ (max. 100) input fields now have upper bounds, matching the limits of the kitproxy server – so the limit is visible directly in the field.
 
-## v6.3.2 — 2026-08-03 — Aufräumen
+## v6.3.2 — 2026-08-03 — Cleanup
 
-- Kategorie-Abfrage verschlankt: „Association football kit templates" entfernt – sie ist eine direkte Unterkategorie beider Ober-Kategorien und bei Tiefe 50 ohnehin enthalten (empirisch geprüft, Ergebnismenge unverändert).
+- Category query streamlined: „Association football kit templates“ removed – it is a direct subcategory of both parent categories and is included anyway at depth 50 (verified empirically, result set unchanged).
 
 ## v6.3.1 — 2026-08-03 — „Ordnung"
 
-- Erledigte Teams werden jetzt nur noch über **einen** Weg ein-/ausgeblendet: den „Erledigte anzeigen"-Button. Die doppelte Checkbox in der Filter-Gruppe wurde entfernt.
+- Completed teams are now shown/hidden via just **one** route: the „Show completed“ button. The duplicate checkbox in the filter group has been removed.
 
 ## v6.3 — 2026-08-03 — „Ordnung"
 
-- Die Einstellungen sind jetzt thematisch gruppiert: **Datenabruf** (Datum, Limit, Tiefe), **Filter** (Saison, Nur Trikot-Teile, Abgeschlossene Teams) und **Darstellung** (Ansicht, Thumb-Breite).
-- Die Checkbox „Abgeschlossene Teams" ist jetzt ein kompaktes Inline-Element (kein großer Kasten mehr) und passt zu „Nur Trikot-Teile".
+- The settings are now grouped by topic: **Data retrieval** (date, limit, depth), **Filter** (season, kit parts only, completed teams) and **Display** (view, thumb width).
+- The „Completed teams“ checkbox is now a compact inline element (no longer a big box) and matches „Kit parts only“.
 
-## v6.2.5 — 2026-08-03 — Kopfbereich
+## v6.2.5 — 2026-08-03 — Header area
 
-- Einheitliches Erscheinungsbild: die globale Eingabe-Basis (früher kräftiger 2px-Rahmen) ist jetzt dezent wie die Filterfelder.
-- Die Checkboxen „Nur Trikot-Teile" und „Abgeschlossene Teams anzeigen" passen jetzt farblich und in der Größe zum neuen Filter-Look.
+- Consistent appearance: the global input base (previously a bold 2px border) is now subtle like the filter fields.
+- The „Kit parts only“ and „Show completed teams“ checkboxes now match the new filter look in color and size.
 
-## v6.2.4 — 2026-08-03 — Kopfbereich
+## v6.2.4 — 2026-08-03 — Header area
 
-- Der obere Bereich wirkt aufgeräumter: schlankere, dezentere Filterfelder (feiner Rahmen statt kräftigem Weiß, mit sanftem Fokus-Rahmen) und kompaktere Buttons.
-- Die „Erledigte anzeigen"-Leiste ist jetzt schmaler und zurückhaltender.
-- Aufräumen: ungenutztes CSS (4 tote `.controls`-Blöcke, verwaiste Media-Queries) und eine unsichtbare, nicht mehr genutzte Statistik-Leiste entfernt.
+- The top area looks tidier: slimmer, more subtle filter fields (fine border instead of bold white, with a soft focus ring) and more compact buttons.
+- The „Show completed“ bar is now narrower and more restrained.
+- Cleanup: unused CSS (4 dead `.controls` blocks, orphaned media queries) and an invisible, no-longer-used statistics bar removed.
 
-## v6.2.3 — 2026-08-03 — Aufräumen
+## v6.2.3 — 2026-08-03 — Cleanup
 
-- Fehlerbehebung: Ein alter, überflüssiger Code-Block warf bei jedem Laden einen Konsolenfehler (`completedTeams is not defined`). Der tote Alt-Code wurde vollständig entfernt.
-- Aufräumen: Dreifach vorhandener Thumbnail-Lade-Code auf eine Fassung reduziert; toter Code und ein ungenutztes Toast-Element entfernt (~650 Zeilen weniger).
-- Performance: Erkannte Trikot-Farben werden jetzt dauerhaft gespeichert (schneller nach Neuladen) und für sichtbare Figuren gebündelt statt einzeln abgefragt.
-- Barrierefreiheit: Die Kit-Figur hat jetzt ein sprechendes Label für Screenreader.
-- Kleinigkeit: Dateinamen mit „/" werden nicht mehr fälschlich ausgeschlossen (Kategorien werden ohnehin über die Datei-Endung erkannt).
+- Bug fix: An old, superfluous code block threw a console error on every load (`completedTeams is not defined`). The dead legacy code was removed entirely.
+- Cleanup: Thumbnail loading code that existed three times was reduced to one version; dead code and an unused toast element removed (~650 fewer lines).
+- Performance: Detected kit colors are now stored permanently (faster after a reload) and queried in batches for visible figures instead of individually.
+- Accessibility: The kit figure now has a descriptive label for screen readers.
+- Minor: Filenames with „/“ are no longer incorrectly excluded (categories are recognized via the file extension anyway).
 
 ## v6.2.2 — 2026-08-02 — Feinschliff
 
-- Die Abhak-Buttons (Team & Kitset) fügen sich jetzt ins Design ein: dunkler, transparenter Hintergrund mit hellem Rahmen; abgehakt = grün mit weißem Haken. Das grelle Weiß und der graue Rahmen sind weg.
+- The check-off buttons (team & kit set) now blend into the design: dark, transparent background with a light border; checked = green with a white check mark. The glaring white and the gray border are gone.
 
 ## v6.2.1 — 2026-08-02 — „Reihe"
 
-- Die Kitsets werden jetzt auch in der **Trikotsets**-Ansicht nebeneinander dargestellt (wie in der Teams-Ansicht).
+- The kit sets are now displayed side by side in the **Kit sets** view too (as in the Teams view).
 
 ## v6.2 — 2026-08-02 — „Reihe"
 
-- Die Kits eines Teams (Heim, Auswärts, Ausweich) werden jetzt **nebeneinander** dargestellt – wie in der Wikipedia-Infobox. Auf schmalen Bildschirmen brechen sie automatisch um.
-- Die Kit-Figur ist jetzt **auf die tatsächlichen Teile zugeschnitten** – kein großer Leerraum mehr um kleine Kits.
-- Das **weiße Rechteck** unter dem Trikot (Stutzen-Platzhalter) wurde entfernt: In der Figur werden nur noch vorhandene Teile gezeigt. (Der Infobox-Code füllt die Stutzenfarbe weiterhin mit der Trikot-Farbe.)
+- A team's kits (home, away, third) are now displayed **side by side** – like in the Wikipedia infobox. On narrow screens they wrap automatically.
+- The kit figure is now **cropped to the actual parts** – no more large empty space around small kits.
+- The **white rectangle** below the shirt (socks placeholder) was removed: the figure now shows only the parts that exist. (The infobox code still fills the socks color with the shirt color.)
 
 ## v6.1 — 2026-08-02 — „Aufstellung"
 
-- Neu: In der **Teams**- und **Trikotsets**-Ansicht wird jedes Kitset jetzt als zusammengesetzte **Trikot-Figur** dargestellt – genau wie die Wikipedia-Vorlage `{{Football kit}}`: Ärmel + Trikot bilden das Shirt, darunter die Hose, darunter die Stutzen.
-- Die Farbflächen hinter den Mustern werden je Teil automatisch erkannt (gleiche Engine wie der Infobox-Kopierer). Fehlt ein Stutzen-Bild, erhält die Stutzen-Fläche die Trikot-Farbe.
-- Die Einzelteile bleiben darunter sichtbar (mit 📊-Verwendung und Abhaken). Die Figur-Größe folgt der **Thumb-Breite**.
-- Performance: Farben werden nur für sichtbare Figuren berechnet (Lazy-Loading) und zwischengespeichert.
+- New: In the **Teams** and **Kit sets** views each kit set is now displayed as a composed **kit figure** – exactly like the Wikipedia template `{{Football kit}}`: sleeves + shirt form the top, below it the shorts, below that the socks.
+- The color areas behind the patterns are detected automatically per part (same engine as the infobox copier). If a socks image is missing, the socks area takes the shirt color.
+- The individual parts remain visible below (with 📊 usage and check-off). The figure size follows the **thumb width**.
+- Performance: Colors are computed only for visible figures (lazy loading) and cached.
 
-## v6.0.3 — 2026-08-02 — Fehlerbehebung
+## v6.0.3 — 2026-08-02 — Bug fix
 
-- Fehlerbehebung: **Thumb-Breite** ändert jetzt sichtbar die Vorschaugröße. Bisher wurde nur die geladene Bildauflösung angepasst, die Anzeige blieb wegen fester CSS-Maße gleich groß. Jetzt steuern Spaltenbreite und Vorschau-Höhe direkt der eingestellte Wert.
+- Bug fix: **Thumb width** now visibly changes the preview size. Previously only the loaded image resolution was adjusted, while the display stayed the same size due to fixed CSS dimensions. Now the column width and preview height are driven directly by the configured value.
 
-## v6.0.2 — 2026-08-02 — Fehlerbehebung
+## v6.0.2 — 2026-08-02 — Bug fix
 
-- Fehlerbehebung: Filter wirken wieder sofort. Ändern von **Saison**, **Thumb-Breite**, **Ansicht** oder **„Nur Trikot-Teile"** aktualisiert die Liste jetzt direkt (bisher wurde der Wert nur gespeichert). **Datum**, **Limit** und **Tiefe** laden die Daten neu, da sie die Abfrage selbst betreffen.
+- Bug fix: Filters take effect immediately again. Changing **Season**, **Thumb width**, **View** or **„Kit parts only“** now updates the list directly (previously the value was only saved). **Date**, **Limit** and **Depth** reload the data, since they affect the query itself.
 
-## v6.0.1 — 2026-08-02 — Fehlerbehebung
+## v6.0.1 — 2026-08-02 — Bug fix
 
-- Fehlerbehebung: Kategorien (z. B. `Football_kit_body/VARAMAN_specific_patterns`) tauchten fälschlich als „Datei" in den Ergebnissen auf. Es werden jetzt nur noch echte Mediendateien (mit Bild-Endung) angezeigt.
+- Bug fix: Categories (e.g. `Football_kit_body/VARAMAN_specific_patterns`) incorrectly showed up as a „file“ in the results. Now only real media files (with an image extension) are shown.
 
 ## v6.0 — 2026-07-23 — „Der Schneider"
 
-- Neu: Jede Team-Kachel hat jetzt den Button **„📋 Infobox-Code"**. Er kopiert den kompletten Wikipedia-Infobox-Block für *alle* Kits des Teams (Heim = 1, Auswärts = 2, …) direkt in die Zwischenablage.
-- Die `pattern_*`-Werte werden aus den Dateinamen abgeleitet (z. B. `Kit_body_kaizerchiefs2627h.png` → `_kaizerchiefs2627h`).
-- Die Farbwerte (`leftarm`, `body`, `rightarm`, `shorts`, `socks`) werden je Teil aus dem Originalbild erkannt – mit derselben Silhouetten-Farberkennung wie das Userscript „Wikipedia Football Kit Code Copier".
-- Fehlt ein Stutzen-Bild, bleibt `pattern_so` leer und die Stutzenfarbe übernimmt die Haupt-Farbe des Trikots (`body`).
+- New: Each team tile now has the **„📋 Infobox code“** button. It copies the complete Wikipedia infobox block for *all* of the team's kits (home = 1, away = 2, …) directly to the clipboard.
+- The `pattern_*` values are derived from the filenames (e.g. `Kit_body_kaizerchiefs2627h.png` → `_kaizerchiefs2627h`).
+- The color values (`leftarm`, `body`, `rightarm`, `shorts`, `socks`) are detected per part from the original image – using the same silhouette color detection as the userscript „Wikipedia Football Kit Code Copier“.
+- If a socks image is missing, `pattern_so` stays empty and the socks color takes the main color of the shirt (`body`).
 
-## v5.4.2 — 2026-07-02 — Fehlerbehebung
+## v5.4.2 — 2026-07-02 — Bug fix
 
-- Fehlerbehebung: „Verwendung anzeigen" zeigt jetzt auch die **lokale Commons-Verwendung** (z. B. Galerieseiten wie „2026–27 Swiss Super League kits"). Bisher wurde nur die Verwendung auf anderen Wikis (`globalusage`) geladen; die lokale Nutzung wird nun über `fileusage` ergänzt.
+- Bug fix: „Show usage“ now also shows the **local Commons usage** (e.g. gallery pages like „2026–27 Swiss Super League kits“). Previously only usage on other wikis (`globalusage`) was loaded; local usage is now added via `fileusage`.
 
-## v5.4.1 — 2026-07-02 — Fehlerbehebung
+## v5.4.1 — 2026-07-02 — Bug fix
 
-- Fehlerbehebung: Fehlerhaft escapte Backticks in `showStatistics()` machten den ersten Skript-Block ungültig. Nach der Korrektur läuft dieser wieder vollständig.
+- Bug fix: Incorrectly escaped backticks in `showStatistics()` made the first script block invalid. After the fix it runs fully again.
 
-## v5.4.0 — 2026-07-02 — Echte Neuzugänge
+## v5.4.0 — 2026-07-02 — Genuine new arrivals
 
-- Neu: Es werden jetzt nur noch Trikot-Teile mit einem echten **neuen Bild-Upload** ab dem gewählten Datum angezeigt. Reine Text-/Metadaten-Änderungen an alten Dateien tauchen nicht mehr auf.
-- Grundlage: das tatsächliche Upload-Datum wird über die MediaWiki-API (`imageinfo`) ermittelt – statt des Seiten-Zeitstempels `touched`, der bei jeder Bearbeitung wechselt.
-- Die Datum-Anzeige auf den Karten zeigt nun das echte Upload-Datum; sortiert wird ebenfalls danach.
-- Fehlerbehebung: Das automatische Speichern der Filter (Datum, Limit & Co.) funktioniert wieder – ein fehlendes Bedienelement hatte zuvor das Skript abgebrochen.
+- New: Only kit parts with a genuine **new image upload** from the selected date onward are now shown. Pure text/metadata changes to old files no longer appear.
+- Foundation: the actual upload date is determined via the MediaWiki API (`imageinfo`) – instead of the page timestamp `touched`, which changes with every edit.
+- The date shown on the cards now displays the real upload date; sorting is by that too.
+- Bug fix: Automatic saving of the filters (date, limit & co.) works again – a missing control had previously aborted the script.
 
-## v5.3.2 — 2026-06-10 — Lesbare Zeitstempel
+## v5.3.2 — 2026-06-10 — Readable timestamps
 
-- Zeitstempel in der Datei-Metazeile (`file-meta`) werden jetzt im lesbaren Format angezeigt: `09.06.2026, 22:58` statt `20260609205821`
-- Konvertierung: MediaWiki-UTC-Timestamp → lokale Browserzeit (z. B. CEST) im deutschen Format
-- Robustes Parsing mit Fallback auf Originalwert bei ungültigem Timestamp
+- Timestamps in the file meta line (`file-meta`) are now shown in a readable format: `09.06.2026, 22:58` instead of `20260609205821`
+- Conversion: MediaWiki UTC timestamp → local browser time (e.g. CEST) in German format
+- Robust parsing with a fallback to the original value on an invalid timestamp
 
-## v5.3.1 — 2026-04-27 — Historische Trikots
+## v5.3.1 — 2026-04-27 — Historical kits
 
-- Bugfix: Historische vierstellige Jahreszahlen korrekt (`tur1923h` → „Saison 1923“ statt „2019/2023“)
-- Bugfix: Nummernvarianten `h1`, `h2`, `h2l` als Heim erkannt (`crc90h1`, `jacuipense26h2l`, `marciliodias26h2l`)
-- Bugfix: Saison bei nummerierten Kit-Suffixen korrekt geparst (nicht mehr „Keine Saison“)
-- Bugfix: Lange Stutzen mit Nummernvariant (`h2l`) korrekt als Heim + Langstutzen
-- Dropdown zeigt historische Einzeljahre (z. B. „1923“) korrekt an
-- Alle nummerierten Varianten normalisiert: `h2→h`, `a2→a`, `t2→t`, `gk2→gk`
-- Changelog-Modal hinzugefügt (Klick auf Versionsnummer)
+- Bugfix: Historical four-digit years correct (`tur1923h` → „Season 1923“ instead of „2019/2023“)
+- Bugfix: Number variants `h1`, `h2`, `h2l` recognized as home (`crc90h1`, `jacuipense26h2l`, `marciliodias26h2l`)
+- Bugfix: Season parsed correctly for numbered kit suffixes (no longer „No season“)
+- Bugfix: Long socks with a number variant (`h2l`) correctly recognized as home + long socks
+- Dropdown shows historical single years (e.g. „1923“) correctly
+- All numbered variants normalized: `h2→h`, `a2→a`, `t2→t`, `gk2→gk`
+- Changelog modal added (click the version number)
 
 ## v5.3.0 — Lazy Kit Loader
 
-- Thumbnails per IntersectionObserver on-demand via MediaWiki-API (kein ORB-Blocking)
-- Batch-Loading bis zu 50 Dateien pro API-Aufruf
-- Rate-Limit-Schutz: 120 ms Pause zwischen Batches
+- Thumbnails loaded on demand via IntersectionObserver through the MediaWiki API (no ORB blocking)
+- Batch loading up to 50 files per API call
+- Rate-limit protection: 120 ms pause between batches
 
 ## v5.2.0 — Unified Storage
 
-- Einheitliches Speichersystem für Filter und Einstellungen
-- Kompakte Filter-Steuerleiste
+- Unified storage system for filters and settings
+- Compact filter control bar
