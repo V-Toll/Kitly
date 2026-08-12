@@ -354,18 +354,15 @@
       50% { background-position: 100% 50%; }
     }
 
+    /* v6.9.0: dezente Versions-Pille – ohne Puls-Animation, kein greller Verlauf. */
     .title-badge {
-      background: linear-gradient(135deg, var(--pitch-bright) 0%, var(--pitch-highlight) 100%);
-      color: white;
-      font-size: 11px;
-      font-weight: 800;
-      padding: 4px 10px;
-      border-radius: 20px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      box-shadow: 0 2px 8px rgba(255, 68, 68, 0.4);
-      animation: pulse 2s ease infinite;
-      border: 2px solid var(--line-white);
+      background: rgba(129, 166, 159, 0.16);
+      color: var(--text-secondary);
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 12px;
+      letter-spacing: 0.3px;
     }
 
     @keyframes pulse {
@@ -403,27 +400,6 @@
 
     input:hover, select:hover {
       border-color: rgba(129, 166, 159, 0.5);
-    }
-
-    button.primary {
-      background: linear-gradient(135deg, var(--pitch-bright) 0%, var(--pitch-highlight) 100%);
-      border: 2px solid var(--line-white);
-      cursor: pointer;
-      font-weight: 700;
-      color: var(--pitch-shadow);
-      text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3);
-      box-shadow: 0 4px 15px rgba(10, 115, 76, 0.4);
-    }
-
-    button.primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(10, 115, 76, 0.6);
-      background: linear-gradient(135deg, var(--pitch-highlight) 0%, var(--pitch-bright) 100%);
-    }
-
-    button.primary:active {
-      transform: translateY(0);
-      box-shadow: 0 2px 10px rgba(10, 115, 76, 0.4);
     }
 
     .wrap {
@@ -618,12 +594,6 @@
       transform: translateY(-1px) scale(1.01);
     }
 
-    .file-card:hover {
-      border-color: var(--pitch-highlight);
-      transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 8px 20px rgba(10, 115, 76, 0.3);
-    }
-
     .file-header {
       padding: 10px 12px;
       background: var(--pitch-bright);
@@ -700,78 +670,6 @@
       align-items: start;
     }
 
-    .card {
-      border: 3px solid var(--line-white);
-      border-radius: 12px;
-      background: linear-gradient(145deg, var(--pitch-shadow), var(--pitch-dark));
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
-    }
-
-    .card:hover {
-      border-color: var(--pitch-highlight);
-      transform: translateY(-4px);
-      box-shadow: 0 8px 24px rgba(10, 115, 76, 0.3);
-    }
-
-    .card-header {
-      padding: 14px 18px;
-      background: var(--pitch-bright);
-      border-bottom: 2px solid var(--line-white);
-    }
-
-    .card-title {
-      font-weight: 600;
-      font-size: 15px;
-      color: var(--line-white);
-    }
-
-    .card-title a {
-      color: var(--line-white);
-      text-decoration: none;
-    }
-
-    .card-title a:hover {
-      color: var(--pitch-highlight);
-    }
-
-    .thumbs {
-      padding: 18px;
-      display: flex;
-      justify-content: center;
-      background: var(--pitch-main);
-    }
-
-    .thumb {
-      width: 100%;
-      height: 150px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--pitch-dark);
-      border: 2px dashed var(--line-white);
-      border-radius: 8px;
-      overflow: hidden;
-    }
-
-    .thumb img {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-    }
-
-    .meta {
-      padding: 14px 18px;
-      background: var(--pitch-dark);
-      border-top: 2px solid var(--line-white);
-      font-size: 12px;
-      color: var(--pitch-highlight);
-      font-weight: 600;
-    }
-
     .loading {
       position: fixed;
       inset: 0;
@@ -814,36 +712,6 @@
       border-bottom-color: var(--pitch-highlight);
     }
 
-    .checkbox-container {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .checkbox-container input[type="checkbox"] {
-      width: 20px;
-      height: 20px;
-      padding: 0;
-      margin: 0;
-      accent-color: var(--pitch-bright);
-      cursor: pointer;
-    }
-
-    .checkbox-container label {
-      margin-bottom: 0;
-      color: var(--pitch-highlight);
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .filter-live {
-      background: var(--pitch-main) !important;
-      border-color: var(--pitch-highlight) !important;
-      box-shadow: 0 0 0 3px rgba(129, 166, 159, 0.2) !important;
-    }
-
-
     @media (max-width: 768px) {
 
       .team-header {
@@ -851,17 +719,6 @@
       }
       .team-title {
         font-size: 20px;
-      
-      h1 {
-        font-size: 20px;
-      }
-      .title-icon {
-        font-size: 24px;
-      }
-      .title-badge {
-        font-size: 9px;
-        padding: 3px 8px;
-      }
       }
       .kitset-parts {
         grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -1052,7 +909,7 @@
       margin: 20px 0;
     }
 
-  .check-btn,.team-check-btn,.kitset-check-btn{background:rgba(7,38,29,.6);border:2px solid var(--pitch-highlight);color:var(--pitch-highlight);border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.3s}.check-btn{position:absolute;top:8px;left:8px;width:32px;height:32px;font-size:18px;z-index:10}.team-check-btn,.kitset-check-btn{position:absolute;top:15px;right:15px;width:36px;height:36px;font-size:20px;z-index:5}.check-btn:hover,.team-check-btn:hover,.kitset-check-btn:hover{background:rgba(129,166,159,.25);border-color:var(--line-white);transform:scale(1.1)}.checked{background:#4CAF50!important;border-color:#4CAF50!important;color:#fff!important}.checked::before{content:"✓";font-weight:700}.check-btn:not(.checked)::before,.team-check-btn:not(.checked)::before,.kitset-check-btn:not(.checked)::before{content:"○"}.team-card,.kitset-card{position:relative}
+  .check-btn,.team-check-btn,.kitset-check-btn{background:rgba(7,38,29,.6);border:2px solid var(--pitch-highlight);color:var(--pitch-highlight);border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.3s}.check-btn{position:absolute;top:8px;left:8px;width:32px;height:32px;font-size:18px;z-index:10}.team-check-btn,.kitset-check-btn{position:absolute;top:15px;right:15px;width:36px;height:36px;font-size:20px;z-index:5}.check-btn:hover,.team-check-btn:hover,.kitset-check-btn:hover{background:rgba(129,166,159,.25);border-color:var(--line-white);transform:scale(1.1)}.checked{background:#4CAF50!important;border-color:#4CAF50!important;color:#fff!important}.checked::before{content:"✓";font-weight:700}.check-btn:not(.checked)::before,.team-check-btn:not(.checked)::before,.kitset-check-btn:not(.checked)::before{content:"○"}.kitset-card{position:relative}
 /* ============================================================================
      TEAM-ABHAKEN FUNKTIONALITÄT - v3.4.0 | 2025-10-06
      ============================================================================ */
@@ -1063,9 +920,6 @@
   .team-check-btn.checked{background:linear-gradient(135deg,#4CAF50 0%,#45a049 100%);border-color:#4CAF50;animation:checkBounce .4s ease}
   .team-check-btn.checked::after{content:'✓';position:absolute;color:white;font-size:22px;font-weight:bold;left:50%;top:50%;transform:translate(-50%,-50%);text-shadow:0 1px 2px rgba(0,0,0,.2)}
   @keyframes checkBounce{0%,100%{transform:translateY(-50%) scale(1)}50%{transform:translateY(-50%) scale(1.15)}}
-  .team-card.completed{display:none;transition:opacity .3s ease}
-  .show-completed .team-card.completed{display:block;opacity:.55;filter:grayscale(30%)}
-  .show-completed .team-card.completed .team-header{background:rgba(76,175,80,.1);border-left:4px solid #4CAF50;padding-left:12px}
   @media (max-width:768px){.team-check-btn{width:28px;height:28px;border-width:2px}}
   @media (prefers-color-scheme:dark){.team-check-btn{background:#2a2a2a;border-color:#888}.team-check-btn:hover{background:#1a3a1a}}
 
@@ -1145,6 +999,10 @@
   .cl-version h3 { font-size: 0.93rem; font-weight: 700; color: #4caf50; margin-bottom: 6px; }
   .cl-version ul { margin: 0; padding-left: 1.3em; font-size: 0.86rem; opacity: 0.88; line-height: 1.75; }
   .cl-version code { background: rgba(255,255,255,0.1); border-radius: 3px; padding: 1px 4px; font-size: 0.82em; }
+  /* v6.9.0: Link zum vollständigen Changelog auf GitHub (nur die letzten 3 Einträge im Tool). */
+  .cl-more { margin-top: 6px; text-align: center; }
+  .cl-more a { color: #4caf50; font-weight: 700; font-size: 0.9rem; text-decoration: none; }
+  .cl-more a:hover { text-decoration: underline; }
 
   /* ── v6.0 „Der Schneider": Infobox-Code-Button ─────────────────────────── */
   .copy-infobox-btn {
@@ -1225,6 +1083,10 @@
   /* v6.6.0: kompakte Icon-Buttons (Theme-/Sprach-Umschalter) */
   .icon-btn { padding: 9px 12px; }
 
+  /* v6.9.0: „Filter zurücksetzen"-Zeile unter den Filter-Gruppen */
+  .filter-reset-row { text-align: center; margin-top: 12px; }
+  .filter-reset-row .secondary-btn { font-size: 12px; padding: 7px 14px; }
+
   /* ===== v6.6.0: HELLMODUS-KORREKTUREN =====
      Rein additiv – der Dunkelmodus bleibt unangetastet. Behebt nur die Stellen,
      an denen fest kodiertes Weiß/Schwarz auf hellem Grund sonst unsichtbar wäre. */
@@ -1243,9 +1105,7 @@
   :root[data-theme="light"] .team-group,
   :root[data-theme="light"] .season-block,
   :root[data-theme="light"] .kitset-card,
-  :root[data-theme="light"] .card,
-  :root[data-theme="light"] .file-card,
-  :root[data-theme="light"] .modal-box {
+  :root[data-theme="light"] .file-card {
     border-color: rgba(12, 36, 27, 0.14) !important;
     box-shadow: 0 2px 10px rgba(12, 36, 27, 0.08);
   }
@@ -1254,7 +1114,6 @@
   /* Der Teil-Name sitzt auf einem GRÜNEN Balken -> weißer Text (nicht grün auf grün). */
   :root[data-theme="light"] .file-header a { color: #ffffff; }
   /* Links auf hellen Flächen als Akzent-Grün. */
-  :root[data-theme="light"] .card-title a,
   :root[data-theme="light"] #notice a { color: var(--pitch-bright); }
   /* Weiche Schatten – die tiefen schwarzen Schatten wirken auf Hell zu hart */
   :root[data-theme="light"] header { box-shadow: 0 2px 12px rgba(12, 36, 27, 0.12); }
@@ -1356,7 +1215,7 @@
   <h1>
     <span class="title-icon">⚽</span>
     <span class="title-main">Kitly</span>
-    <span class="title-badge" onclick="showChangelogModal()" style="cursor:pointer" title="Show changelog">v6.8.2</span>
+    <span class="title-badge" onclick="showChangelogModal()" style="cursor:pointer" title="Show changelog">v6.9.0</span>
   </h1>
   
   <div class="header-actions">
@@ -1444,6 +1303,9 @@
       </fieldset>
 
     </div>
+    <div class="filter-reset-row">
+      <button type="button" class="secondary-btn" onclick="resetFilters()" data-de="↺ Filter zurücksetzen" data-en="↺ Reset filters">↺ Reset filters</button>
+    </div>
   </div>
 
   <div id="notice"></div>
@@ -1515,6 +1377,7 @@ var I18N = {
     "kitType.h": "Heim", "kitType.a": "Auswärts", "kitType.t": "Ausweich",
     "kitType.e": "Europa", "kitType.f": "Viertes", "kitType.gk": "Torhüter",
     "kitType.gkh": "Torhüter Heim", "kitType.gka": "Torhüter Auswärts", "kitType.gkt": "Torhüter Ausweich",
+    "kitType.anniv": "{n}-Jahre-Edition",
     "part.body": "Trikot", "part.leftArm": "L. Ärmel", "part.rightArm": "R. Ärmel",
     "part.shorts": "Hose", "part.socks": "Stutzen", "part.socksLong": "Stutzen (L)",
     "season.noneOption": "Keine Saison ({n})",
@@ -1586,6 +1449,7 @@ var I18N = {
     "kitType.h": "Home", "kitType.a": "Away", "kitType.t": "Third",
     "kitType.e": "Europe", "kitType.f": "Fourth", "kitType.gk": "Goalkeeper",
     "kitType.gkh": "Goalkeeper home", "kitType.gka": "Goalkeeper away", "kitType.gkt": "Goalkeeper third",
+    "kitType.anniv": "{n}-year edition",
     "part.body": "Body", "part.leftArm": "L. sleeve", "part.rightArm": "R. sleeve",
     "part.shorts": "Shorts", "part.socks": "Socks", "part.socksLong": "Socks (L)",
     "season.noneOption": "No season ({n})",
@@ -1641,7 +1505,18 @@ function tp(key, n, vars) {
 var PART_KEY = { body: 'part.body', left_arm: 'part.leftArm', right_arm: 'part.rightArm', shorts: 'part.shorts', socks: 'part.socks' };
 function partName(p) { return PART_KEY[p] ? t(PART_KEY[p]) : p; }
 var KITTYPE_KEY = { h: 'kitType.h', a: 'kitType.a', t: 'kitType.t', e: 'kitType.e', f: 'kitType.f', gk: 'kitType.gk', gkd: 'kitType.gk', gkh: 'kitType.gkh', gka: 'kitType.gka', gkt: 'kitType.gkt' };
-function kitTypeName(kt) { return KITTYPE_KEY[kt] ? t(KITTYPE_KEY[kt]) : null; }
+function kitTypeName(kt) {
+  var m = kt && kt.match(/^y(\d+)$/); // v6.8.3: Jubiläumsedition "y135" -> "135-year edition"
+  if (m) return t('kitType.anniv', { n: m[1] });
+  return KITTYPE_KEY[kt] ? t(KITTYPE_KEY[kt]) : null;
+}
+// v6.9.0: Datei-Meta-Zeile: „<Bytes> Bytes • <Datum> • <Autor>" (Autor nur wenn bekannt).
+// usageEscAttr escaped den Autornamen fürs innerHTML.
+function fileMetaHtml(file) {
+  var s = file.len + " Bytes • " + formatMwTimestamp(file.uploadTs || file.touched);
+  if (file.author) s += " • " + usageEscAttr(file.author);
+  return s;
+}
 // Statische HTML-Elemente mit data-de/data-en auf die aktuelle Sprache setzen.
 function applyStaticTranslations() {
   var els = document.querySelectorAll('[data-de][data-en]');
@@ -1695,7 +1570,7 @@ function updateThemeButton() {
   var labels = { de: { auto: 'Auto', light: 'Hell', dark: 'Dunkel' }, en: { auto: 'Auto', light: 'Light', dark: 'Dark' } };
   if (b.firstChild && b.firstChild.nodeType === 3) b.firstChild.nodeValue = icons[pref] + ' ';
   var lbl = document.getElementById('themeLabel');
-  if (lbl) lbl.textContent = (labels[currentLang] || labels.de)[pref];
+  if (lbl) lbl.textContent = (labels[currentLang] || labels.en)[pref];
   b.setAttribute('title', currentLang === 'de' ? 'Design: Auto / Hell / Dunkel' : 'Theme: Auto / Light / Dark');
 }
 // Auf OS-Theme-Wechsel reagieren, solange „auto" aktiv ist.
@@ -1705,8 +1580,6 @@ function updateThemeButton() {
   if (mq.addEventListener) mq.addEventListener('change', handler);
   else if (mq.addListener) mq.addListener(handler);
 })();
-
-/* Team-Abhaken v3.4.0 */
 
 // ================================================
 // === DATENABRUF (fetchData + Render) ===
@@ -1918,6 +1791,16 @@ function analyzeKitFilename(filename) {
 	result.set_id = result.team + "_" + result.season + "_" + result.kit_type;
 	return result;
   }
+  // v6.8.3: Jubiläums-/Jahre-Edition, z.B. "djurgardens135y" -> 135-Jahre-Edition.
+  // Schema <Team><Jahre>y (50/100/135/150…), KEINE Saison. Typ-Code "y<Jahre>".
+  var anniv = workingName.match(/^(.+?)(\d{2,3})y$/i);
+  if (anniv && !/^(nike|adidas|puma|umbro|kappa)/i.test(anniv[1])) {
+	result.team = anniv[1].replace(/^_+|_+$/g, '').replace(/[\s_\-–\/]+$/, '').trim();
+	result.season = null;                 // Jubiläumsedition hat keine Saison
+	result.kit_type = 'y' + anniv[2];     // z.B. "y135"
+	result.set_id = result.team + "_noseason_" + result.kit_type;
+	return result;
+  }
   var fourDigitMatch = workingName.match(/^(.+?)(\d{4})([a-z][a-z0-9]*)$/i);
   if (fourDigitMatch && !/^(nike|adidas|puma|umbro|kappa)/i.test(fourDigitMatch[1])) {
 	result.team = fourDigitMatch[1].replace(/^_+|_+$/g, '').trim();
@@ -1965,7 +1848,9 @@ function analyzeKitFilename(filename) {
   return result;
 }
 // Alle Filter AUSSER dem „Ausblenden-wenn-verwendet"-Filter (dieser braucht den Usage-Scan).
-function getBaseFilteredFiles() {
+// opts.skipKitType: den Trikottyp-Filter überspringen (für die Trikottyp-Dropdown-Zählung,
+// damit dort nicht nur der bereits gewählte Typ übrig bleibt).
+function getBaseFilteredFiles(opts) {
   var ctrl = readControls();
   var filtered = allFiles.slice();
   if (ctrl.filterTrikotTeile) filtered = filtered.filter(function(f) { return isTrikotTeil(f.title); });
@@ -1980,7 +1865,7 @@ function getBaseFilteredFiles() {
 	if (ctrl.seasonFilter === 'keine') filtered = filtered.filter(function(f) { return extractSeasons(f.title).length === 0; });
 	else filtered = filtered.filter(function(f) { return extractSeasons(f.title).indexOf(ctrl.seasonFilter) !== -1; });
   }
-  if (ctrl.kitTypeFilters && ctrl.kitTypeFilters.length > 0) {
+  if (!(opts && opts.skipKitType) && ctrl.kitTypeFilters && ctrl.kitTypeFilters.length > 0) {
 	filtered = filtered.filter(function(f) { var a = analyzeKitFilename(f.title); var t = normKitType(a.kit_type); return t && ctrl.kitTypeFilters.indexOf(t) !== -1; });
   }
   return filtered;
@@ -2010,7 +1895,9 @@ function populateSeasonFilter() {
   var sortedSeasons = Object.keys(seasonCounts).sort(function(a, b) { return parseInt(b.split('/')[0], 10) - parseInt(a.split('/')[0], 10); });
   var select = document.getElementById("seasonFilter");
   if (!select) return;
-  var currentValue = select.value;
+  // v6.9.0: wie beim Trikottyp auf den gespeicherten Wert zurückfallen (bei einem
+  // Neuladen existiert nur die Platzhalter-Option -> select.value ist noch "").
+  var currentValue = select.value || localStorage.getItem('filter_season') || '';
   var allOpt = select.querySelector('option[value=""]');
   select.innerHTML = '';
   if (allOpt) select.appendChild(allOpt);
@@ -2022,7 +1909,9 @@ function populateSeasonFilter() {
 function populateKitTypeFilter() {
   var select = document.getElementById('kitTypeFilter');
   if (!select) return;
-  var filteredFiles = getFilteredFiles();
+  // v6.9.0: OHNE den Trikottyp-Filter zählen, sonst bleibt nach einer Auswahl nur
+  // der gewählte Typ im Dropdown übrig.
+  var filteredFiles = getBaseFilteredFiles({ skipKitType: true });
   var kitTypeCounts = {};
   filteredFiles.forEach(function(file) {
 	var a = analyzeKitFilename(file.title);
@@ -2110,7 +1999,7 @@ function renderTeams() {
     var partsHtml = kitset.parts.map(function(part) {
       var pn = partName(part.analysis.part);
       if (part.analysis.part === 'socks' && part.analysis.is_long_socks) pn = t('part.socksLong');
-      return "<div class=\"file-card\" data-file=\"" + part.file.title.replace(/"/g, '&quot;') + "\"><button class=\"usage-btn\" onclick=\"event.stopPropagation(); showUsageModal('" + part.file.title.replace(/'/g, "\\'") + "');\" title=\"" + t('btn.showUsage') + "\">📊</button><div class=\"file-header\"><a href=\"https://commons.wikimedia.org/wiki/File:" + encodeURIComponent(part.file.title) + "\" target=\"_blank\" rel=\"noopener noreferrer\">" + pn + "</a></div><div class=\"file-thumb\"><img class=\"lazy-thumb\" data-filename=\"" + part.file.title.replace(/\"/g, '&quot;') + "\" alt=\"\"></div><div class=\"file-meta\">" + part.file.len + " Bytes • " + formatMwTimestamp(part.file.uploadTs || part.file.touched) + "</div></div>";
+      return "<div class=\"file-card\" data-file=\"" + part.file.title.replace(/"/g, '&quot;') + "\"><button class=\"usage-btn\" title=\"" + t('btn.showUsage') + "\">📊</button><div class=\"file-header\"><a href=\"https://commons.wikimedia.org/wiki/File:" + encodeURIComponent(part.file.title) + "\" target=\"_blank\" rel=\"noopener noreferrer\">" + pn + "</a></div><div class=\"file-thumb\"><img class=\"lazy-thumb\" data-filename=\"" + part.file.title.replace(/\"/g, '&quot;') + "\" alt=\"\"></div><div class=\"file-meta\">" + fileMetaHtml(part.file) + "</div></div>";
     }).join('');
     return "<div class=\"kitset-card\" data-kitset-id=\"" + safeTeam + "-" + safeSeason + "-" + kitType + "\" data-kit-type=\"" + kitType + "\"><div class=\"kitset-header\"><div class=\"kitset-title\">" + displayName + "</div><div class=\"kitset-subtitle\">" + tp('label.parts', kitset.parts.length) + "</div></div>" + buildKitFigureHtml(kitset.parts) + "<div class=\"kitset-parts\">" + partsHtml + "</div>" + (showUsage ? "<div class=\"kitset-usage\" data-usage-pending=\"1\"></div>" : "") + "</div>";
   }
@@ -2122,7 +2011,7 @@ function renderTeams() {
     teamCard.className = "team-group";
     teamCard.setAttribute("data-team-id", safeTeam);
     var subtitle = seasonCount + " " + (seasonCount === 1 ? t('label.seasonSingular') : t('label.seasonPlural')) + " • " + tp('label.parts', team.total_parts);
-    teamCard.innerHTML = "<div class=\"team-header\"><div class=\"team-title\">" + (team.team.charAt(0).toUpperCase() + team.team.slice(1)) + "</div><div class=\"team-subtitle\">" + subtitle + "</div><button class=\"team-check-btn\" data-team-id=\"" + safeTeam + "\" role=\"checkbox\" aria-checked=\"false\" tabindex=\"0\"></button></div><div class=\"team-kits\"></div>";
+    teamCard.innerHTML = "<div class=\"team-header\"><div class=\"team-title\">" + usageEscAttr(team.team.charAt(0).toUpperCase() + team.team.slice(1)) + "</div><div class=\"team-subtitle\">" + subtitle + "</div><button class=\"team-check-btn\" data-team-id=\"" + safeTeam + "\" role=\"checkbox\" aria-checked=\"false\" tabindex=\"0\"></button></div><div class=\"team-kits\"></div>";
     var teamKits = teamCard.querySelector(".team-kits");
     seasonKeys.forEach(function(sk) {
       var sg = team.seasons[sk];
@@ -2149,14 +2038,14 @@ function renderKitsets() {
   var showUsage = readControls().showUsage; // v6.8.0: Inline-Verwendung pro Kitset
   var partOrder = ['body', 'left_arm', 'right_arm', 'shorts', 'socks'];
   kitsets.forEach(function(kitset) {
-	var title = (kitset.team ? kitset.team.charAt(0).toUpperCase() + kitset.team.slice(1) : t('label.unknown')) + (kitset.season ? " " + formatSeasonLabel(kitset.season) : "") + (kitset.kit_type ? " " + (kitTypeName(kitset.kit_type) || kitset.kit_type) : "");
+	var title = (kitset.team ? usageEscAttr(kitset.team.charAt(0).toUpperCase() + kitset.team.slice(1)) : t('label.unknown')) + (kitset.season ? " " + formatSeasonLabel(kitset.season) : "") + (kitset.kit_type ? " " + (kitTypeName(kitset.kit_type) || kitset.kit_type) : "");
 	var card = document.createElement("div");
 	card.className = "kitset-card";
 	card.setAttribute("data-kitset-id", kitset.id);
 	var partsHtml = kitset.parts.sort(function(a, b) { return partOrder.indexOf(a.analysis.part) - partOrder.indexOf(b.analysis.part); }).map(function(part) {
 	  var pn = partName(part.analysis.part);
 	  if (part.analysis.part === 'socks' && part.analysis.is_long_socks) pn = t('part.socksLong');
-	  return "<div class=\"file-card\" data-file=\"" + part.file.title.replace(/"/g, '&quot;') + "\"><button class=\"usage-btn\" onclick=\"event.stopPropagation(); showUsageModal('" + part.file.title.replace(/'/g, "\\'") + "');\" title=\"" + t('btn.showUsage') + "\">📊</button><div class=\"file-header\"><a href=\"https://commons.wikimedia.org/wiki/File:" + encodeURIComponent(part.file.title) + "\" target=\"_blank\" rel=\"noopener noreferrer\">" + pn + "</a></div><div class=\"file-thumb\"><img class=\"lazy-thumb\" data-filename=\"" + part.file.title.replace(/\"/g, '&quot;') + "\" alt=\"\"></div><div class=\"file-meta\">" + part.file.len + " Bytes • " + formatMwTimestamp(part.file.uploadTs || part.file.touched) + "</div></div>";
+	  return "<div class=\"file-card\" data-file=\"" + part.file.title.replace(/"/g, '&quot;') + "\"><button class=\"usage-btn\" title=\"" + t('btn.showUsage') + "\">📊</button><div class=\"file-header\"><a href=\"https://commons.wikimedia.org/wiki/File:" + encodeURIComponent(part.file.title) + "\" target=\"_blank\" rel=\"noopener noreferrer\">" + pn + "</a></div><div class=\"file-thumb\"><img class=\"lazy-thumb\" data-filename=\"" + part.file.title.replace(/\"/g, '&quot;') + "\" alt=\"\"></div><div class=\"file-meta\">" + fileMetaHtml(part.file) + "</div></div>";
 	}).join('');
 	card.innerHTML = "<div class=\"kitset-header\"><div class=\"kitset-title\">" + title + "</div><div class=\"kitset-subtitle\">" + tp('label.parts', kitset.parts.length) + "</div></div>" + buildKitFigureHtml(kitset.parts) + "<div class=\"kitset-parts\">" + partsHtml + "</div>" + (showUsage ? "<div class=\"kitset-usage\" data-usage-pending=\"1\"></div>" : "");
 	grid.appendChild(card);
@@ -2174,7 +2063,7 @@ function renderSingleFiles() {
 	var div = document.createElement("div");
 	div.className = "file-card";
 	div.setAttribute("data-file", f.title);
-	div.innerHTML = "<button class=\"usage-btn\" onclick=\"event.stopPropagation(); showUsageModal('" + f.title.replace(/'/g, "\\'") + "');\" title=\"" + t('btn.showUsage') + "\">📊</button><div class=\"file-header\"><a href=\"https://commons.wikimedia.org/wiki/File:" + encodeURIComponent(f.title) + "\" target=\"_blank\" rel=\"noopener noreferrer\">" + f.title + "</a></div><div class=\"file-thumb\"><img class=\"lazy-thumb\" data-filename=\"" + f.title.replace(/\"/g, '&quot;') + "\" alt=\"\"></div><div class=\"file-meta\">" + f.len + " Bytes • " + formatMwTimestamp(f.uploadTs || f.touched) + "</div>";
+	div.innerHTML = "<button class=\"usage-btn\" title=\"" + t('btn.showUsage') + "\">📊</button><div class=\"file-header\"><a href=\"https://commons.wikimedia.org/wiki/File:" + encodeURIComponent(f.title) + "\" target=\"_blank\" rel=\"noopener noreferrer\">" + usageEscAttr(f.title) + "</a></div><div class=\"file-thumb\"><img class=\"lazy-thumb\" data-filename=\"" + f.title.replace(/\"/g, '&quot;') + "\" alt=\"\"></div><div class=\"file-meta\">" + fileMetaHtml(f) + "</div>";
 	grid.appendChild(div);
   });
 }
@@ -2207,11 +2096,36 @@ function saveKitColorCache() {
     try {
       var out = {};
       Object.keys(kitColorCache).forEach(function(k) { if (kitColorCache[k]) out[k] = kitColorCache[k]; });
+      // v6.9.0: Wachstum begrenzen – bei sehr vielen Farben nur die letzten behalten
+      // (Farben werden bei Bedarf neu erkannt). Verhindert unbegrenztes localStorage-Wachstum.
+      var keys = Object.keys(out);
+      if (keys.length > KIT_COLOR_CACHE_MAX) {
+        var keep = keys.slice(keys.length - KIT_COLOR_CACHE_MAX);
+        var trimmed = {}; keep.forEach(function(k) { trimmed[k] = out[k]; });
+        out = trimmed; kitColorCache = trimmed;
+      }
       localStorage.setItem(KIT_COLOR_CACHE_KEY, JSON.stringify(out));
     } catch (e) { /* z.B. Quota – unkritisch */ }
   }, 800);
 }
+var KIT_COLOR_CACHE_MAX = 6000;
+// v6.9.0: Abgelaufene Usage-Cache-Einträge (usage_v2_*) aufräumen, damit localStorage
+// nicht unbegrenzt wächst. Läuft einmal beim Start; entfernt Einträge > 24 h.
+function cleanupUsageCache() {
+  try {
+    var now = Date.now(), MAX_AGE = 24 * 60 * 60 * 1000, toRemove = [];
+    for (var i = 0; i < localStorage.length; i++) {
+      var k = localStorage.key(i);
+      if (!k || k.indexOf('usage_v2_') !== 0) continue;
+      var ok = false;
+      try { var d = JSON.parse(localStorage.getItem(k)); ok = d && d.timestamp && (now - d.timestamp) < MAX_AGE; } catch (e) {}
+      if (!ok) toRemove.push(k);
+    }
+    toRemove.forEach(function(k) { try { localStorage.removeItem(k); } catch (e) {} });
+  } catch (e) {}
+}
 loadKitColorCache();
+cleanupUsageCache();
 
 // Teil-Analyse -> Zellen-Kürzel der Figur.
 var KIT_PART_TO_CELL = { left_arm: 'la', body: 'b', right_arm: 'ra', shorts: 'sh', socks: 'so' };
@@ -2475,8 +2389,13 @@ function populateUsageChips() {
       + '🌍 <span data-de="Länder laden" data-en="Load countries">' + (currentLang === 'en' ? 'Load countries' : 'Länder laden') + '</span></button>';
     return;
   }
-  var counts = {};
+  // v6.9.0: Jede Datei nur EINMAL zählen. usageWikiMap enthält pro Datei mehrere
+  // Namensvarianten (Leerzeichen/Unterstrich) -> über den kanonischen Namen deduplizieren.
+  var counts = {}, seen = {};
   Object.keys(usageWikiMap).forEach(function(title) {
+    var canon = title.replace(/_/g, ' ');
+    if (seen[canon]) return;
+    seen[canon] = 1;
     Object.keys(usageWikiMap[title]).forEach(function(w) { counts[w] = (counts[w] || 0) + 1; });
   });
   var wikis = Object.keys(counts).sort(function(a, b) { return (usageWikiRank(a) - usageWikiRank(b)) || a.localeCompare(b); });
@@ -2562,7 +2481,7 @@ async function filterByRealUpload(files, afterDate) {
       action: 'query',
       titles: titlesParam,
       prop:   'imageinfo',
-      iiprop: 'timestamp',
+      iiprop: 'timestamp|user',
       iilimit:'50',       // v6.7.0: mehrere Versionen -> jüngste UND älteste (Erst-Upload)
       format: 'json',
       origin: '*'         // Pflicht für CORS (auch von file://)
@@ -2588,7 +2507,7 @@ async function filterByRealUpload(files, afterDate) {
           if (!revs || !revs.length || !revs[0].timestamp) return;
           // imageinfo ist neueste-zuerst: [0] = jüngster Upload, [len-1] = Erst-Upload.
           var toMw = function(iso) { return iso.replace(/[^0-9]/g, '').slice(0, 14); };
-          var rec = { latest: toMw(revs[0].timestamp), first: toMw(revs[revs.length - 1].timestamp) };
+          var rec = { latest: toMw(revs[0].timestamp), first: toMw(revs[revs.length - 1].timestamp), author: (revs[revs.length - 1].user || '') };
           var apiName = page.title.replace(/^File:/, '');
           uploadMap[apiName] = rec;
           if (normalMap[page.title]) uploadMap[normalMap[page.title]] = rec;
@@ -2616,6 +2535,7 @@ async function filterByRealUpload(files, afterDate) {
     if (rec) {
       f.uploadTs = rec.latest;            // für Anzeige + Sortierung (jüngster Upload)
       f.firstUploadTs = rec.first;        // v6.7.0: Erst-Upload -> unterscheidet Neu von Update
+      if (rec.author) f.author = rec.author; // v6.9.0: Ersteller (Uploader der ältesten Version)
       if (rec.latest >= minMw) kept.push(f); // Datei hatte im Zeitraum echte Upload-Aktivität
     } else {
       // Upload-Datum unbekannt (fehlend/Fehler) -> behalten, Anzeige nutzt `touched`.
@@ -3393,6 +3313,24 @@ function applyFilters() {
     if (typeof updateStats === 'function') updateStats();
   }, 200);
 }
+// v6.9.0: Filter auf Standard zurücksetzen (die Anzeige-/Filter-Optionen, NICHT den
+// Datenabruf mit Datum/Limit/Tiefe – die würden ein Neuladen erfordern).
+function resetFilters() {
+  var setChecked = function(id, v) { var el = document.getElementById(id); if (el) el.checked = v; };
+  var setVal = function(id, v) { var el = document.getElementById(id); if (el) el.value = v; };
+  setChecked('filterTrikotTeile', true);
+  setChecked('filterHideUpdates', true);
+  setChecked('filterShowUsage', true);
+  setVal('seasonFilter', '');
+  setVal('kitTypeFilter', '');
+  setVal('viewMode', 'teams');
+  setVal('width', '120');
+  activeUsageWikis = {};
+  try { localStorage.removeItem('filter_usageWikis'); } catch (e) {}
+  saveFilterValues();
+  populateUsageChips();
+  if (isDataLoaded) applyFilters();
+}
 
 function attachFilterListeners() {
   // Client-seitige Filter: nur neu rendern.
@@ -3473,10 +3411,11 @@ async function fetchGlobalUsage(filename) {
   // Lokale Treffer zuerst, danach globale.
   const usage = localUsage.concat(globalUsage);
 
-  localStorage.setItem(cacheKey, JSON.stringify({
-    usage: usage,
-    timestamp: Date.now()
-  }));
+  // v6.9.0: guarded – ein Quota-Fehler darf einen erfolgreichen Abruf NICHT in einen
+  // abgelehnten Promise (Fehler-Anzeige) verwandeln.
+  try {
+    localStorage.setItem(cacheKey, JSON.stringify({ usage: usage, timestamp: Date.now() }));
+  } catch (e) {}
 
   return usage;
 }
@@ -3501,7 +3440,6 @@ function showUsageModal(filename) {
       }
     };
     document.addEventListener('keydown', escHandler);
-    modal._escHandler = escHandler;
 
     // Click-Outside
     const clickHandler = function(e) {
@@ -3510,7 +3448,6 @@ function showUsageModal(filename) {
       }
     };
     document.addEventListener('click', clickHandler);
-    modal._clickHandler = clickHandler;
   }
   document.body.style.overflow = 'hidden';
 
@@ -3533,10 +3470,10 @@ function showUsageModal(filename) {
       Object.keys(byWiki).sort().forEach(wiki => {
         const pages = byWiki[wiki];
         html += '<li class="usage-wiki">';
-        html += '<div class="usage-wiki-name">📖 ' + wiki + ' (' + pages.length + ')</div>';
+        html += '<div class="usage-wiki-name">📖 ' + usageEscAttr(wiki) + ' (' + pages.length + ')</div>';
         html += '<ul class="usage-pages">';
         pages.forEach(page => {
-          html += '<li><a href="' + page.url + '" target="_blank" rel="noopener">' + page.title + '</a></li>';
+          html += '<li><a href="' + usageEscAttr(page.url) + '" target="_blank" rel="noopener">' + usageEscAttr(page.title) + '</a></li>';
         });
         html += '</ul></li>';
       });
@@ -3632,6 +3569,17 @@ function openCommonsFilePage(title) {
   a.remove();
 }
 document.addEventListener('click', function(e) {
+  // v6.9.0: 📊-Button -> Verwendungs-Modal. Delegiert über data-file (kein Inline-onclick
+  // mehr -> keine Attribut-Injection über Dateinamen mit Anführungszeichen).
+  var usageBtn = e.target.closest('.usage-btn');
+  if (usageBtn) {
+    e.preventDefault(); e.stopPropagation();
+    var ucard = usageBtn.closest('.file-card');
+    var uFile = ucard && ucard.dataset.file;
+    if (uFile) showUsageModal(uFile);
+    return false;
+  }
+
   // Vorschaubild angeklickt -> Commons-Dateiseite im Hintergrund-Tab
   var thumbImg = e.target.closest('img.lazy-thumb');
   if (thumbImg) {
@@ -3883,8 +3831,11 @@ function checkEmptyState() {
   var allCards = grid.querySelectorAll('.team-group, .kitset-card');
   if (!allCards.length) return;
 
+  // v6.9.0: echte Sichtbarkeit (offsetParent === null bei display:none an Element ODER
+  // Vorfahr) – sonst zählten Kitset-Karten in ausgeblendeten Teams als sichtbar und der
+  // „Alle erledigt"-Hinweis erschien in der Teams-Ansicht nie.
   var visibleCount = Array.from(allCards).filter(function(el) {
-    return el.style.display !== 'none';
+    return el.offsetParent !== null;
   }).length;
 
   if (visibleCount === 0 && !showCompletedItems) {
@@ -3918,286 +3869,32 @@ function checkEmptyState() {
 	<button class="cl-close" onclick="closeChangelogModal()" aria-label="Close">&#x2715;</button>
 	<h2>&#x26BD; Changelog &mdash; Kitly</h2>
 	<div class="cl-version">
+	  <h3>v6.9.0 &mdash; 2026-08-11 &mdash; Code review fixes</h3>
+	  <ul>
+		<li>New: the file meta line now also shows the <strong>author</strong> (uploader of the oldest version), e.g. &bdquo;274 Bytes &middot; 11.08.2026 &middot; JonasBR&ldquo;.</li>
+		<li>New: <strong>&bdquo;Reset filters&ldquo;</strong> button (below the filter groups) restores the filter/display options to their defaults.</li>
+		<li>Fix: the <strong>kit type dropdown</strong> no longer loses its other options after a selection.</li>
+		<li>Fix: the country chip <strong>counts</strong> in &bdquo;Hide if used in&ldquo; are no longer inflated.</li>
+		<li>Fix: the <strong>season filter</strong> is now restored after a reload (like the kit type filter).</li>
+		<li>Fix: the &bdquo;All done&ldquo; hint now also appears in the Teams view.</li>
+		<li>Hardening: file names are no longer written into inline event handlers (delegated click via <code>data-file</code>), and page titles/URLs in the usage modal are HTML-escaped &ndash; closing a narrow injection surface from external file names. A failed cache write no longer turns a successful fetch into an error.</li>
+		<li>Housekeeping: the usage cache is pruned (entries older than 24&nbsp;h) and the color cache is capped, so <code>localStorage</code> no longer grows without bound. Removed a batch of dead CSS and stale code.</li>
+	  </ul>
+	</div>
+	<div class="cl-version">
+	  <h3>v6.8.3 &mdash; 2026-08-11 &mdash; Anniversary editions</h3>
+	  <ul>
+		<li>Anniversary/jubilee kits with a <code>&lt;years&gt;y</code> suffix (e.g. <code>Kit_body_djurgardens135y.png</code>) are now recognized: team = &bdquo;Djurgardens&ldquo;, type = &bdquo;135-year edition&ldquo;, no season &ndash; instead of team &bdquo;Djurgardens1&ldquo;, &bdquo;Season 1935&ldquo; and type &bdquo;Y&ldquo;. Also works for 50y, 100y, 150y &hellip;</li>
+	  </ul>
+	</div>
+	<div class="cl-version">
 	  <h3>v6.8.2 &mdash; 2026-08-11 &mdash; English by default</h3>
 	  <ul>
 		<li><strong>English is now the project's main language.</strong> The interface still auto-detects your browser language and switches to German for German browsers, but the default and fallback is now always English (previously German).</li>
 		<li>The GitHub docs (README and this changelog) are now in English.</li>
 	  </ul>
 	</div>
-	<div class="cl-version">
-	  <h3>v6.8.1 &mdash; 2026-08-10 &mdash; Hyphenated season on the team</h3>
-	  <ul>
-		<li>Filenames with a hyphenated season attached directly to the team (e.g. <code>Kit_body_cskasofia26-27a.png</code>) are now recognized correctly: team = &bdquo;Cskasofia&ldquo;, season = &bdquo;2026/27&ldquo; (instead of team &bdquo;Cskasofia26-&ldquo; and &bdquo;Season 2027&ldquo;).</li>
-	  </ul>
-	</div>
-	<div class="cl-version">
-	  <h3>v6.8.0 &mdash; 2026-08-09 &mdash; „Einsatz"</h3>
-	  <ul>
-		<li>New: <strong>Usage shown directly in the kit set</strong>. Below each kit set there is now &bdquo;Used in: …&ldquo; with links to the pages where the parts are already embedded &ndash; without clicking 📊. The details of all parts are combined and deduplicated.</li>
-		<li>In front of each page is the <strong>country flag</strong> of the wiki language variant (for Commons the <strong>Commons logo</strong>; without a matching flag the language code). Order: <strong>de → en → pt → Commons → rest</strong>.</li>
-		<li>Loaded <strong>as you scroll</strong> (only visible kit sets are queried) and cached for 24&nbsp;h &ndash; so a later click on 📊 is instant.</li>
-		<li>New toggle <strong>&bdquo;Show usage&ldquo;</strong> (on by default) to switch it off/on.</li>
-		<li>New filter <strong>&bdquo;Hide if used in …&ldquo;</strong>: activate one or more wikis via flag chips; every file already embedded there is hidden. This shows at a glance which kit parts are still missing in, for example, the German Wikipedia. Sets/teams with no remaining parts disappear automatically. (For this it checks the usage of all matches once, with a progress indicator and 24-h cache.)</li>
-		<li>Fast &amp; gentle: The usage scan runs <strong>in batches</strong> (up to 50 files per request instead of one per file) in the background – the interface appears immediately. In addition, <strong>the thumbnail loader retries failed requests</strong>, so previews are preserved instead of falling back to &bdquo;No preview&ldquo;.</li>
-	  </ul>
-	</div>
-	<div class="cl-version">
-	  <h3>v6.7.0 &mdash; 2026-08-09 &mdash; „Neuzugang"</h3>
-	  <ul>
-		<li>New: <strong>&bdquo;Hide file updates&ldquo;</strong> (on by default). Files that only received a <em>new version</em> within the selected period, but whose <strong>first upload</strong> predates it, are hidden – so only genuine new uploads remain. Toggleable without reloading.</li>
-		<li>Foundation: For each file, the <strong>first upload</strong> is now additionally determined via the MediaWiki API (oldest file version), not just the most recent upload.</li>
-		<li>The <strong>limit</strong> can now be set up to <strong>10000</strong> (previously 2000; default stays 1000) &ndash; for wide time spans where matches would otherwise be cut off.</li>
-	  </ul>
-	</div>
-	<div class="cl-version">
-	  <h3>v6.6.0 &mdash; 2026-08-09 &mdash; „Kitly"</h3>
-	  <ul>
-		<li>The tool is now called <strong>Kitly</strong> – a name that also works internationally.</li>
-		<li>New: <strong>DE/EN language switch</strong> (🌐 button). The entire interface is now available in German and English; the language is saved and, on first launch, guessed from the browser language.</li>
-		<li>New: <strong>Light/dark mode with automatic option</strong> (🌗 button, Auto / Light / Dark). &bdquo;Auto&ldquo; follows the operating system; the green pitch identity is preserved in both modes. The choice is saved.</li>
-		<li>New: Clicking a <strong>thumbnail</strong> opens the Commons file page in a new background tab.</li>
-		<li>Season spans across multiple years are now shown as a range: <code>8792</code> &rarr; &bdquo;Season 1987–1992&ldquo; (instead of &bdquo;Season 8792&ldquo;), while consecutive seasons still appear as <code>1987/88</code>.</li>
-		<li>Counters now use the correct singular/plural (&bdquo;1 team found&ldquo;, &bdquo;1 part&ldquo; or &bdquo;1 team found&ldquo;, &bdquo;1 part&ldquo;).</li>
-	  </ul>
-	</div>
-	<div class="cl-version">
-	  <h3>v6.5.1 &mdash; 2026-08-09 &mdash; „Feinschliff"</h3>
-	  <ul>
-		<li>Season spans recognized correctly: <code>1819</code>/<code>1920</code>/<code>2021</code> are now shown and sorted as &bdquo;2018/19&ldquo;/&bdquo;2019/20&ldquo;/&bdquo;2020/21&ldquo; – genuine single years (1923, 1975, 2026) stay unchanged.</li>
-		<li>Verbose filenames: a standalone year (e.g. <code>FC_Tokyo_2026_HOME</code>) is no longer taken into the team name.</li>
-		<li>The kit set view shows the season in plain text (<code>2627</code> &rarr; &bdquo;2026/27&ldquo;).</li>
-		<li>The kit type filter also works reliably for goalkeeper variants (<code>gkd</code>/<code>g</code>).</li>
-		<li>Statistics no longer count files in hidden teams as visible; check-off buttons are updated with debouncing (less DOM load on large lists).</li>
-	  </ul>
-	</div>
-	<div class="cl-version">
-	  <h3>v6.5.0 &mdash; 2026-08-09 &mdash; „Aufgeräumte Kabine"</h3>
-	  <ul>
-		<li>New: <strong>Kit type filter</strong> (dropdown home/away/third/goalkeeper) in the filter group.</li>
-		<li>The two parallel check-off systems were merged into <strong>one</strong> (a single store). Checking off teams, kit sets, and files now runs through the same logic.</li>
-		<li>2-digit seasons are shown correctly: <code>02</code> &rarr; &bdquo;Season 2002&ldquo;.</li>
-		<li>Cleaned up: dead auto-refresh code, orphaned helper functions, one unused access, and all debug output (console.log) removed.</li>
-	  </ul>
-	</div>
-	<div class="cl-version">
-	  <h3>v6.4.0 &mdash; 2026-08-08 &mdash; „Chronik"</h3>
-	  <ul>
-		<li>All seasons of a team are now shown under <strong>one</strong> team card, sorted chronologically (newest season on top). Example: &bdquo;Gelp&ldquo; with 1996/98 above 1993/95.</li>
-		<li>When a team is checked off as completed, <strong>all</strong> seasons of that team disappear with it.</li>
-		<li>The &bdquo;Infobox code&ldquo; button now sits <strong>per season</strong> (instead of per team), so the kit numbers don't collide across seasons.</li>
-	  </ul>
-	</div>
-	<div class="cl-version">
-	  <h3>v6.3.11 &mdash; 2026-08-08 &mdash; Season filter aligned</h3>
-	  <ul>
-		<li>The season filter now shows exactly the same season as the team display (shared logic). Unusual spans like &bdquo;1993/95&ldquo; or &bdquo;1998/2001&ldquo; appear in the dropdown just as they do on the teams.</li>
-	  </ul>
-	</div>
-	<div class="cl-version">
-	  <h3>v6.3.10 &mdash; 2026-08-08 &mdash; Season spans</h3>
-	  <ul>
-		<li>Non-consecutive season spans are now shown correctly: <code>9395</code> &rarr; &bdquo;1993/95&ldquo;. At a century boundary the end year is shown with 4 digits: <code>9801</code> &rarr; &bdquo;1998/2001&ldquo;, <code>9900</code> &rarr; &bdquo;1999/2000&ldquo;. Genuine single years (1923, 1975) stay unchanged.</li>
-	  </ul>
-	</div>
-	<div class="cl-version">
-	  <h3>v6.3.9 &mdash; 2026-08-08 &mdash; Hyphenated seasons</h3>
-	  <ul>
-		<li>Filenames with a separator season like <code>Kit_body_spartak-vn-26-27-a.png</code> are now read correctly: team (&bdquo;spartak-vn&ldquo;), season (&bdquo;2026/27&ldquo;) and type (away). Home and away land in the same team. Supports &bdquo;YY-YY&ldquo;, &bdquo;YYYY-YY&ldquo; and single 4-digit year blocks.</li>
-	  </ul>
-	</div>
-	<div class="cl-version">
-	  <h3>v6.3.8 &mdash; 2026-08-08 &mdash; Infobox numbering</h3>
-	  <ul>
-		<li>The &bdquo;Infobox code&ldquo; now numbers the kits by type instead of by order: home = 1, away = 2, third = 3, fourth = 4. So an away-only set correctly yields <code>…2</code> (instead of incorrectly <code>…1</code>).</li>
-	  </ul>
-	</div>
-	<div class="cl-version">
-	  <h3>v6.3.7 &mdash; 2026-08-08 &mdash; Feinschliff</h3>
-	  <ul>
-		<li>In the team row the kit types are now sorted consistently: home, away, third, then goalkeeper – matching the order of the kit set cards.</li>
-	  </ul>
-	</div>
-	<div class="cl-version">
-	  <h3>v6.3.6 &mdash; 2026-08-08 &mdash; Verbose filenames</h3>
-	  <ul>
-		<li>New naming scheme recognized: <code>Kit_body_FC_Tokyo_2026_-_27_AWAY_FP.png</code> &amp; co. Team (&bdquo;FC Tokyo&ldquo;), season (&bdquo;2026/27&ldquo;) and type are now read correctly; home and away land in the same team.</li>
-		<li><code>FP</code> = field player (&rarr; home/away/third), <code>GK</code> = goalkeeper (&rarr; goalkeeper home/away). Previously &bdquo;fp&ldquo; was shown as the type and the whole name as the team.</li>
-	  </ul>
-	</div>
-	<div class="cl-version">
-	  <h3>v6.3.5 &mdash; 2026-08-03 &mdash; Goalkeeper home/away</h3>
-	  <ul>
-		<li>Goalkeeper kits are now distinguished by home/away: <code>gkh</code> &rarr; &bdquo;Goalkeeper home&ldquo;, <code>gka</code> &rarr; &bdquo;Goalkeeper away&ldquo; (also <code>gkt</code> &rarr; &bdquo;Goalkeeper third&ldquo;). Applies to the display, kit set titles and the kit type filter.</li>
-	  </ul>
-	</div>
-	<div class="cl-version">
-	  <h3>v6.3.4 &mdash; 2026-08-03 &mdash; Bug fix</h3>
-	  <ul>
-		<li>Files with a 4-digit year and no type code (e.g.&thinsp;<code>Kit_body_River_1975.png</code>) are now recognized correctly: season = 1975, type = home (no &bdquo;h&ldquo;/&bdquo;a&ldquo; at the end means home kit). Previously they ended up under &bdquo;No season • unknown&ldquo;.</li>
-	  </ul>
-	</div>
-	<div class="cl-version">
-	  <h3>v6.3.3 &mdash; 2026-08-03 &mdash; Feinschliff</h3>
-	  <ul>
-		<li>The &bdquo;Limit&ldquo; (max. 2000) and &bdquo;Depth&ldquo; (max. 100) input fields now have upper bounds, matching the limits of the kitproxy server – so the limit is visible directly in the field.</li>
-	  </ul>
-	</div>
-	<div class="cl-version">
-	  <h3>v6.3.2 &mdash; 2026-08-03 &mdash; Cleanup</h3>
-	  <ul>
-		<li>Category query streamlined: &bdquo;Association football kit templates&ldquo; removed – it is a direct subcategory of both parent categories and is included anyway at depth 50 (verified empirically, result set unchanged).</li>
-	  </ul>
-	</div>
-	<div class="cl-version">
-	  <h3>v6.3.1 &mdash; 2026-08-03 &mdash; „Ordnung"</h3>
-	  <ul>
-		<li>Completed teams are now shown/hidden via just <strong>one</strong> route: the &bdquo;Show completed&ldquo; button. The duplicate checkbox in the filter group has been removed.</li>
-	  </ul>
-	</div>
-	<div class="cl-version">
-	  <h3>v6.3 &mdash; 2026-08-03 &mdash; „Ordnung"</h3>
-	  <ul>
-		<li>The settings are now grouped by topic: <strong>Data retrieval</strong> (date, limit, depth), <strong>Filter</strong> (season, kit parts only, completed teams) and <strong>Display</strong> (view, thumb width).</li>
-		<li>The &bdquo;Completed teams&ldquo; checkbox is now a compact inline element (no longer a big box) and matches &bdquo;Kit parts only&ldquo;.</li>
-	  </ul>
-	</div>
-	<div class="cl-version">
-	  <h3>v6.2.5 &mdash; 2026-08-03 &mdash; Header area</h3>
-	  <ul>
-		<li>Consistent appearance: the global input base (previously a bold 2px border) is now subtle like the filter fields.</li>
-		<li>The &bdquo;Kit parts only&ldquo; and &bdquo;Show completed teams&ldquo; checkboxes now match the new filter look in color and size.</li>
-	  </ul>
-	</div>
-	<div class="cl-version">
-	  <h3>v6.2.4 &mdash; 2026-08-03 &mdash; Header area</h3>
-	  <ul>
-		<li>The top area looks tidier: slimmer, more subtle filter fields (fine border instead of bold white, with a soft focus ring) and more compact buttons.</li>
-		<li>The &bdquo;Show completed&ldquo; bar is now narrower and more restrained.</li>
-		<li>Cleanup: unused CSS (4 dead <code>.controls</code> blocks, orphaned media queries) and an invisible, no-longer-used statistics bar removed.</li>
-	  </ul>
-	</div>
-	<div class="cl-version">
-	  <h3>v6.2.3 &mdash; 2026-08-03 &mdash; Cleanup</h3>
-	  <ul>
-		<li>Bug fix: An old, superfluous code block threw a console error on every load (<code>completedTeams is not defined</code>). The dead legacy code was removed entirely.</li>
-		<li>Cleanup: Thumbnail loading code that existed three times was reduced to one version; dead code and an unused toast element removed (~650 fewer lines).</li>
-		<li>Performance: Detected kit colors are now stored permanently (faster after a reload) and queried in batches for visible figures instead of individually.</li>
-		<li>Accessibility: The kit figure now has a descriptive label for screen readers.</li>
-		<li>Minor: Filenames with &bdquo;/&ldquo; are no longer incorrectly excluded (categories are recognized via the file extension anyway).</li>
-	  </ul>
-	</div>
-	<div class="cl-version">
-	  <h3>v6.2.2 &mdash; 2026-08-02 &mdash; Feinschliff</h3>
-	  <ul>
-		<li>The check-off buttons (team &amp; kit set) now blend into the design: dark, transparent background with a light border; checked = green with a white check mark. The glaring white and the gray border are gone.</li>
-	  </ul>
-	</div>
-	<div class="cl-version">
-	  <h3>v6.2.1 &mdash; 2026-08-02 &mdash; „Reihe"</h3>
-	  <ul>
-		<li>The kit sets are now displayed side by side in the <strong>Kit sets</strong> view too (as in the Teams view).</li>
-	  </ul>
-	</div>
-	<div class="cl-version">
-	  <h3>v6.2 &mdash; 2026-08-02 &mdash; „Reihe"</h3>
-	  <ul>
-		<li>A team's kits (home, away, third) are now displayed <strong>side by side</strong> – like in the Wikipedia infobox. On narrow screens they wrap automatically.</li>
-		<li>The kit figure is now <strong>cropped to the actual parts</strong> – no more large empty space around small kits.</li>
-		<li>The <strong>white rectangle</strong> below the shirt (socks placeholder) was removed: the figure now shows only the parts that exist. (The infobox code still fills the socks color with the shirt color.)</li>
-	  </ul>
-	</div>
-	<div class="cl-version">
-	  <h3>v6.1 &mdash; 2026-08-02 &mdash; „Aufstellung"</h3>
-	  <ul>
-		<li>New: In the <strong>Teams</strong> and <strong>Kit sets</strong> views each kit set is now displayed as a composed <strong>kit figure</strong> &ndash; exactly like the Wikipedia template <code>{{Football kit}}</code>: sleeves + shirt form the top, below it the shorts, below that the socks.</li>
-		<li>The color areas behind the patterns are detected automatically per part (same engine as the infobox copier). If a socks image is missing, the socks area takes the shirt color.</li>
-		<li>The individual parts remain visible below (with 📊 usage and check-off). The figure size follows the <strong>thumb width</strong>.</li>
-		<li>Performance: Colors are computed only for visible figures (lazy loading) and cached.</li>
-	  </ul>
-	</div>
-	<div class="cl-version">
-	  <h3>v6.0.3 &mdash; 2026-08-02 &mdash; Bug fix</h3>
-	  <ul>
-		<li>Bug fix: <strong>Thumb width</strong> now visibly changes the preview size. Previously only the loaded image resolution was adjusted, while the display stayed the same size due to fixed CSS dimensions. Now the column width and preview height are driven directly by the configured value.</li>
-	  </ul>
-	</div>
-	<div class="cl-version">
-	  <h3>v6.0.2 &mdash; 2026-08-02 &mdash; Bug fix</h3>
-	  <ul>
-		<li>Bug fix: Filters take effect immediately again. Changing <strong>Season</strong>, <strong>Thumb width</strong>, <strong>View</strong> or <strong>&bdquo;Kit parts only&ldquo;</strong> now updates the list directly (previously the value was only saved). <strong>Date</strong>, <strong>Limit</strong> and <strong>Depth</strong> reload the data, since they affect the query itself.</li>
-	  </ul>
-	</div>
-	<div class="cl-version">
-	  <h3>v6.0.1 &mdash; 2026-08-02 &mdash; Bug fix</h3>
-	  <ul>
-		<li>Bug fix: Categories (e.g.&thinsp;<code>Football_kit_body/VARAMAN_specific_patterns</code>) incorrectly showed up as a &bdquo;file&ldquo; in the results. Now only real media files (with an image extension) are shown.</li>
-	  </ul>
-	</div>
-	<div class="cl-version">
-	  <h3>v6.0 &mdash; 2026-07-23 &mdash; „Der Schneider"</h3>
-	  <ul>
-		<li>New: Each team tile now has the <strong>&bdquo;📋 Infobox code&ldquo;</strong> button. It copies the complete Wikipedia infobox block for <em>all</em> of the team's kits (home = 1, away = 2, …) directly to the clipboard.</li>
-		<li>The <code>pattern_*</code> values are derived from the filenames (e.g.&thinsp;<code>Kit_body_kaizerchiefs2627h.png</code> &rarr; <code>_kaizerchiefs2627h</code>).</li>
-		<li>The color values (<code>leftarm</code>, <code>body</code>, <code>rightarm</code>, <code>shorts</code>, <code>socks</code>) are detected per part from the original image &ndash; using the same silhouette color detection as the userscript &bdquo;Wikipedia Football Kit Code Copier&ldquo;.</li>
-		<li>If a socks image is missing, <code>pattern_so</code> stays empty and the socks color takes the main color of the shirt (<code>body</code>).</li>
-	  </ul>
-	</div>
-	<div class="cl-version">
-	  <h3>v5.4.2 &mdash; 2026-07-02 &mdash; Bug fix</h3>
-	  <ul>
-		<li>Bug fix: &bdquo;Show usage&ldquo; now also shows the <strong>local Commons usage</strong> (e.g.&thinsp;gallery pages like &bdquo;2026–27 Swiss Super League kits&ldquo;). Previously only usage on other wikis (<code>globalusage</code>) was loaded; local usage is now added via <code>fileusage</code>.</li>
-	  </ul>
-	</div>
-	<div class="cl-version">
-	  <h3>v5.4.1 &mdash; 2026-07-02 &mdash; Bug fix</h3>
-	  <ul>
-		<li>Bug fix: Incorrectly escaped backticks in <code>showStatistics()</code> made the first script block invalid. After the fix it runs fully again.</li>
-	  </ul>
-	</div>
-	<div class="cl-version">
-	  <h3>v5.4.0 &mdash; 2026-07-02 &mdash; Genuine new arrivals</h3>
-	  <ul>
-		<li>New: Only kit parts with a genuine <strong>new image upload</strong> from the selected date onward are now shown. Pure text/metadata changes to old files no longer appear.</li>
-		<li>Foundation: the actual upload date is determined via the MediaWiki API (<code>imageinfo</code>) &ndash; instead of the page timestamp <code>touched</code>, which changes with every edit.</li>
-		<li>The date shown on the cards now displays the real upload date; sorting is by that too.</li>
-		<li>Bug fix: Automatic saving of the filters (date, limit &amp; co.) works again &ndash; a missing control had previously aborted the script.</li>
-	  </ul>
-	</div>
-	<div class="cl-version">
-	  <h3>v5.3.2 &mdash; 2026-06-10 &mdash; Readable timestamps</h3>
-	  <ul>
-		<li>Timestamps in the file meta line (<code>file-meta</code>) are now shown in a readable format: <code>09.06.2026, 22:58</code> instead of <code>20260609205821</code></li>
-		<li>Conversion: MediaWiki UTC timestamp &rarr; local browser time (e.g.&thinsp;CEST) in German format</li>
-		<li>Robust parsing with a fallback to the original value on an invalid timestamp</li>
-	  </ul>
-	</div>
-		<div class="cl-version">
-	  <h3>v5.3.1 &mdash; 2026-04-27 &mdash; Historical kits</h3>
-	  <ul>
-		<li>Bugfix: Historical four-digit years correct (<code>tur1923h</code> &rarr; &bdquo;Season 1923&ldquo; instead of &bdquo;2019/2023&ldquo;)</li>
-		<li>Bugfix: Number variants <code>h1</code>, <code>h2</code>, <code>h2l</code> recognized as home (<code>crc90h1</code>, <code>jacuipense26h2l</code>, <code>marciliodias26h2l</code>)</li>
-		<li>Bugfix: Season parsed correctly for numbered kit suffixes (no longer &bdquo;No season&ldquo;)</li>
-		<li>Bugfix: Long socks with a number variant (<code>h2l</code>) correctly recognized as home + long socks</li>
-		<li>Dropdown shows historical single years (e.g.&thinsp;&bdquo;1923&ldquo;) correctly</li>
-		<li>All numbered variants normalized: <code>h2&rarr;h</code>, <code>a2&rarr;a</code>, <code>t2&rarr;t</code>, <code>gk2&rarr;gk</code></li>
-		<li>Changelog modal added (click the version number)</li>
-	  </ul>
-	</div>
-	<div class="cl-version">
-	  <h3>v5.3.0 &mdash; Lazy Kit Loader</h3>
-	  <ul>
-		<li>Thumbnails loaded on demand via IntersectionObserver through the MediaWiki API (no ORB blocking)</li>
-		<li>Batch loading up to 50 files per API call</li>
-		<li>Rate-limit protection: 120&thinsp;ms pause between batches</li>
-	  </ul>
-	</div>
-	<div class="cl-version">
-	  <h3>v5.2.0 &mdash; Unified Storage</h3>
-	  <ul>
-		<li>Unified storage system for filters and settings</li>
-		<li>Compact filter control bar</li>
-	  </ul>
-	</div>
+	<div class="cl-more"><a href="https://github.com/V-Toll/Kitly/blob/main/CHANGELOG.md" target="_blank" rel="noopener" data-de="Vollständiger Changelog auf GitHub →" data-en="Full changelog on GitHub →">Full changelog on GitHub →</a></div>
   </div>
 </div>
 

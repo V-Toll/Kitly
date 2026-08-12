@@ -5,6 +5,21 @@ All notable changes to *Kitly* – newest version first. These entries are also 
 Named minor versions (with a codename) are feature releases; patches cover bug fixes and polish.
 
 
+## v6.9.0 — 2026-08-11 — Code review fixes
+
+- New: the file meta line now also shows the **author** (uploader of the oldest version), e.g. „274 Bytes · 11.08.2026 · JonasBR“.
+- New: **„Reset filters“** button (below the filter groups) restores the filter/display options to their defaults.
+- Fix: the **kit type dropdown** no longer loses its other options after a selection.
+- Fix: the country chip **counts** in „Hide if used in“ are no longer inflated.
+- Fix: the **season filter** is now restored after a reload (like the kit type filter).
+- Fix: the „All done“ hint now also appears in the Teams view.
+- Hardening: file names are no longer written into inline event handlers (delegated click via `data-file`), and page titles/URLs in the usage modal are HTML-escaped – closing a narrow injection surface from external file names. A failed cache write no longer turns a successful fetch into an error.
+- Housekeeping: the usage cache is pruned (entries older than 24 h) and the color cache is capped, so `localStorage` no longer grows without bound. Removed a batch of dead CSS and stale code.
+
+## v6.8.3 — 2026-08-11 — Anniversary editions
+
+- Anniversary/jubilee kits with a `<years>y` suffix (e.g. `Kit_body_djurgardens135y.png`) are now recognized: team = „Djurgardens“, type = „135-year edition“, no season – instead of team „Djurgardens1“, „Season 1935“ and type „Y“. Also works for 50y, 100y, 150y …
+
 ## v6.8.2 — 2026-08-11 — English by default
 
 - **English is now the project's main language.** The interface still auto-detects your browser language and switches to German for German browsers, but the default and fallback is now always English (previously German).
