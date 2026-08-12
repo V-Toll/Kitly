@@ -94,7 +94,7 @@ The entire interface is available in **English and German**; on first launch the
 
 ## 📦 Version & changelog
 
-Current version: **v6.9.0**. You'll find the full history in [CHANGELOG.md](CHANGELOG.md) as well as directly in the tool via the **⚽** version badge.
+Current version: **v6.9.1**. You'll find the full history in [CHANGELOG.md](CHANGELOG.md) as well as directly in the tool via the **⚽** version badge.
 
 ## 📄 License
 

@@ -5,6 +5,10 @@ All notable changes to *Kitly* – newest version first. These entries are also 
 Named minor versions (with a codename) are feature releases; patches cover bug fixes and polish.
 
 
+## v6.9.1 — 2026-08-11 — Bug fix
+
+- Fix: the "All done" hint counted teams together with their nested kit sets (e.g. "16" for 7 teams). It now counts only the top-level entries and names them per view: "All N teams / kit sets / kit parts completed".
+
 ## v6.9.0 — 2026-08-11 — Code review fixes
 
 - New: the file meta line now also shows the **author** (uploader of the oldest version), e.g. „274 Bytes · 11.08.2026 · JonasBR“.
