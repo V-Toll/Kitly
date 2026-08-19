@@ -5,6 +5,10 @@ All notable changes to *Kitly* – newest version first. These entries are also 
 Named minor versions (with a codename) are feature releases; patches cover bug fixes and polish.
 
 
+## v6.10.1 — 2026-08-20 — Bug fix
+
+- Fix: file names with an ordinal kit number after the season, e.g. `Kit_body_bohemians2026-3rd.png`, are now parsed correctly – team "Bohemians", season "2026", type "Third" – instead of team "Bohemians2026-3" with no season. Recognizes 1st/2nd/3rd/4th (home / away / third / fourth).
+
 ## v6.10.0 — 2026-08-18 — Categories
 
 - New: below the "Used in" line, each kit set now also lists the **Commons categories** of its files (deduplicated, named once even when shared by several parts), with links to the category pages. Only visible content categories are shown; hidden license/maintenance categories are omitted.

@@ -1218,7 +1218,7 @@
   <h1>
     <span class="title-icon">⚽</span>
     <span class="title-main">Kitly</span>
-    <span class="title-badge" onclick="showChangelogModal()" style="cursor:pointer" title="Show changelog">v6.10.0</span>
+    <span class="title-badge" onclick="showChangelogModal()" style="cursor:pointer" title="Show changelog">v6.10.1</span>
   </h1>
   
   <div class="header-actions">
@@ -1717,6 +1717,19 @@ function normKitType(kt) {
   if (t === 'g' || t === 'gkd') return 'gk';
   return t;
 }
+// v6.10.1: Trikotnummer/Ordinal -> kanonischer Typ. Erkennt „1st/2nd/3rd/4th", bloße
+// Ziffern „1–4" (1=Heim, 2=Auswärts, 3=Ausweich, 4=viertes) sowie Klartext. Gibt null
+// zurück, wenn kein Trikottyp erkannt wird – dann bleibt der Zusatz ein freies Label.
+function kitTypeFromToken(tok) {
+  if (!tok) return null;
+  var m = {
+    '1st': 'h', '2nd': 'a', '3rd': 't', '4th': 'f',
+    '1': 'h', '2': 'a', '3': 't', '4': 'f',
+    'home': 'h', 'away': 'a', 'third': 't', 'fourth': 'f',
+    'gk': 'gk', 'goalkeeper': 'gk', 'gkh': 'gkh', 'gka': 'gka', 'gkt': 'gkt'
+  };
+  return m[String(tok).toLowerCase()] || null;
+}
 // v6.3.11: Der Saison-Filter nutzt exakt dieselbe Saison wie die Team-Anzeige
 // (abgeleitet über analyzeKitFilename), damit beide immer übereinstimmen.
 function extractSeasons(filename) {
@@ -1819,14 +1832,25 @@ function analyzeKitFilename(filename) {
   // kitTypeMatch-Regel ("Cisf16h", keine Saison). Der Zusatz wird als sichtbarer Typ
   // genutzt (behält das aussagekräftige Set-Label), die Rolle (h/a/t/gk) fließt in die
   // Set-Kennung ein, damit z.B. "…16h_recopa" und "…16a_recopa" getrennt bleiben.
-  var suffixSeason = workingName.match(/^(.+?)(\d{2,4})([a-z]+)?[_\-]([a-z][a-z0-9]*)$/i);
+  // v6.10.1: Zusatz darf auch mit Ziffer beginnen (Ordinal „3rd"). Ist der Zusatz eine
+  // erkannte Trikotnummer (1st/2nd/3rd/4th, 1–4, home/away/third …), IST er der Trikottyp
+  // – z.B. "bohemians2026-3rd" -> Team „bohemians", Saison „2026", Typ „t" (Ausweich).
+  // Andernfalls bleibt er ein freies Label (z.B. „recopa") und die Rolle (h/a/t) fließt
+  // in die Set-Kennung, damit z.B. "…16h_recopa" und "…16a_recopa" getrennt bleiben.
+  var suffixSeason = workingName.match(/^(.+?)(\d{2,4})([a-z]+)?[_\-]([a-z0-9]+)$/i);
   if (suffixSeason && !/^(nike|adidas|puma|umbro|kappa)/i.test(suffixSeason[1])) {
 	result.team = suffixSeason[1].replace(/^[\s_\-–\/]+|[\s_\-–\/]+$/g, '').trim();
 	result.season = suffixSeason[2];
-	var sfLetter = normKitType((suffixSeason[3] || '').toLowerCase()); // h/a/t/gk … (kann leer sein)
-	var sfDesc = suffixSeason[4].toLowerCase();                        // z.B. "recopa"
-	result.kit_type = sfDesc;
-	result.set_id = result.team + "_" + result.season + "_" + (sfLetter ? sfLetter + "-" : "") + sfDesc;
+	var sfTok = suffixSeason[4].toLowerCase();
+	var sfType = kitTypeFromToken(sfTok);
+	if (sfType) {
+	  result.kit_type = sfType;                                       // Zusatz = Trikottyp (z.B. "3rd" -> "t")
+	  result.set_id = result.team + "_" + result.season + "_" + result.kit_type;
+	} else {
+	  var sfLetter = normKitType((suffixSeason[3] || '').toLowerCase()); // h/a/t/gk … (kann leer sein)
+	  result.kit_type = sfTok;                                        // freies Label (z.B. "recopa")
+	  result.set_id = result.team + "_" + result.season + "_" + (sfLetter ? sfLetter + "-" : "") + sfTok;
+	}
 	return result;
   }
   var fourDigitMatch = workingName.match(/^(.+?)(\d{4})([a-z][a-z0-9]*)$/i);
@@ -3952,6 +3976,12 @@ function checkEmptyState() {
 	<button class="cl-close" onclick="closeChangelogModal()" aria-label="Close">&#x2715;</button>
 	<h2>&#x26BD; Changelog &mdash; Kitly</h2>
 	<div class="cl-version">
+	  <h3>v6.10.1 &mdash; 2026-08-20 &mdash; Bug fix</h3>
+	  <ul>
+		<li>Fix: file names with an ordinal kit number after the season, e.g. <code>Kit_body_bohemians2026-3rd.png</code>, are now parsed correctly &ndash; team &bdquo;Bohemians&ldquo;, season &bdquo;2026&ldquo;, type &bdquo;Third&ldquo; &ndash; instead of team &bdquo;Bohemians2026-3&ldquo; with no season. Recognizes 1st/2nd/3rd/4th (home / away / third / fourth).</li>
+	  </ul>
+	</div>
+	<div class="cl-version">
 	  <h3>v6.10.0 &mdash; 2026-08-18 &mdash; Categories</h3>
 	  <ul>
 		<li>New: below the &bdquo;Used in&ldquo; line, each kit set now also lists the <strong>Commons categories</strong> of its files (deduplicated, named once even when shared), with links to the category pages. Only visible content categories are shown; hidden license/maintenance categories are omitted.</li>
@@ -3962,19 +3992,6 @@ function checkEmptyState() {
 	  <h3>v6.9.1 &mdash; 2026-08-11 &mdash; Bug fix</h3>
 	  <ul>
 		<li>Fix: the &bdquo;All done&ldquo; hint counted teams together with their nested kit sets (e.g. &bdquo;16&ldquo; for 7 teams). It now counts only the top-level entries and names them per view: &bdquo;All N teams / kit sets / kit parts completed&ldquo;.</li>
-	  </ul>
-	</div>
-	<div class="cl-version">
-	  <h3>v6.9.0 &mdash; 2026-08-11 &mdash; Code review fixes</h3>
-	  <ul>
-		<li>New: the file meta line now also shows the <strong>author</strong> (uploader of the oldest version), e.g. &bdquo;274 Bytes &middot; 11.08.2026 &middot; JonasBR&ldquo;.</li>
-		<li>New: <strong>&bdquo;Reset filters&ldquo;</strong> button (below the filter groups) restores the filter/display options to their defaults.</li>
-		<li>Fix: the <strong>kit type dropdown</strong> no longer loses its other options after a selection.</li>
-		<li>Fix: the country chip <strong>counts</strong> in &bdquo;Hide if used in&ldquo; are no longer inflated.</li>
-		<li>Fix: the <strong>season filter</strong> is now restored after a reload (like the kit type filter).</li>
-		<li>Fix: the &bdquo;All done&ldquo; hint now also appears in the Teams view.</li>
-		<li>Hardening: file names are no longer written into inline event handlers (delegated click via <code>data-file</code>), and page titles/URLs in the usage modal are HTML-escaped &ndash; closing a narrow injection surface from external file names. A failed cache write no longer turns a successful fetch into an error.</li>
-		<li>Housekeeping: the usage cache is pruned (entries older than 24&nbsp;h) and the color cache is capped, so <code>localStorage</code> no longer grows without bound. Removed a batch of dead CSS and stale code.</li>
 	  </ul>
 	</div>
 	<div class="cl-more"><a href="https://github.com/V-Toll/Kitly/blob/main/CHANGELOG.md" target="_blank" rel="noopener" data-de="Vollständiger Changelog auf GitHub →" data-en="Full changelog on GitHub →">Full changelog on GitHub →</a></div>
