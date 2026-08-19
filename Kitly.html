@@ -1173,6 +1173,9 @@
   .kitset-usage .ku-flag { font-size: 12px; }
   .kitset-usage img.ku-commons { height: 13px; width: auto; vertical-align: -2px; }
   .kitset-usage .ku-wiki { font-size: 9px; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.3px; }
+  /* v6.10.0: Verwendungs- und Kategorienzeile untereinander. */
+  .kitset-usage .ku-row + .ku-row { margin-top: 3px; }
+  .kitset-usage .ku-cats-row { opacity: 0.92; }
 
   /* v6.8.0: „Ausblenden, wenn verwendet in …" – Flaggen-Chips zum Aktivieren. */
   .uf-row { grid-column: 1 / -1; }
@@ -1215,7 +1218,7 @@
   <h1>
     <span class="title-icon">⚽</span>
     <span class="title-main">Kitly</span>
-    <span class="title-badge" onclick="showChangelogModal()" style="cursor:pointer" title="Show changelog">v6.9.1</span>
+    <span class="title-badge" onclick="showChangelogModal()" style="cursor:pointer" title="Show changelog">v6.10.0</span>
   </h1>
   
   <div class="header-actions">
@@ -1356,6 +1359,7 @@ var I18N = {
     "usage.empty": "📭 Diese Datei wird noch nicht verwendet.",
     "usage.error": "❌ Fehler beim Laden.",
     "usage.inlineLabel": "Verwendet in:",
+    "usage.catsLabel": "Kategorien:",
     "usage.inlineNone": "Noch nicht verwendet",
     "usage.inlineLoading": "Verwendung wird geladen…",
     "usage.scanning": "Prüfe Verwendung … {n}/{total}",
@@ -1431,6 +1435,7 @@ var I18N = {
     "usage.empty": "📭 This file is not used yet.",
     "usage.error": "❌ Error while loading.",
     "usage.inlineLabel": "Used in:",
+    "usage.catsLabel": "Categories:",
     "usage.inlineNone": "Not used yet",
     "usage.inlineLoading": "Loading usage…",
     "usage.scanning": "Checking usage … {n}/{total}",
@@ -1805,6 +1810,23 @@ function analyzeKitFilename(filename) {
 	result.season = null;                 // Jubiläumsedition hat keine Saison
 	result.kit_type = 'y' + anniv[2];     // z.B. "y135"
 	result.set_id = result.team + "_noseason_" + result.kit_type;
+	return result;
+  }
+  // v6.10.0: Kompakte Saison+Typ mit NACHGESTELLTEM Zusatz, z.B. "cisf16h_recopa"
+  // -> Team "cisf", Saison "16" (angezeigt als 2016), Zusatz "recopa". Der Zusatz nach
+  // "_"/"-" verhindert, dass die 2-/4-stelligen Saison-Regeln unten greifen (deren
+  // Typgruppe erlaubt keinen Unterstrich) -> bisher landete das in der generischen
+  // kitTypeMatch-Regel ("Cisf16h", keine Saison). Der Zusatz wird als sichtbarer Typ
+  // genutzt (behält das aussagekräftige Set-Label), die Rolle (h/a/t/gk) fließt in die
+  // Set-Kennung ein, damit z.B. "…16h_recopa" und "…16a_recopa" getrennt bleiben.
+  var suffixSeason = workingName.match(/^(.+?)(\d{2,4})([a-z]+)?[_\-]([a-z][a-z0-9]*)$/i);
+  if (suffixSeason && !/^(nike|adidas|puma|umbro|kappa)/i.test(suffixSeason[1])) {
+	result.team = suffixSeason[1].replace(/^[\s_\-–\/]+|[\s_\-–\/]+$/g, '').trim();
+	result.season = suffixSeason[2];
+	var sfLetter = normKitType((suffixSeason[3] || '').toLowerCase()); // h/a/t/gk … (kann leer sein)
+	var sfDesc = suffixSeason[4].toLowerCase();                        // z.B. "recopa"
+	result.kit_type = sfDesc;
+	result.set_id = result.team + "_" + result.season + "_" + (sfLetter ? sfLetter + "-" : "") + sfDesc;
 	return result;
   }
   var fourDigitMatch = workingName.match(/^(.+?)(\d{4})([a-z][a-z0-9]*)$/i);
@@ -2302,6 +2324,40 @@ function setupUsageObserver() {
   slots.forEach(function(s) { usageObserver.observe(s.closest('.kitset-card') || s); });
 }
 // Verwendung ALLER Teile eines Kitsets sammeln, deduplizieren und als Links anzeigen.
+// v6.10.0: Kategorien der Kitset-Dateien holen (gebündelt, ein API-Aufruf). Nur
+// SICHTBARE Kategorien (clshow=!hidden) – die versteckten Lizenz-/Wartungskategorien
+// (CC-Zero, Self-published work, SDC-Tracking …) wären reines Rauschen. Session-Cache.
+var categoryCache = {}; // Dateiname -> [Kategorienamen]
+async function fetchCategoriesForFiles(files) {
+  var need = files.filter(function(f) { return !(f in categoryCache); });
+  for (var i = 0; i < need.length; i += 50) {
+    var batch = need.slice(i, i + 50);
+    var url = 'https://commons.wikimedia.org/w/api.php?' + new URLSearchParams({
+      action: 'query', titles: batch.map(function(f) { return 'File:' + f; }).join('|'),
+      prop: 'categories', cllimit: 'max', clshow: '!hidden', format: 'json', origin: '*'
+    });
+    try {
+      var data = await apiFetchJsonRetry(url, 3);
+      var normalMap = {};
+      if (data.query.normalized) data.query.normalized.forEach(function(n) { normalMap[n.to] = n.from; });
+      Object.values(data.query.pages).forEach(function(page) {
+        var list = (page.categories || []).map(function(c) { return c.title.replace(/^Category:/, ''); });
+        [page.title, normalMap[page.title]].forEach(function(full) {
+          if (!full) return;
+          var name = full.replace(/^File:/, '');
+          categoryCache[name] = list; categoryCache[name.replace(/ /g, '_')] = list; categoryCache[name.replace(/_/g, ' ')] = list;
+        });
+      });
+    } catch (e) { batch.forEach(function(f) { if (!(f in categoryCache)) categoryCache[f] = []; }); }
+  }
+  // Union über alle Teile des Kitsets, dedupliziert, Reihenfolge erhalten.
+  var seen = {}, out = [];
+  files.forEach(function(f) {
+    var list = categoryCache[f] || categoryCache[f.replace(/_/g, ' ')] || categoryCache[f.replace(/ /g, '_')] || [];
+    list.forEach(function(c) { if (!seen[c]) { seen[c] = 1; out.push(c); } });
+  });
+  return out;
+}
 function fillKitsetUsage(el) {
   var card = el.closest ? el.closest('.kitset-card') : null;
   if (!card) return;
@@ -2311,23 +2367,41 @@ function fillKitsetUsage(el) {
   if (!files.length) { el.innerHTML = ''; return; }
   var esc = function(s) { return String(s).replace(/[&<>"]/g, function(c) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]; }); };
   el.innerHTML = '<span class="ku-info">' + t('usage.inlineLoading') + '</span>';
-  Promise.all(files.map(function(f) { return fetchGlobalUsage(f).catch(function() { return []; }); }))
-    .then(function(results) {
+  Promise.all([
+    Promise.all(files.map(function(f) { return fetchGlobalUsage(f).catch(function() { return []; }); })),
+    fetchCategoriesForFiles(files).catch(function() { return []; })
+  ]).then(function(res) {
+      var results = res[0], cats = res[1];
+      // Zeile 1: Verwendung
       var seen = {}, pages = [];
       results.forEach(function(list) {
         (list || []).forEach(function(u) {
           if (u && u.url && !seen[u.url]) { seen[u.url] = 1; pages.push(u); }
         });
       });
-      if (!pages.length) { el.innerHTML = '<span class="ku-none">📊 ' + t('usage.inlineNone') + '</span>'; return; }
-      pages = pages.map(function(u, i) { return { u: u, i: i }; })
-                   .sort(function(a, b) { return (usageWikiRank(a.u.wiki) - usageWikiRank(b.u.wiki)) || (a.i - b.i); })
-                   .map(function(x) { return x.u; });
-      var links = pages.map(function(u) {
-        return '<span class="ku-item">' + usageWikiMarker(u.wiki)
-             + '<a href="' + esc(u.url) + '" target="_blank" rel="noopener noreferrer">' + esc(u.title.replace(/_/g, ' ')) + '</a></span>';
-      }).join(', ');
-      el.innerHTML = '<span class="ku-label">📊 ' + t('usage.inlineLabel') + '</span> ' + links;
+      var usageHtml;
+      if (!pages.length) {
+        usageHtml = '<span class="ku-none">📊 ' + t('usage.inlineNone') + '</span>';
+      } else {
+        pages = pages.map(function(u, i) { return { u: u, i: i }; })
+                     .sort(function(a, b) { return (usageWikiRank(a.u.wiki) - usageWikiRank(b.u.wiki)) || (a.i - b.i); })
+                     .map(function(x) { return x.u; });
+        var links = pages.map(function(u) {
+          return '<span class="ku-item">' + usageWikiMarker(u.wiki)
+               + '<a href="' + esc(u.url) + '" target="_blank" rel="noopener noreferrer">' + esc(u.title.replace(/_/g, ' ')) + '</a></span>';
+        }).join(', ');
+        usageHtml = '<span class="ku-label">📊 ' + t('usage.inlineLabel') + '</span> ' + links;
+      }
+      var html = '<div class="ku-row">' + usageHtml + '</div>';
+      // Zeile 2: Kategorien (nur wenn vorhanden)
+      if (cats && cats.length) {
+        var catLinks = cats.map(function(c) {
+          var href = 'https://commons.wikimedia.org/wiki/' + encodeURIComponent(('Category:' + c).replace(/ /g, '_'));
+          return '<a href="' + esc(href) + '" target="_blank" rel="noopener noreferrer">' + esc(c) + '</a>';
+        }).join(', ');
+        html += '<div class="ku-row ku-cats-row"><span class="ku-label">🗂️ ' + t('usage.catsLabel') + '</span> ' + catLinks + '</div>';
+      }
+      el.innerHTML = html;
     })
     .catch(function() { el.innerHTML = '<span class="ku-none">' + t('usage.error') + '</span>'; });
 }
@@ -3878,6 +3952,13 @@ function checkEmptyState() {
 	<button class="cl-close" onclick="closeChangelogModal()" aria-label="Close">&#x2715;</button>
 	<h2>&#x26BD; Changelog &mdash; Kitly</h2>
 	<div class="cl-version">
+	  <h3>v6.10.0 &mdash; 2026-08-18 &mdash; Categories</h3>
+	  <ul>
+		<li>New: below the &bdquo;Used in&ldquo; line, each kit set now also lists the <strong>Commons categories</strong> of its files (deduplicated, named once even when shared), with links to the category pages. Only visible content categories are shown; hidden license/maintenance categories are omitted.</li>
+		<li>Fix: file names with a trailing tag after a compact season, e.g. <code>Kit_body_cisf16h_recopa.png</code>, are now parsed correctly &ndash; team &bdquo;Cisf&ldquo;, season &bdquo;2016&ldquo;, tag &bdquo;recopa&ldquo; &ndash; instead of team &bdquo;Cisf16h&ldquo; with no season.</li>
+	  </ul>
+	</div>
+	<div class="cl-version">
 	  <h3>v6.9.1 &mdash; 2026-08-11 &mdash; Bug fix</h3>
 	  <ul>
 		<li>Fix: the &bdquo;All done&ldquo; hint counted teams together with their nested kit sets (e.g. &bdquo;16&ldquo; for 7 teams). It now counts only the top-level entries and names them per view: &bdquo;All N teams / kit sets / kit parts completed&ldquo;.</li>
@@ -3894,12 +3975,6 @@ function checkEmptyState() {
 		<li>Fix: the &bdquo;All done&ldquo; hint now also appears in the Teams view.</li>
 		<li>Hardening: file names are no longer written into inline event handlers (delegated click via <code>data-file</code>), and page titles/URLs in the usage modal are HTML-escaped &ndash; closing a narrow injection surface from external file names. A failed cache write no longer turns a successful fetch into an error.</li>
 		<li>Housekeeping: the usage cache is pruned (entries older than 24&nbsp;h) and the color cache is capped, so <code>localStorage</code> no longer grows without bound. Removed a batch of dead CSS and stale code.</li>
-	  </ul>
-	</div>
-	<div class="cl-version">
-	  <h3>v6.8.3 &mdash; 2026-08-11 &mdash; Anniversary editions</h3>
-	  <ul>
-		<li>Anniversary/jubilee kits with a <code>&lt;years&gt;y</code> suffix (e.g. <code>Kit_body_djurgardens135y.png</code>) are now recognized: team = &bdquo;Djurgardens&ldquo;, type = &bdquo;135-year edition&ldquo;, no season &ndash; instead of team &bdquo;Djurgardens1&ldquo;, &bdquo;Season 1935&ldquo; and type &bdquo;Y&ldquo;. Also works for 50y, 100y, 150y &hellip;</li>
 	  </ul>
 	</div>
 	<div class="cl-more"><a href="https://github.com/V-Toll/Kitly/blob/main/CHANGELOG.md" target="_blank" rel="noopener" data-de="Vollständiger Changelog auf GitHub →" data-en="Full changelog on GitHub →">Full changelog on GitHub →</a></div>

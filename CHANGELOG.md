@@ -5,6 +5,11 @@ All notable changes to *Kitly* – newest version first. These entries are also 
 Named minor versions (with a codename) are feature releases; patches cover bug fixes and polish.
 
 
+## v6.10.0 — 2026-08-18 — Categories
+
+- New: below the "Used in" line, each kit set now also lists the **Commons categories** of its files (deduplicated, named once even when shared by several parts), with links to the category pages. Only visible content categories are shown; hidden license/maintenance categories are omitted.
+- Fix: file names with a trailing tag after a compact season, e.g. `Kit_body_cisf16h_recopa.png`, are now parsed correctly – team "Cisf", season "2016", tag "recopa" – instead of team "Cisf16h" with no season.
+
 ## v6.9.1 — 2026-08-11 — Bug fix
 
 - Fix: the "All done" hint counted teams together with their nested kit sets (e.g. "16" for 7 teams). It now counts only the top-level entries and names them per view: "All N teams / kit sets / kit parts completed".
