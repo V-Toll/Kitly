@@ -5,6 +5,10 @@ All notable changes to *Kitly* – newest version first. These entries are also 
 Named minor versions (with a codename) are feature releases; patches cover bug fixes and polish.
 
 
+## v6.10.3 — 2026-08-31 — Transparent kit type
+
+- New: the `tr` kit-type suffix, e.g. `Kit_body_kashima26tr.png`, is now labelled "Transparent" (team "Kashima", season "2026") instead of the raw code "tr".
+
 ## v6.10.2 — 2026-08-30 — Copa Libertadores kits
 
 - New: recognizes the Copa Libertadores naming scheme `<team>L<role><yy>`, e.g. `Kit_body_gremioLT17.png` → team "Gremio", season "2017", type "Copa Libertadores third". Role `H`/`A`/`T` = home / away / third; a trailing `_2` version counter is ignored.
