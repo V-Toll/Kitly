@@ -5,6 +5,10 @@ All notable changes to *Kitly* – newest version first. These entries are also 
 Named minor versions (with a codename) are feature releases; patches cover bug fixes and polish.
 
 
+## v6.10.2 — 2026-08-30 — Copa Libertadores kits
+
+- New: recognizes the Copa Libertadores naming scheme `<team>L<role><yy>`, e.g. `Kit_body_gremioLT17.png` → team "Gremio", season "2017", type "Copa Libertadores third". Role `H`/`A`/`T` = home / away / third; a trailing `_2` version counter is ignored.
+
 ## v6.10.1 — 2026-08-20 — Bug fix
 
 - Fix: file names with an ordinal kit number after the season, e.g. `Kit_body_bohemians2026-3rd.png`, are now parsed correctly – team "Bohemians", season "2026", type "Third" – instead of team "Bohemians2026-3" with no season. Recognizes 1st/2nd/3rd/4th (home / away / third / fourth).

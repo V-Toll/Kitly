@@ -1218,7 +1218,7 @@
   <h1>
     <span class="title-icon">⚽</span>
     <span class="title-main">Kitly</span>
-    <span class="title-badge" onclick="showChangelogModal()" style="cursor:pointer" title="Show changelog">v6.10.1</span>
+    <span class="title-badge" onclick="showChangelogModal()" style="cursor:pointer" title="Show changelog">v6.10.2</span>
   </h1>
   
   <div class="header-actions">
@@ -1381,6 +1381,7 @@ var I18N = {
     "kitType.h": "Heim", "kitType.a": "Auswärts", "kitType.t": "Ausweich",
     "kitType.e": "Europa", "kitType.f": "Viertes", "kitType.gk": "Torhüter",
     "kitType.gkh": "Torhüter Heim", "kitType.gka": "Torhüter Auswärts", "kitType.gkt": "Torhüter Ausweich",
+    "kitType.libh": "Copa Libertadores Heim", "kitType.liba": "Copa Libertadores Auswärts", "kitType.libt": "Copa Libertadores Ausweich",
     "kitType.anniv": "{n}-Jahre-Edition",
     "part.body": "Trikot", "part.leftArm": "L. Ärmel", "part.rightArm": "R. Ärmel",
     "part.shorts": "Hose", "part.socks": "Stutzen", "part.socksLong": "Stutzen (L)",
@@ -1457,6 +1458,7 @@ var I18N = {
     "kitType.h": "Home", "kitType.a": "Away", "kitType.t": "Third",
     "kitType.e": "Europe", "kitType.f": "Fourth", "kitType.gk": "Goalkeeper",
     "kitType.gkh": "Goalkeeper home", "kitType.gka": "Goalkeeper away", "kitType.gkt": "Goalkeeper third",
+    "kitType.libh": "Copa Libertadores home", "kitType.liba": "Copa Libertadores away", "kitType.libt": "Copa Libertadores third",
     "kitType.anniv": "{n}-year edition",
     "part.body": "Body", "part.leftArm": "L. sleeve", "part.rightArm": "R. sleeve",
     "part.shorts": "Shorts", "part.socks": "Socks", "part.socksLong": "Socks (L)",
@@ -1515,7 +1517,7 @@ function tp(key, n, vars) {
 // Übersetzte Anzeige-Namen für Trikotteile und Trikottypen (überall wiederverwendet).
 var PART_KEY = { body: 'part.body', left_arm: 'part.leftArm', right_arm: 'part.rightArm', shorts: 'part.shorts', socks: 'part.socks' };
 function partName(p) { return PART_KEY[p] ? t(PART_KEY[p]) : p; }
-var KITTYPE_KEY = { h: 'kitType.h', a: 'kitType.a', t: 'kitType.t', e: 'kitType.e', f: 'kitType.f', gk: 'kitType.gk', gkd: 'kitType.gk', gkh: 'kitType.gkh', gka: 'kitType.gka', gkt: 'kitType.gkt' };
+var KITTYPE_KEY = { h: 'kitType.h', a: 'kitType.a', t: 'kitType.t', e: 'kitType.e', f: 'kitType.f', gk: 'kitType.gk', gkd: 'kitType.gk', gkh: 'kitType.gkh', gka: 'kitType.gka', gkt: 'kitType.gkt', libh: 'kitType.libh', liba: 'kitType.liba', libt: 'kitType.libt' };
 function kitTypeName(kt) {
   var m = kt && kt.match(/^y(\d+)$/); // v6.8.3: Jubiläumsedition "y135" -> "135-year edition"
   if (m) return t('kitType.anniv', { n: m[1] });
@@ -1832,6 +1834,21 @@ function analyzeKitFilename(filename) {
   // kitTypeMatch-Regel ("Cisf16h", keine Saison). Der Zusatz wird als sichtbarer Typ
   // genutzt (behält das aussagekräftige Set-Label), die Rolle (h/a/t/gk) fließt in die
   // Set-Kennung ein, damit z.B. "…16h_recopa" und "…16a_recopa" getrennt bleiben.
+  // v6.10.2: Copa-Libertadores-Trikots. Schema <Team>L<Rolle><YY>[_<Variante>], z.B.
+  // "gremioLT17" -> Team „gremio", Saison „17" (=2017), Typ Libertadores Ausweich.
+  // L = Libertadores; Rolle H/A/T = Heim/Auswärts/Ausweich. Groß-Schreibung von L UND
+  // Rolle ist entscheidend (KEIN /i-Flag), damit ein kleines „l" im Teamnamen
+  // (z.B. „nacional") nicht fälschlich greift. Optionaler „_<Ziffer>"-Variantenzähler.
+  // MUSS vor suffixSeason stehen, sonst würde „flaLH17_2" dort falsch als Zusatz „2"
+  // (= Auswärts) interpretiert.
+  var lib = workingName.match(/^(.+?)L([HAT])(\d{2,4})(?:_\d+)?$/);
+  if (lib && !/^(nike|adidas|puma|umbro|kappa)/i.test(lib[1])) {
+	result.team = lib[1].replace(/^[\s_\-–\/]+|[\s_\-–\/]+$/g, '').trim();
+	result.season = lib[3];
+	result.kit_type = { H: 'libh', A: 'liba', T: 'libt' }[lib[2]];
+	result.set_id = result.team + "_" + result.season + "_" + result.kit_type;
+	return result;
+  }
   // v6.10.1: Zusatz darf auch mit Ziffer beginnen (Ordinal „3rd"). Ist der Zusatz eine
   // erkannte Trikotnummer (1st/2nd/3rd/4th, 1–4, home/away/third …), IST er der Trikottyp
   // – z.B. "bohemians2026-3rd" -> Team „bohemians", Saison „2026", Typ „t" (Ausweich).
@@ -3976,6 +3993,12 @@ function checkEmptyState() {
 	<button class="cl-close" onclick="closeChangelogModal()" aria-label="Close">&#x2715;</button>
 	<h2>&#x26BD; Changelog &mdash; Kitly</h2>
 	<div class="cl-version">
+	  <h3>v6.10.2 &mdash; 2026-08-30 &mdash; Copa Libertadores kits</h3>
+	  <ul>
+		<li>New: recognizes the Copa Libertadores naming scheme <code>&lt;team&gt;L&lt;role&gt;&lt;yy&gt;</code>, e.g. <code>Kit_body_gremioLT17.png</code> &rarr; team &bdquo;Gremio&ldquo;, season &bdquo;2017&ldquo;, type &bdquo;Copa Libertadores third&ldquo;. Role <code>H</code>/<code>A</code>/<code>T</code> = home / away / third; a trailing <code>_2</code> version counter is ignored.</li>
+	  </ul>
+	</div>
+	<div class="cl-version">
 	  <h3>v6.10.1 &mdash; 2026-08-20 &mdash; Bug fix</h3>
 	  <ul>
 		<li>Fix: file names with an ordinal kit number after the season, e.g. <code>Kit_body_bohemians2026-3rd.png</code>, are now parsed correctly &ndash; team &bdquo;Bohemians&ldquo;, season &bdquo;2026&ldquo;, type &bdquo;Third&ldquo; &ndash; instead of team &bdquo;Bohemians2026-3&ldquo; with no season. Recognizes 1st/2nd/3rd/4th (home / away / third / fourth).</li>
@@ -3986,12 +4009,6 @@ function checkEmptyState() {
 	  <ul>
 		<li>New: below the &bdquo;Used in&ldquo; line, each kit set now also lists the <strong>Commons categories</strong> of its files (deduplicated, named once even when shared), with links to the category pages. Only visible content categories are shown; hidden license/maintenance categories are omitted.</li>
 		<li>Fix: file names with a trailing tag after a compact season, e.g. <code>Kit_body_cisf16h_recopa.png</code>, are now parsed correctly &ndash; team &bdquo;Cisf&ldquo;, season &bdquo;2016&ldquo;, tag &bdquo;recopa&ldquo; &ndash; instead of team &bdquo;Cisf16h&ldquo; with no season.</li>
-	  </ul>
-	</div>
-	<div class="cl-version">
-	  <h3>v6.9.1 &mdash; 2026-08-11 &mdash; Bug fix</h3>
-	  <ul>
-		<li>Fix: the &bdquo;All done&ldquo; hint counted teams together with their nested kit sets (e.g. &bdquo;16&ldquo; for 7 teams). It now counts only the top-level entries and names them per view: &bdquo;All N teams / kit sets / kit parts completed&ldquo;.</li>
 	  </ul>
 	</div>
 	<div class="cl-more"><a href="https://github.com/V-Toll/Kitly/blob/main/CHANGELOG.md" target="_blank" rel="noopener" data-de="Vollständiger Changelog auf GitHub →" data-en="Full changelog on GitHub →">Full changelog on GitHub →</a></div>
