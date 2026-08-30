@@ -684,12 +684,70 @@
     .loading .box {
       background: var(--pitch-dark);
       border: 3px solid var(--line-white);
-      padding: 24px 32px;
+      padding: 26px 40px 22px;
       border-radius: 16px;
       font-size: 18px;
       color: var(--pitch-highlight);
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
       font-weight: 700;
+      /* v6.11.0: kleine Lade-Animation – Ball + Text untereinander, zentriert. */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+    /* v6.11.0: hüpfender, rollender Fußball mit mitschwingendem Schatten. */
+    .loading-ball-wrap {
+      position: relative;
+      width: 56px;
+      height: 52px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+    .loading-ball {
+      font-size: 38px;
+      line-height: 1;
+      will-change: transform;
+      animation: kitlyBall 0.95s cubic-bezier(0.5, 0.05, 0.5, 0.95) infinite;
+    }
+    .loading-ball-shadow {
+      position: absolute;
+      bottom: -3px;
+      width: 32px;
+      height: 7px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.5);
+      filter: blur(2px);
+      animation: kitlyBallShadow 0.95s cubic-bezier(0.5, 0.05, 0.5, 0.95) infinite;
+    }
+    @keyframes kitlyBall {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50%      { transform: translateY(-22px) rotate(180deg); }
+    }
+    @keyframes kitlyBallShadow {
+      0%, 100% { transform: scale(1);   opacity: 0.5; }
+      50%      { transform: scale(0.55); opacity: 0.22; }
+    }
+    .loading-text { display: inline-flex; align-items: center; }
+    .loading-dots { display: inline-flex; align-items: center; margin-left: 2px; }
+    .loading-dots i {
+      width: 5px;
+      height: 5px;
+      margin-left: 4px;
+      border-radius: 50%;
+      background: currentColor;
+      opacity: 0.28;
+      animation: kitlyDot 1.2s ease-in-out infinite;
+    }
+    .loading-dots i:nth-child(2) { animation-delay: 0.18s; }
+    .loading-dots i:nth-child(3) { animation-delay: 0.36s; }
+    @keyframes kitlyDot {
+      0%, 65%, 100% { opacity: 0.28; transform: translateY(0); }
+      32%           { opacity: 1;    transform: translateY(-4px); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .loading-ball, .loading-ball-shadow, .loading-dots i { animation: none; }
     }
 
     #notice {
@@ -1082,6 +1140,8 @@
 
   /* v6.6.0: kompakte Icon-Buttons (Theme-/Sprach-Umschalter) */
   .icon-btn { padding: 9px 12px; }
+  /* v6.11.0: Benachrichtigungs-Schalter im Aus-Zustand dezent gedimmt. */
+  .icon-btn.is-off { opacity: 0.6; }
 
   /* v6.9.0: „Filter zurücksetzen"-Zeile unter den Filter-Gruppen */
   .filter-reset-row { text-align: center; margin-top: 12px; }
@@ -1218,7 +1278,7 @@
   <h1>
     <span class="title-icon">⚽</span>
     <span class="title-main">Kitly</span>
-    <span class="title-badge" onclick="showChangelogModal()" style="cursor:pointer" title="Show changelog">v6.10.3</span>
+    <span class="title-badge" onclick="showChangelogModal()" style="cursor:pointer" title="Show changelog">v6.11.0</span>
   </h1>
   
   <div class="header-actions">
@@ -1228,6 +1288,7 @@
     </button>
     <button id="themeToggle" onclick="cycleTheme()" class="secondary-btn icon-btn" title="Theme: Auto / Light / Dark" aria-label="Toggle theme">🌗 <span id="themeLabel"></span></button>
     <button id="langToggle" onclick="cycleLanguage()" class="secondary-btn icon-btn" title="Sprache / Language" aria-label="Toggle language">🌐 <span id="langLabel">DE</span></button>
+    <button id="notifyToggle" onclick="toggleNotify()" class="secondary-btn icon-btn" aria-pressed="false" aria-label="Toggle notifications">🔕 <span id="notifyLabel"></span></button>
   </div>
 
   <div id="filterPanel" class="filter-panel collapsed">
@@ -1324,7 +1385,13 @@
 </div>
 
 <div class="loading" id="loading">
-  <div class="box"><span data-de="Lade Daten…" data-en="Loading data…">Loading data…</span></div>
+  <div class="box">
+    <div class="loading-ball-wrap" aria-hidden="true">
+      <div class="loading-ball">⚽</div>
+      <div class="loading-ball-shadow"></div>
+    </div>
+    <div class="loading-text"><span data-de="Lade Daten" data-en="Loading data">Loading data</span><span class="loading-dots" aria-hidden="true"><i></i><i></i><i></i></span></div>
+  </div>
 </div>
 
 <script>
@@ -1365,6 +1432,15 @@ var I18N = {
     "usage.scanning": "Prüfe Verwendung … {n}/{total}",
     "usage.filterNone": "Keine Verwendungen gefunden.",
     "notice.proxyUrl": "PetScan-Proxy-URL: <a href=\"{link}\" target=\"_blank\">öffnen</a> — bitte warten…",
+    "notify.on": "An", "notify.off": "Aus",
+    "notify.btnTitle": "Benachrichtigen, wenn die Suche fertig ist",
+    "notify.heading": "Kitly — Suche abgeschlossen",
+    "notify.body": "{n} neue Trikot-Dateien gefunden.",
+    "notify.body.one": "{n} neue Trikot-Datei gefunden.",
+    "notify.bodyNone": "Keine neuen Trikots gefunden.",
+    "notify.enabledBody": "Benachrichtigungen aktiviert. Du wirst informiert, wenn eine Suche fertig ist.",
+    "notify.enabledOk": "Benachrichtigungen aktiviert. Du bekommst eine Desktop-Benachrichtigung, wenn die Suche fertig ist. Zusätzlich blinkt der Tab-Titel „✅ Kitly“.",
+    "notify.enabledFallback": "Benachrichtigungen aktiviert.\n\nDein Browser zeigt für lokale Dateien (file://) offenbar keine Desktop-Benachrichtigung. Stattdessen blinkt der Tab-Titel „✅ Kitly“, sobald die Suche fertig ist – das siehst du auch in einem anderen Tab.\n\nFür echte Desktop-Benachrichtigungen: Kitly über einen lokalen Server/HTTPS öffnen oder einen Browser nutzen, der file:// erlaubt (z. B. Chrome).",
     "notice.noTeamsFiltered": "Keine Teams entsprechen den Filterkriterien.",
     "notice.noTeamsFound": "Keine Teams gefunden.",
     "notice.teamsFound": "{n} Teams gefunden.",
@@ -1443,6 +1519,15 @@ var I18N = {
     "usage.scanning": "Checking usage … {n}/{total}",
     "usage.filterNone": "No usages found.",
     "notice.proxyUrl": "PetScan proxy URL: <a href=\"{link}\" target=\"_blank\">open</a> — please wait…",
+    "notify.on": "On", "notify.off": "Off",
+    "notify.btnTitle": "Notify when the search is done",
+    "notify.heading": "Kitly — search complete",
+    "notify.body": "{n} new kit files found.",
+    "notify.body.one": "{n} new kit file found.",
+    "notify.bodyNone": "No new kits found.",
+    "notify.enabledBody": "Notifications enabled. You'll be notified when a search finishes.",
+    "notify.enabledOk": "Notifications enabled. You'll get a desktop notification when the search finishes. The tab title also flashes “✅ Kitly”.",
+    "notify.enabledFallback": "Notifications enabled.\n\nYour browser apparently doesn't show desktop notifications for local files (file://). Instead, the tab title flashes “✅ Kitly” when the search finishes – visible even from another tab.\n\nFor real desktop notifications: open Kitly via a local server/HTTPS, or use a browser that allows file:// (e.g. Chrome).",
     "notice.noTeamsFiltered": "No teams match the filter criteria.",
     "notice.noTeamsFound": "No teams found.",
     "notice.teamsFound": "{n} teams found.",
@@ -1553,6 +1638,7 @@ function applyLanguage() {
   var ll = document.getElementById('langLabel');
   if (ll) ll.textContent = currentLang.toUpperCase();
   updateThemeButton();
+  if (typeof updateNotifyButton === 'function') updateNotifyButton();
   // Dynamische Inhalte neu aufbauen, wenn schon Daten geladen sind.
   if (typeof isDataLoaded !== 'undefined' && isDataLoaded && typeof renderFiles === 'function') renderFiles();
   if (typeof updateStats === 'function') updateStats();
@@ -1595,6 +1681,81 @@ function updateThemeButton() {
   if (mq.addEventListener) mq.addEventListener('change', handler);
   else if (mq.addListener) mq.addListener(handler);
 })();
+
+// --- v6.11.0: Benachrichtigung nach Abschluss der Suche ---
+// Zwei Wege: (1) echte Desktop-Benachrichtigung, wo der Browser sie erlaubt, und
+// (2) als ZUVERLÄSSIGER Fallback ein blinkender Tab-Titel („✅ Kitly"). Letzterer
+// braucht keine Berechtigung und funktioniert überall – auch bei lokal geöffneten
+// Dateien (file://) und in einem anderen Tab. Das Feature ist daher vom Erteilen der
+// Desktop-Berechtigung ENTKOPPELT: einmal aktiviert, meldet es sich in jedem Fall.
+var NOTIFY_KEY = 'kitly_notify';
+function notifySupported() { return 'Notification' in window; }
+function notifyEnabled() { try { return localStorage.getItem(NOTIFY_KEY) === '1'; } catch (e) { return false; } }
+function setNotifyEnabled(on) { try { localStorage.setItem(NOTIFY_KEY, on ? '1' : '0'); } catch (e) {} }
+// Darf der Browser eine echte Desktop-Benachrichtigung zeigen?
+function osNotifyAllowed() { return notifySupported() && Notification.permission === 'granted'; }
+function updateNotifyButton() {
+  var b = document.getElementById('notifyToggle');
+  if (!b) return;
+  var on = notifyEnabled(); // Button spiegelt das Feature (unabhängig von der OS-Berechtigung)
+  if (b.firstChild && b.firstChild.nodeType === 3) b.firstChild.nodeValue = (on ? '🔔' : '🔕') + ' ';
+  var lbl = document.getElementById('notifyLabel');
+  if (lbl) lbl.textContent = t(on ? 'notify.on' : 'notify.off');
+  b.setAttribute('aria-pressed', on ? 'true' : 'false');
+  b.classList.toggle('is-off', !on);
+  b.setAttribute('title', t('notify.btnTitle'));
+}
+// Echte Desktop-Benachrichtigung (nur wenn erlaubt). Wirft bei Anzeige-Problemen.
+function showKitlyNotification(title, body) {
+  var n = new Notification(title, { body: body, tag: 'kitly-search-done', renotify: true });
+  n.onclick = function () { try { window.focus(); } catch (e) {} n.close(); };
+  return n;
+}
+// --- Tab-Titel-Blinken als berechtigungsfreier Fallback ---
+var _notifyOrigTitle = null, _notifyFlashTimer = null;
+function stopTitleFlash() {
+  if (_notifyFlashTimer) { clearInterval(_notifyFlashTimer); _notifyFlashTimer = null; }
+  if (_notifyOrigTitle != null) { document.title = _notifyOrigTitle; _notifyOrigTitle = null; }
+}
+function flashTitleDone(count, brief) {
+  stopTitleFlash();
+  _notifyOrigTitle = document.title;
+  var msg = '✅ ' + (count > 0 ? count + ' · ' : '') + 'Kitly';
+  var alt = false;
+  document.title = msg;
+  _notifyFlashTimer = setInterval(function () { document.title = alt ? _notifyOrigTitle : msg; alt = !alt; }, 1000);
+  // Schaut der Nutzer gerade hin (oder „brief"), nach ein paar Sekunden aufräumen –
+  // sonst bis zur Rückkehr blinken (siehe visibilitychange/focus unten).
+  if (brief || (document.visibilityState === 'visible' && document.hasFocus())) setTimeout(stopTitleFlash, 6000);
+}
+document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'visible') stopTitleFlash(); });
+window.addEventListener('focus', stopTitleFlash);
+
+async function toggleNotify() {
+  if (notifyEnabled()) { setNotifyEnabled(false); updateNotifyButton(); stopTitleFlash(); return; }
+  setNotifyEnabled(true); updateNotifyButton();
+  // Berechtigung für echte Desktop-Benachrichtigungen best effort anfragen (User-Geste).
+  if (notifySupported() && Notification.permission === 'default') {
+    try { await Notification.requestPermission(); } catch (e) {}
+  }
+  // Sofort-Test: Desktop-Benachrichtigung (falls erlaubt) + kurzer Titel-Flash.
+  var osShown = false;
+  if (osNotifyAllowed()) { try { showKitlyNotification(t('notify.heading'), t('notify.enabledBody')); osShown = true; } catch (e) {} }
+  flashTitleDone(0, true);
+  alert(osShown ? t('notify.enabledOk') : t('notify.enabledFallback'));
+}
+// Nach Abschluss der Suche melden – wenn das Feature aktiviert ist. Desktop-
+// Benachrichtigung wo erlaubt, Tab-Titel-Blinken immer (auch bei aktivem Tab).
+function notifySearchDone(count) {
+  if (!notifyEnabled()) return;
+  if (osNotifyAllowed()) {
+    try {
+      var body = (count > 0) ? tp('notify.body', count) : t('notify.bodyNone');
+      showKitlyNotification(t('notify.heading'), body);
+    } catch (e) { /* Anzeige fehlgeschlagen – Fallback greift trotzdem */ }
+  }
+  flashTitleDone(count, false);
+}
 
 // ================================================
 // === DATENABRUF (fetchData + Render) ===
@@ -2704,6 +2865,8 @@ async function fetchData() {
 	  if (typeof applyCompletedState === 'function') applyCompletedState();
 	  if (typeof updateStats === 'function') updateStats();
 	}, 200);
+	// v6.11.0: Nach Abschluss benachrichtigen, falls der Tab nicht im Blick ist.
+	notifySearchDone(allFiles.length);
 	// Bei aktivem Ausschluss-Filter die Verwendung IM HINTERGRUND scannen und
 	// danach neu filtern – die Oberfläche bleibt sofort nutzbar.
 	if (Object.keys(activeUsageWikis).length) {
@@ -3995,6 +4158,13 @@ function checkEmptyState() {
 	<button class="cl-close" onclick="closeChangelogModal()" aria-label="Close">&#x2715;</button>
 	<h2>&#x26BD; Changelog &mdash; Kitly</h2>
 	<div class="cl-version">
+	  <h3>v6.11.0 &mdash; 2026-08-31 &mdash; Search notifications</h3>
+	  <ul>
+		<li>New: optional <strong>notification when a refresh finishes</strong>. Enable it with the 🔔 button in the header. Where the browser allows it you get a real desktop notification; as a permission-free fallback that works everywhere (including local <code>file://</code> and other tabs) the <strong>browser-tab title flashes</strong> „✅ Kitly“ until you return. Reports how many new kit files were found.</li>
+		<li>Polish: the „Loading data…“ overlay now has a small animation – a bouncing, rolling football with animated dots.</li>
+	  </ul>
+	</div>
+	<div class="cl-version">
 	  <h3>v6.10.3 &mdash; 2026-08-31 &mdash; Transparent kit type</h3>
 	  <ul>
 		<li>New: the <code>tr</code> kit-type suffix, e.g. <code>Kit_body_kashima26tr.png</code>, is now labelled &bdquo;Transparent&ldquo; (team &bdquo;Kashima&ldquo;, season &bdquo;2026&ldquo;) instead of the raw code &bdquo;tr&ldquo;.</li>
@@ -4004,12 +4174,6 @@ function checkEmptyState() {
 	  <h3>v6.10.2 &mdash; 2026-08-30 &mdash; Copa Libertadores kits</h3>
 	  <ul>
 		<li>New: recognizes the Copa Libertadores naming scheme <code>&lt;team&gt;L&lt;role&gt;&lt;yy&gt;</code>, e.g. <code>Kit_body_gremioLT17.png</code> &rarr; team &bdquo;Gremio&ldquo;, season &bdquo;2017&ldquo;, type &bdquo;Copa Libertadores third&ldquo;. Role <code>H</code>/<code>A</code>/<code>T</code> = home / away / third; a trailing <code>_2</code> version counter is ignored.</li>
-	  </ul>
-	</div>
-	<div class="cl-version">
-	  <h3>v6.10.1 &mdash; 2026-08-20 &mdash; Bug fix</h3>
-	  <ul>
-		<li>Fix: file names with an ordinal kit number after the season, e.g. <code>Kit_body_bohemians2026-3rd.png</code>, are now parsed correctly &ndash; team &bdquo;Bohemians&ldquo;, season &bdquo;2026&ldquo;, type &bdquo;Third&ldquo; &ndash; instead of team &bdquo;Bohemians2026-3&ldquo; with no season. Recognizes 1st/2nd/3rd/4th (home / away / third / fourth).</li>
 	  </ul>
 	</div>
 	<div class="cl-more"><a href="https://github.com/V-Toll/Kitly/blob/main/CHANGELOG.md" target="_blank" rel="noopener" data-de="Vollständiger Changelog auf GitHub →" data-en="Full changelog on GitHub →">Full changelog on GitHub →</a></div>

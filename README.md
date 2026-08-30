@@ -29,6 +29,7 @@
 - 📋 **Infobox code at the click of a button** – copies the ready-to-use Wikipedia infobox block per season (home = 1, away = 2, third = 3 …), including automatically detected kit colours.
 - ✅ **Check off & remember** – completed teams, kit sets or individual files can be hidden; the state is stored locally.
 - 🌐 **Bilingual** (English / German) and with **light/dark mode** including an automatic option.
+- 🔔 **Optional notification** – get a desktop notification when a refresh finishes (with a permission-free tab-title flash as a fallback that works even for local files).
 - 🔒 **Privacy-friendly** – runs locally in your browser; data comes exclusively from Wikimedia Commons (via a small CORS proxy for PetScan).
 
 ---
@@ -57,7 +58,7 @@
 - **Hide file updates** – show genuine new uploads only; files whose first upload predates the chosen date are hidden (on by default, see below).
 - **View** – *Teams* (grouped by team/season), *Kit sets* (side by side like the infobox) or *Single*.
 - **Thumb width** – size of the thumbnails.
-- **Theme** (🌗) – Auto / Light / Dark. **Language** (🌐) – English / German.
+- **Theme** (🌗) – Auto / Light / Dark. **Language** (🌐) – English / German. **Notifications** (🔔) – notify when a refresh completes.
 
 </details>
 
@@ -94,7 +95,7 @@ The entire interface is available in **English and German**; on first launch the
 
 ## 📦 Version & changelog
 
-Current version: **v6.10.3**. You'll find the full history in [CHANGELOG.md](CHANGELOG.md) as well as directly in the tool via the **⚽** version badge.
+Current version: **v6.11.0**. You'll find the full history in [CHANGELOG.md](CHANGELOG.md) as well as directly in the tool via the **⚽** version badge.
 
 ## 📄 License
 

@@ -5,6 +5,11 @@ All notable changes to *Kitly* – newest version first. These entries are also 
 Named minor versions (with a codename) are feature releases; patches cover bug fixes and polish.
 
 
+## v6.11.0 — 2026-08-31 — Search notifications
+
+- New: optional **notification when a refresh finishes**. Enable it with the 🔔 button in the header. Where the browser allows it you get a real desktop notification; as a permission-free fallback that works everywhere (including local `file://` and other tabs) the **browser-tab title flashes** "✅ Kitly" until you return. Reports how many new kit files were found.
+- Polish: the "Loading data…" overlay now has a small animation – a bouncing, rolling football with animated dots.
+
 ## v6.10.3 — 2026-08-31 — Transparent kit type
 
 - New: the `tr` kit-type suffix, e.g. `Kit_body_kashima26tr.png`, is now labelled "Transparent" (team "Kashima", season "2026") instead of the raw code "tr".
