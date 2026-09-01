@@ -757,6 +757,27 @@
       font-weight: 500;
     }
 
+    /* v6.11.1: Warnhinweis, wenn das Ergebnis-Limit erreicht wurde (Treffer
+       abgeschnitten). Bleibt sichtbar, bis die nächste Suche startet. */
+    .limit-warning {
+      margin: 10px auto 0;
+      max-width: 760px;
+      padding: 9px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.45;
+      color: #ffe9b0;
+      background: rgba(196, 132, 0, 0.18);
+      border: 2px solid rgba(240, 173, 20, 0.55);
+      border-radius: 10px;
+    }
+    .limit-warning[hidden] { display: none; }
+    :root[data-theme="light"] .limit-warning {
+      color: #6b4400;
+      background: rgba(240, 173, 20, 0.16);
+      border-color: rgba(176, 118, 0, 0.5);
+    }
+
     #notice a {
       color: var(--line-white);
       text-decoration: none;
@@ -1278,7 +1299,7 @@
   <h1>
     <span class="title-icon">⚽</span>
     <span class="title-main">Kitly</span>
-    <span class="title-badge" onclick="showChangelogModal()" style="cursor:pointer" title="Show changelog">v6.11.0</span>
+    <span class="title-badge" onclick="showChangelogModal()" style="cursor:pointer" title="Show changelog">v6.11.1</span>
   </h1>
   
   <div class="header-actions">
@@ -1373,6 +1394,8 @@
   </div>
 
   <div id="notice"></div>
+  <!-- v6.11.1: Warnung, wenn PetScan am Ergebnis-Limit abgeschnitten hat. -->
+  <div id="limitWarning" class="limit-warning" hidden></div>
   <!-- v5.2.0 Unified Storage Controls (compact) -->
   <div class="unified-storage-bar">
     <button id="btnToggleCompleted" onclick="toggleShowCompleted()" class="unified-toggle-btn" data-de="👁️ Erledigte anzeigen" data-en="👁️ Show completed">👁️ Show completed</button>
@@ -1441,6 +1464,7 @@ var I18N = {
     "notify.enabledBody": "Benachrichtigungen aktiviert. Du wirst informiert, wenn eine Suche fertig ist.",
     "notify.enabledOk": "Benachrichtigungen aktiviert. Du bekommst eine Desktop-Benachrichtigung, wenn die Suche fertig ist. Zusätzlich blinkt der Tab-Titel „✅ Kitly“.",
     "notify.enabledFallback": "Benachrichtigungen aktiviert.\n\nDein Browser zeigt für lokale Dateien (file://) offenbar keine Desktop-Benachrichtigung. Stattdessen blinkt der Tab-Titel „✅ Kitly“, sobald die Suche fertig ist – das siehst du auch in einem anderen Tab.\n\nFür echte Desktop-Benachrichtigungen: Kitly über einen lokalen Server/HTTPS öffnen oder einen Browser nutzen, der file:// erlaubt (z. B. Chrome).",
+    "notice.limitReached": "⚠️ Limit erreicht: PetScan hat {n} Treffer geliefert – genau so viele, wie das Limit erlaubt. Weitere Dateien im Zeitraum wurden abgeschnitten. Erhöhe das „Limit“ (bis 10000) oder wähle ein kleineres Zeitfenster.",
     "notice.noTeamsFiltered": "Keine Teams entsprechen den Filterkriterien.",
     "notice.noTeamsFound": "Keine Teams gefunden.",
     "notice.teamsFound": "{n} Teams gefunden.",
@@ -1528,6 +1552,7 @@ var I18N = {
     "notify.enabledBody": "Notifications enabled. You'll be notified when a search finishes.",
     "notify.enabledOk": "Notifications enabled. You'll get a desktop notification when the search finishes. The tab title also flashes “✅ Kitly”.",
     "notify.enabledFallback": "Notifications enabled.\n\nYour browser apparently doesn't show desktop notifications for local files (file://). Instead, the tab title flashes “✅ Kitly” when the search finishes – visible even from another tab.\n\nFor real desktop notifications: open Kitly via a local server/HTTPS, or use a browser that allows file:// (e.g. Chrome).",
+    "notice.limitReached": "⚠️ Limit reached: PetScan returned {n} results – exactly as many as the limit allows. Further files in the period were cut off. Raise the “Limit” (up to 10000) or pick a smaller date range.",
     "notice.noTeamsFiltered": "No teams match the filter criteria.",
     "notice.noTeamsFound": "No teams found.",
     "notice.teamsFound": "{n} teams found.",
@@ -1639,6 +1664,7 @@ function applyLanguage() {
   if (ll) ll.textContent = currentLang.toUpperCase();
   updateThemeButton();
   if (typeof updateNotifyButton === 'function') updateNotifyButton();
+  if (typeof updateLimitWarning === 'function') updateLimitWarning();
   // Dynamische Inhalte neu aufbauen, wenn schon Daten geladen sind.
   if (typeof isDataLoaded !== 'undefined' && isDataLoaded && typeof renderFiles === 'function') renderFiles();
   if (typeof updateStats === 'function') updateStats();
@@ -1792,6 +1818,27 @@ function getSelectedKitTypes() {
 }
 function showLoading(on) {
   document.getElementById("loading").style.display = on ? "flex" : "none";
+}
+// v6.11.1: Warnung, wenn PetScan genau am Limit zurückkam – dann wurden weitere
+// Treffer im Zeitraum stillschweigend abgeschnitten. Der Hinweis lebt in einem
+// EIGENEN Element, weil die Statuszeile (#notice) mehrfach überschrieben wird.
+var lastRawResultCount = 0, lastLimitReached = false;
+function updateLimitWarning() {
+  var el = document.getElementById('limitWarning');
+  if (!el) return;
+  if (lastLimitReached) {
+    el.textContent = t('notice.limitReached', { n: lastRawResultCount });
+    el.hidden = false;
+  } else {
+    el.textContent = '';
+    el.hidden = true;
+  }
+}
+function setLimitWarning(rawCount, limit) {
+  var lim = parseInt(limit, 10);
+  lastRawResultCount = rawCount;
+  lastLimitReached = !!(lim > 0 && rawCount >= lim);
+  updateLimitWarning();
 }
 function setNotice(text, link) {
   const n = document.getElementById("notice");
@@ -2009,6 +2056,19 @@ function analyzeKitFilename(filename) {
 	result.team = lib[1].replace(/^[\s_\-–\/]+|[\s_\-–\/]+$/g, '').trim();
 	result.season = lib[3];
 	result.kit_type = { H: 'libh', A: 'liba', T: 'libt' }[lib[2]];
+	result.set_id = result.team + "_" + result.season + "_" + result.kit_type;
+	return result;
+  }
+  // v6.11.1: Zweite Libertadores-Schreibweise – Kennung als SUFFIX statt als „L" vor der
+  // Rolle: <Team><YY><Rolle>_wc_la, z.B. "corinthians13H_wc_la" -> Team „corinthians",
+  // Saison „13" (=2013), Typ Libertadores Heim. Rolle H/A/T optional (fehlt sie -> Heim);
+  // Rolle case-insensitiv, „_wc_la" ebenso. Optionaler „_<Ziffer>"-Variantenzähler.
+  // MUSS vor suffixSeason stehen, sonst würde dort „la" als freies Label gewertet.
+  var libWc = workingName.match(/^(.+?)(\d{2,4})([HAT])?_wc_la(?:_\d+)?$/i);
+  if (libWc && !/^(nike|adidas|puma|umbro|kappa)/i.test(libWc[1])) {
+	result.team = libWc[1].replace(/^[\s_\-–\/]+|[\s_\-–\/]+$/g, '').trim();
+	result.season = libWc[2];
+	result.kit_type = { h: 'libh', a: 'liba', t: 'libt' }[(libWc[3] || 'H').toLowerCase()];
 	result.set_id = result.team + "_" + result.season + "_" + result.kit_type;
 	return result;
   }
@@ -2841,9 +2901,12 @@ async function fetchData() {
   var url = PETSCAN_PROXY + "?" + params.toString();
   showLoading(true);
   setNotice("", url);
+  setLimitWarning(0, 0); // alte Warnung zurücksetzen
   try {
 	var data = await fetchJSON(url);
 	allFiles = (data["*"] && data["*"][0] && data["*"][0].a && data["*"][0].a["*"]) ? data["*"][0].a["*"] : [];
+	// v6.11.1: Roh-Trefferzahl VOR allen Filtern mit dem Limit vergleichen.
+	setLimitWarning(allFiles.length, ctrl.limit);
 	// v6.0.1: Nicht-Dateien (Kategorien o. Ä.) direkt an der Quelle aussortieren.
 	allFiles = allFiles.filter(function(f) { return f && isCommonsFile(f.title); });
 	// v5.4.0: PetScan filtert nach `touched` (jede Bearbeitung). Nachgelagert nur
@@ -4158,6 +4221,13 @@ function checkEmptyState() {
 	<button class="cl-close" onclick="closeChangelogModal()" aria-label="Close">&#x2715;</button>
 	<h2>&#x26BD; Changelog &mdash; Kitly</h2>
 	<div class="cl-version">
+	  <h3>v6.11.1 &mdash; 2026-09-01 &mdash; Bug fix</h3>
+	  <ul>
+		<li>Fix: the second Copa Libertadores spelling with a <code>_wc_la</code> suffix, e.g. <code>Kit_body_corinthians13H_wc_la.png</code>, is now parsed correctly &ndash; team &bdquo;Corinthians&ldquo;, season &bdquo;2013&ldquo;, type &bdquo;Copa Libertadores home&ldquo; &ndash; instead of team &bdquo;Corinthians13H_wc&ldquo; with no season. Role <code>H</code>/<code>A</code>/<code>T</code> optional (defaults to home).</li>
+		<li>New: a <strong>warning when the result limit is reached</strong>. If PetScan returns exactly as many hits as the limit allows, further files in the period were silently cut off &ndash; Kitly now says so and suggests raising the limit or narrowing the date range.</li>
+	  </ul>
+	</div>
+	<div class="cl-version">
 	  <h3>v6.11.0 &mdash; 2026-08-31 &mdash; Search notifications</h3>
 	  <ul>
 		<li>New: optional <strong>notification when a refresh finishes</strong>. Enable it with the 🔔 button in the header. Where the browser allows it you get a real desktop notification; as a permission-free fallback that works everywhere (including local <code>file://</code> and other tabs) the <strong>browser-tab title flashes</strong> „✅ Kitly“ until you return. Reports how many new kit files were found.</li>
@@ -4168,12 +4238,6 @@ function checkEmptyState() {
 	  <h3>v6.10.3 &mdash; 2026-08-31 &mdash; Transparent kit type</h3>
 	  <ul>
 		<li>New: the <code>tr</code> kit-type suffix, e.g. <code>Kit_body_kashima26tr.png</code>, is now labelled &bdquo;Transparent&ldquo; (team &bdquo;Kashima&ldquo;, season &bdquo;2026&ldquo;) instead of the raw code &bdquo;tr&ldquo;.</li>
-	  </ul>
-	</div>
-	<div class="cl-version">
-	  <h3>v6.10.2 &mdash; 2026-08-30 &mdash; Copa Libertadores kits</h3>
-	  <ul>
-		<li>New: recognizes the Copa Libertadores naming scheme <code>&lt;team&gt;L&lt;role&gt;&lt;yy&gt;</code>, e.g. <code>Kit_body_gremioLT17.png</code> &rarr; team &bdquo;Gremio&ldquo;, season &bdquo;2017&ldquo;, type &bdquo;Copa Libertadores third&ldquo;. Role <code>H</code>/<code>A</code>/<code>T</code> = home / away / third; a trailing <code>_2</code> version counter is ignored.</li>
 	  </ul>
 	</div>
 	<div class="cl-more"><a href="https://github.com/V-Toll/Kitly/blob/main/CHANGELOG.md" target="_blank" rel="noopener" data-de="Vollständiger Changelog auf GitHub →" data-en="Full changelog on GitHub →">Full changelog on GitHub →</a></div>

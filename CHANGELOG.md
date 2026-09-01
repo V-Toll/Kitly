@@ -5,6 +5,11 @@ All notable changes to *Kitly* – newest version first. These entries are also 
 Named minor versions (with a codename) are feature releases; patches cover bug fixes and polish.
 
 
+## v6.11.1 — 2026-09-01 — Bug fix
+
+- Fix: the second Copa Libertadores spelling with a `_wc_la` suffix, e.g. `Kit_body_corinthians13H_wc_la.png`, is now parsed correctly – team "Corinthians", season "2013", type "Copa Libertadores home" – instead of team "Corinthians13H_wc" with no season. Role `H`/`A`/`T` optional (defaults to home).
+- New: a **warning when the result limit is reached**. If PetScan returns exactly as many hits as the limit allows, further files in the period were silently cut off – Kitly now says so and suggests raising the limit or narrowing the date range.
+
 ## v6.11.0 — 2026-08-31 — Search notifications
 
 - New: optional **notification when a refresh finishes**. Enable it with the 🔔 button in the header. Where the browser allows it you get a real desktop notification; as a permission-free fallback that works everywhere (including local `file://` and other tabs) the **browser-tab title flashes** "✅ Kitly" until you return. Reports how many new kit files were found.
