@@ -5,6 +5,84 @@ All notable changes to *Kitly* – newest version first. These entries are also 
 Named minor versions (with a codename) are feature releases; patches cover bug fixes and polish.
 
 
+## v6.15.0 — 2026-11-16 — "Anzeigetafel"
+
+- **A progress bar replaces the plain "Loading data" text.** Below the bouncing ball the overlay now shows the current step ("Step 2 of 3: Categories"), a bar, a detail line (which title search or category, how many files so far, "n of total" while upload dates are checked) and the time elapsed.
+- **Estimated time left.** Calculated from elapsed time and progress, shown from about 10 % onwards and rounded to 5 seconds; before that the overlay says it is still estimating. It is an estimate, not a measurement: the five title searches have no fixed number of pages (each stops once a page holds nothing new), so the figure can jump early on. The bar is a weighted share across the steps of the chosen source (Commons search, PetScan, or both).
+- **Cancel button.** Stops the retrieval at once, including a request still in flight or waiting after a rate limit, and leaves the list from the previous retrieval untouched: no error message, no notification, and the "since last visit" day is not updated. Background work such as the usage scan is not affected.
+- Keyboard: focus moves to the Cancel button while the overlay is open and returns to where it was afterwards. Screen readers announce the step line.
+- Internal: the shared API helper accepts an optional abort signal, and the error handlers that swallow a failure to keep a partial result now let a cancellation through.
+
+## v6.14.0 — 2026-09-14 — "Nachspielzeit"
+
+- **Colours are cached per file version, not per filename.** Replacing a file on Commons with a corrected version left the old colour in place until local storage was cleared. The key carries the upload timestamp now. The previous colour cache (`kitColorCache_v1`) is removed on the first start of this version: it is a pure derived cache, holds nothing you entered, and is rebuilt within seconds. Nothing else in local storage is touched, and no completion data is affected.
+- **The usage scan reads its own cache.** It has written it since v6.13.0 but never read it, so every reload fetched everything again although the data is valid for 24 hours. A second run over the same files costs no requests at all now.
+- **The first-upload date of files with more than 50 versions was wrong.** A batch query returns at most 50 versions per file and offers no continuation marker, so the oldest version returned was taken for the original upload. Affected files are fetched individually now. This matters for the "hide file updates" filter, which classified those files as new uploads.
+- **The category walk stops at the limit.** Each of the eight kit categories used to page through up to 10,000 entries even with the limit set to 100. It stops once the limit is reached; a category is ordered by the time entries were filed, newest first, so what drops out was filed after the limit's worth of other entries in the same category.
+- **A batch whose usage list ran into the API budget is split completely.** Until now only files that came back empty were re-fetched. The file at which the budget runs out gets a truncated list rather than an empty one and was waved through as complete. The split also goes deep enough to reach individual files, so their result is cached instead of being fetched anew every time.
+- Fix: long goalkeeper socks (`gkhl`, `gkal`, `gktl`) were not recognised as long, so they appeared next to the short ones instead of replacing them.
+- Fix: `.tif`, `.tiff` and `.webp` were missing from the filename analysis and from the pattern token of the infobox code, so the extension stayed in the name and broke kit-type and season detection for those files.
+- Fix: clicking "Fetch data" twice no longer starts a second retrieval alongside the first, where whichever finished last won regardless of the filters it had started with.
+- Fix: the PetScan query passed the namespace as `ns=1`, which is not a valid parameter and was ignored. It is `ns[6]=1` now. Checked live: the result is identical either way, because the kit categories contain practically nothing but files.
+- The statistics line says "completed in total" for the tick counts; they cover everything ever ticked, not only the current view.
+
+## v6.13.2 — 2026-09-14 — Bug fix
+
+- Fix: **the error message from a failed retrieval was overwritten immediately.** Since v6.13.1 the redraw ran after the message had been set, so what stayed on screen was "No teams found" rather than the reason. Introduced in v6.13.1, fixed here.
+- Fix: **the post-render timer existed twice.** The wrapper from v5.2 survived alongside the shared timer introduced in v6.13.1, so every redraw scheduled two passes. The wrapper is gone; the five call sites schedule the pass themselves. Introduced in v6.13.1, fixed here.
+- Fix: the **season filter** no longer narrows its own list of options. Picking a season used to drop every other season from the dropdown, so getting back meant resetting the filter.
+- Fix: **numbering in the generated infobox code.** Kit parts with a fixed number could collide with automatically numbered ones, which produced two kits sharing a number.
+- Fix: a failed colour analysis is no longer cached. Until now one failed image load stored an empty colour for that file for the rest of the session.
+- Fix: the kit-set heading no longer runs underneath the tick button, and in light mode links in the card header keep a readable hover colour.
+- Accessibility: the tick buttons carry a label and the checkbox role in every view, the three dialogs announce themselves as dialogs, keep the focus inside while open and hand it back on close, and the version badge is a real button reachable by keyboard.
+- Internal: retries and error handling for all API calls sit in one place now; dead code and 15 unused translation keys removed; several stale comments corrected.
+
+## v6.13.1 — 2026-09-14 — Bug fix
+
+- Fix: **usage figures were wrong and stayed wrong.** The usage query asks for up to 500 entries, but that budget applies *per request*, not per file. One heavily used file (`File:Kit body.svg` has tens of thousands of usages) consumed the entire budget, so every file behind it in the same batch came back empty – and Kitly cached that emptiness for 24 hours. It now follows the API's continuation, splits a batch that hits the budget, and caches a file only once its list is provably complete.
+- The usage cache key moves to `usage_v3_`; the previous entries are dropped rather than reused, since they may contain exactly the incomplete data described above. Nothing else in local storage is touched and no completion data is affected.
+- Fix: **a failing part of the retrieval no longer discards the rest.** If one of the five title searches, the category walk or one of the two sources fails, Kitly keeps what the others delivered and reports how much is missing. API errors that Commons returns with HTTP 200 and an error body are recognised as errors now, and only genuinely retryable failures (429, 5xx, network) are retried, respecting `Retry-After`.
+- Fix: **ticks no longer get lost through the spelling of a filename.** Commons treats `Kit body x.png` and `Kit_body_x.png` as the same file; Kitly stored them under two keys, so a tick set in one view could be invisible in another. Both spellings are read now, and unticking clears every variant. Stored data is left untouched.
+- The **"Depth"** field is gone from the interface. The PetScan category crawl now always runs at maximum depth. The setting had no useful case: the kit-template category tree was already covered in full, so any lower value could only lose hits. The functionality itself is unchanged.
+- Fix: an unparseable date no longer sinks a kit set to the bottom of the list. Invalid dates are ignored both for the "newest" date and for sorting.
+- Fix: a season written two ways in filenames (`16` and `2016`) produced two groups under one and the same heading. Both now land in the same season group; genuine spans such as `1617` stay separate.
+- Fix: loosening a filter after a usage scan re-scans the files that were not covered before, instead of showing them with an empty usage list.
+- Fix: a refresh started while a usage scan is still running no longer lets the old scan write its results into the new list.
+- Fix: if a retrieval fails, the list from the previous retrieval is cleared instead of remaining on screen underneath the error message.
+- Fix: if the browser refuses the automatic copy of the infobox code (Safari, after the colour analysis), the code now appears in a dialog ready to be copied by hand, instead of only in the console.
+- Fix: in the retrieval panel, the data source and the limit sat lower than the date field, because the whole row was aligned to the bottom edge of the "Since last visit" button. The three fields line up again now, with the button below the date. That button also had its dark-mode surface in light mode, where it showed up as a grey block with white text.
+- Fix: the hover colour of the view toggle no longer turns the label white on a light background; the tooltips of two filter labels are translated as well.
+- Internal: one shared post-render timer instead of one per render, and filenames containing quotation marks are escaped consistently in the generated markup.
+
+## v6.13.0 — 2026-09-14 — "Flügelspiel"
+
+- New: a third data source, **Both (Commons + PetScan)**. It runs the Commons search first, then adds whatever PetScan knows on top, merging the two by filename so nothing appears twice. If PetScan fails or is unreachable, the Commons result is still shown together with a note, instead of the whole retrieval failing.
+- New: the Commons source no longer depends on the filename scheme alone. On top of the five title searches it now walks the kit categories **live** via the Commons API (`list=categorymembers`, newest first, bounded by the chosen date), which brings PetScan's coverage without the Toolforge replica. Worth knowing: freshly uploaded kit files are frequently not categorised at all yet, so the title search still carries most of the load and the category walk is a complement, not a replacement.
+- New: a **"Since last visit"** button below the date field. Kitly remembers the day of the last successful retrieval and sets the date to it on one click, then refreshes. The button only shows up when there is something to jump back to.
+- The **usage cache** is bounded now: one key per file instead of up to three spellings of the same name, at most 400 entries, oldest pruned first. If local storage runs out regardless, Kitly shows a visible warning rather than swallowing the quota error.
+- Fix: in the **Kit sets** view a kit set holding both short and long socks now shows the long ones only, matching the behaviour the Teams view already had.
+- Fix: switching the language now relabels the **Season** and **Kit type** dropdowns as well; they used to keep the previous language until the next refresh.
+- Fix: the changelog and usage dialogs referenced two CSS variables that were never defined, which could produce white text on a white background in light mode.
+- Fix: a ticked team button rendered **two check marks**, and it followed the operating-system colour scheme directly instead of the theme setting, so it looked wrong when the theme was overridden.
+- Fix: the filter panel could cut off its content on short windows; it scrolls now.
+- Internal: filename analysis is cached per retrieval instead of being recomputed for every file on every render, and `readControls()` no longer writes to the date field as a side effect of being read.
+
+## v6.12.1 — 2026-09-14 — Bug fix
+
+- Fix: the file meta line showed `undefined Bytes` for the Commons source, which, unlike PetScan, returns no file size with the result rows. The size is now taken from the `imageinfo` query and omitted entirely when unknown.
+- Fix: the limit warning fired almost every time with the Commons source. It compared the number of scanned search hits against the limit rather than the number of files actually kept.
+
+## v6.12.0 — 2026-09-14 — "Doppelpass"
+
+- New: **selectable data source** under "📥 Data retrieval". **Commons search (live)** is the new default and queries the Commons API directly, so it always sees today's uploads. **PetScan (categories)** remains available and still finds kit parts whose filename breaks the usual scheme, but it reads a Toolforge database replica: while that replica lags behind, PetScan returns nothing for the most recent days. That is what made Kitly appear to stop finding new kits. The Commons source matches on the title (`Kit body` / `Kit shorts` / `Kit socks` / `Kit left arm` / `Kit right arm`) and therefore reports new files reliably, new versions of older files only incidentally. The "Depth" field applies to PetScan only and is hidden for the Commons source.
+- New: a **warning when the source looks stale**. If the newest hit is more than a day behind the current date, Kitly says so instead of just showing an empty list.
+- Fix: **ticking a team no longer hides its future kits.** The team tick was stored under the club name alone, without a season or a timestamp, so once "Chelsea" had been ticked every Chelsea kit of every later season stayed hidden, including files that did not exist when the tick was set. A team's state is now derived from its kit sets and is no longer stored separately.
+- Fix: **a tick in the Teams view and a tick in the Kit sets view are now the same tick.** The two views built different key formats for the same kit set (`team-season-type` versus `team_season_type`), so a kit set ticked in one view still appeared unticked in the other.
+- New: a ticked kit set **reopens when a new part shows up**, and a ticked file reopens when a new version is uploaded. Ticks record what they covered instead of hiding whatever later matches the key.
+- Data migration: completion data moves from `kitStorage_v5` to `kitStorage_v6` on first start. Kit-set and file ticks are carried over, team ticks are dissolved into the files they covered. Nothing is deleted: the previous state is kept under `kitStorage_v5_backup`, and the result of the migration is reported once in the header.
+- Robustness: Commons API calls retry with escalating backoff on HTTP 429 and 5xx (honouring `Retry-After`) instead of silently dropping part of the result.
+- Changed: the "kit sets completed" figure replaces "teams completed" in the statistics line, matching the new storage model.
+
 ## v6.11.1 — 2026-09-01 — Bug fix
 
 - Fix: the second Copa Libertadores spelling with a `_wc_la` suffix, e.g. `Kit_body_corinthians13H_wc_la.png`, is now parsed correctly – team "Corinthians", season "2013", type "Copa Libertadores home" – instead of team "Corinthians13H_wc" with no season. Role `H`/`A`/`T` optional (defaults to home).

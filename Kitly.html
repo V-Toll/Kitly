@@ -2,6 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <!-- Ziele (v6.15.0 festgehalten): nur der Autor selbst, Zen / Firefox (Gecko) auf macOS,
+       Datei per Doppelklick geöffnet (file://). Oberfläche zweisprachig DE/EN (I18N unten).
+       Optik: die vorhandene „Pitch"-Palette, hell/dunkel über die CSS-Variablen. -->
   <!-- Favicon v3.4.0 - Zentriertes Trikot mit Checkmark -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPCEtLSBIaW50ZXJncnVuZDogRnXDn2JhbGxmZWxkLUdyw7xuIC0tPgogIDxyZWN0IHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgZmlsbD0iIzBBNzM0QyIgcng9IjQiLz4KCiAgPCEtLSBUcmlrb3QtRm9ybSAoemVudHJpZXJ0KSAtLT4KICA8IS0tIFNjaHVsdGVybiB1bmQgS8O2cnBlciAtLT4KICA8cGF0aCBkPSJNIDEwIDEwIEwgMTEgOCBMIDE0IDkgTCAxNiA3IEwgMTggOSBMIDIxIDggTCAyMiAxMCBMIDIyIDIyIFEgMjIgMjUgMTkgMjUgTCAxMyAyNSBRIDEwIDI1IDEwIDIyIFoiIAogICAgICAgIGZpbGw9IiNmZmZmZmYiIHN0cm9rZT0iIzBBNzM0QyIgc3Ryb2tlLXdpZHRoPSIwLjUiLz4KCiAgPCEtLSBWLUF1c3NjaG5pdHQgLS0+CiAgPHBhdGggZD0iTSAxNCA5IEwgMTYgMTIgTCAxOCA5IiBmaWxsPSJub25lIiBzdHJva2U9IiMwQTczNEMiIHN0cm9rZS13aWR0aD0iMS4yIi8+CgogIDwhLS0gTGlua2VyIMOEcm1lbCAtLT4KICA8cGF0aCBkPSJNIDEwIDEwIEwgOCAxMSBMIDggMTUgTCAxMCAxNCBaIiBmaWxsPSIjZmZmZmZmIiBzdHJva2U9IiMwQTczNEMiIHN0cm9rZS13aWR0aD0iMC41Ii8+CgogIDwhLS0gUmVjaHRlciDDhHJtZWwgLS0+CiAgPHBhdGggZD0iTSAyMiAxMCBMIDI0IDExIEwgMjQgMTUgTCAyMiAxNCBaIiBmaWxsPSIjZmZmZmZmIiBzdHJva2U9IiMwQTczNEMiIHN0cm9rZS13aWR0aD0iMC41Ii8+CgogIDwhLS0gQ2hlY2ttYXJrIChmw7xyICJBYmhha2VuIi1GdW5rdGlvbmFsaXTDpHQpIC0tPgogIDxwYXRoIGQ9Ik0gMTIgMTcgTCAxNC41IDIwIEwgMjAgMTQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzRDQUY1MCIgc3Ryb2tlLXdpZHRoPSIyLjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L3N2Zz4=">
   <!-- Fallback für ältere Browser -->
@@ -19,6 +22,10 @@
       --line-white: #ffffff;
       --text-primary: #ffffff;
       --text-secondary: #81A69F;
+      /* v6.13.0: Das Changelog- und das Verwendungs-Modal nutzten --surface/--text,
+         die es nie gab. Beide fielen deshalb immer auf dunkle Festwerte zurück. */
+      --surface: #0B3326;
+      --text: #ffffff;
     }
     /* v6.6.0: Hellmodus – gleiche grüne Rasen-Identität, nur hell & luftig.
        Dieselben Variablen, andere Werte: Flächen werden hell, Text dunkel,
@@ -33,6 +40,8 @@
       --line-white:   #2C4A3C;   /* Linien & Titeltext -> dunkel auf hell */
       --text-primary: #0C241B;
       --text-secondary: #4F6F64;
+      --surface: #ffffff;
+      --text: #0C241B;
     }
 
     * {
@@ -106,13 +115,16 @@
       padding: 0;
     }
 
-    .filter-panel.collapsed {
-      max-height: 0;
-      padding: 0;
-    }
+    /* v6.13.2: Die frühere Regel .filter-panel.collapsed wiederholte wortwörtlich
+       die Basisregel darüber und war damit wirkungslos. Die Klasse selbst bleibt,
+       weil :not(.collapsed) unten darauf aufbaut. */
 
+    /* v6.13.0: Der feste Deckel von 700px hat das Panel abgeschnitten, sobald die
+       Länder-Chips geladen waren. Die Animation braucht einen Zahlenwert, deshalb
+       bleibt max-height, aber großzügig, und der Inhalt scrollt statt zu verschwinden. */
     .filter-panel:not(.collapsed) {
-      max-height: 700px;
+      max-height: 75vh;
+      overflow-y: auto;
       padding: 15px 0;
     }
 
@@ -165,6 +177,27 @@
       background: rgba(7, 38, 29, 0.78);
     }
 
+    /* v6.13.0: Schnellknopf unter dem Datumsfeld, nur sichtbar wenn ein
+       früherer Abruf gespeichert ist (das Attribut hidden steuert das). */
+    .since-btn {
+      margin-top: 6px;
+      width: 100%;
+      padding: 6px 10px;
+      border-radius: 8px;
+      border: 1px dashed rgba(129, 166, 159, 0.5);
+      background: rgba(7, 38, 29, 0.4);
+      color: var(--text-primary);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+    .since-btn:hover {
+      border-color: var(--pitch-highlight);
+      background: rgba(7, 38, 29, 0.7);
+    }
+    .since-btn[hidden] { display: none; }
+
     .filter-grid input[type="checkbox"] {
       width: 16px;
       height: 16px;
@@ -204,6 +237,13 @@
       margin-bottom: 0;
       gap: 10px 12px;
       align-items: end; /* Checkboxen an Feld-Unterkante ausrichten */
+    }
+    /* v6.13.1: Im Datenabruf gibt es keine Checkboxen, dafür den Knopf „Seit dem
+       letzten Besuch" unter dem Datumsfeld. Mit align-items:end richtete sich die
+       ganze Zeile an dessen Unterkante aus, wodurch Datenquelle und Limit tiefer
+       standen als das Datumsfeld. Hier also an der Oberkante ausrichten. */
+    .filter-group .filter-grid.fetch-grid {
+      align-items: start;
     }
     /* Kompakte Inline-Checkbox (ersetzt den großen Kasten). */
     .filter-check {
@@ -363,6 +403,16 @@
       padding: 2px 8px;
       border-radius: 12px;
       letter-spacing: 0.3px;
+      /* v6.13.2: aus dem span wurde ein button, damit das Badge per Tastatur
+         erreichbar ist. Die Button-Voreinstellungen müssen dafür weg. */
+      border: 0;
+      font-family: inherit;
+      line-height: inherit;
+      cursor: pointer;
+    }
+    .title-badge:focus-visible {
+      outline: 2px solid var(--pitch-highlight);
+      outline-offset: 2px;
     }
 
     @keyframes pulse {
@@ -543,7 +593,10 @@
     }
 
     .kitset-header {
-      padding: 14px 18px;
+      /* v6.13.2: Platz für den absolut positionierten Abhak-Knopf, wie bei
+         .team-header. In der Trikotsets-Ansicht steht hier der lange Titel aus
+         Verein, Saison und Typ und lief bisher unter den Knopf. */
+      padding: 14px 45px 14px 18px;
       background: linear-gradient(90deg, var(--pitch-bright) 0%, var(--pitch-main) 100%);
       border-bottom: 2px solid var(--line-white);
     }
@@ -750,6 +803,60 @@
       .loading-ball, .loading-ball-shadow, .loading-dots i { animation: none; }
     }
 
+    /* v6.15.0: Fortschritt im Lade-Overlay – Schrittzeile, Balken, Detail, Zeit, Abbrechen.
+       Farben nur aus den Pitch-Variablen; Füllung und Rahmen --pitch-highlight, weil
+       --pitch-bright im Dunkelmodus gegen die Box unter 3:1 fällt. */
+    .loading-progress {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 8px;
+      width: min(420px, calc(100vw - 150px));
+      text-align: center;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--pitch-highlight);
+    }
+    .loading-detail, .loading-time {
+      font-size: 13px;
+      font-weight: 500;
+      min-height: 1.3em;
+      overflow-wrap: anywhere;
+    }
+    .loading-time { font-variant-numeric: tabular-nums; }
+    .loading-progress progress {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 10px;
+      border: 1px solid var(--pitch-highlight);
+      border-radius: 6px;
+      background: var(--pitch-dark);
+      overflow: hidden;
+    }
+    .loading-progress progress::-webkit-progress-bar { background: var(--pitch-dark); }
+    .loading-progress progress::-webkit-progress-value { background: var(--pitch-highlight); }
+    .loading-progress progress::-moz-progress-bar { background: var(--pitch-highlight); }
+    @media (forced-colors: active) {
+      .loading-progress progress::-webkit-progress-value { background: Highlight; }
+      .loading-progress progress::-moz-progress-bar { background: Highlight; }
+    }
+    .loading-cancel {
+      align-self: center;
+      margin-top: 6px;
+      padding: 7px 18px;
+      border-radius: 8px;
+      border: 1px solid var(--pitch-highlight);
+      background: transparent;
+      color: var(--line-white);
+      font: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .loading-cancel:hover { background: var(--pitch-main); }
+    .loading-cancel:focus-visible { outline: 2px solid var(--line-white); outline-offset: 2px; }
+
     #notice {
       margin: 12px 0 0 0;
       font-size: 13px;
@@ -866,7 +973,9 @@
     }
 
     .usage-content {
-      background: var(--pitch-dark);
+      /* v6.13.0: --surface folgt dem Theme, --pitch-dark ist im Hellmodus reines Weiß. */
+      background: var(--surface);
+      color: var(--text);
       border: 3px solid var(--pitch-bright);
       border-radius: 12px;
       max-width: 650px;
@@ -897,7 +1006,7 @@
     .usage-close {
       background: none;
       border: none;
-      color: white;
+      color: var(--text); /* v6.13.0: war fest weiß und im Hellmodus unsichtbar */
       font-size: 32px;
       cursor: pointer;
       width: 40px;
@@ -983,7 +1092,7 @@
       background: rgba(255, 68, 68, 0.2);
       border: 2px solid #ff4444;
       border-radius: 8px;
-      color: white;
+      color: var(--text); /* v6.13.0: war fest weiß und im Hellmodus unsichtbar */
       text-align: center;
       margin: 20px 0;
     }
@@ -997,10 +1106,12 @@
   .team-check-btn:hover{border-color:var(--line-white);background:rgba(129,166,159,.25);transform:translateY(-50%) scale(1.05);box-shadow:0 4px 8px rgba(0,0,0,.3)}
   .team-check-btn:focus{outline:3px solid #4CAF50;outline-offset:2px}
   .team-check-btn.checked{background:linear-gradient(135deg,#4CAF50 0%,#45a049 100%);border-color:#4CAF50;animation:checkBounce .4s ease}
-  .team-check-btn.checked::after{content:'✓';position:absolute;color:white;font-size:22px;font-weight:bold;left:50%;top:50%;transform:translate(-50%,-50%);text-shadow:0 1px 2px rgba(0,0,0,.2)}
+  /* v6.13.0: Das eigene ::after-Häkchen ist entfallen. Es lag über dem ✓ aus der
+     gemeinsamen .checked-Regel, also standen dort zwei Haken übereinander. */
   @keyframes checkBounce{0%,100%{transform:translateY(-50%) scale(1)}50%{transform:translateY(-50%) scale(1.15)}}
   @media (max-width:768px){.team-check-btn{width:28px;height:28px;border-width:2px}}
-  @media (prefers-color-scheme:dark){.team-check-btn{background:#2a2a2a;border-color:#888}.team-check-btn:hover{background:#1a3a1a}}
+  /* v6.13.0: Die frühere @media (prefers-color-scheme:dark)-Regel ist entfallen.
+     Sie folgte dem Betriebssystem und hat die Theme-Umschaltung der App übergangen. */
 
   /* Unified Storage Controls – compact one-line bar */
   .unified-storage-bar {
@@ -1026,7 +1137,9 @@
     white-space: nowrap;
     transition: all 0.2s ease;
   }
-  .unified-toggle-btn:hover { background: rgba(129, 166, 159, 0.28); color: #fff; }
+  /* v6.13.1: Weiß auf dem hellen Hover-Ton war im Light-Mode praktisch unlesbar.
+     Die Grundfarbe des Buttons bleibt beim Hover erhalten. */
+  .unified-toggle-btn:hover { background: rgba(129, 166, 159, 0.28); }
   .unified-stats-text {
     flex: 1;
     min-width: 0;
@@ -1183,8 +1296,9 @@
     color: var(--text-primary);
   }
   /* Karten/Panels: sichtbarer, weicher Rahmen statt „weiß auf weiß" */
+  /* v6.13.2: .season-block ist hier raus – das Element hat keinen Basis-Rahmen,
+     die Farbangabe lief also ins Leere und übrig blieb ein Schatten ohne Kante. */
   :root[data-theme="light"] .team-group,
-  :root[data-theme="light"] .season-block,
   :root[data-theme="light"] .kitset-card,
   :root[data-theme="light"] .file-card {
     border-color: rgba(12, 36, 27, 0.14) !important;
@@ -1194,6 +1308,9 @@
   :root[data-theme="light"] .copy-infobox-btn { color: #ffffff; }
   /* Der Teil-Name sitzt auf einem GRÜNEN Balken -> weißer Text (nicht grün auf grün). */
   :root[data-theme="light"] .file-header a { color: #ffffff; }
+  /* v6.13.2: Auch der Hover-Zustand. Der lag auf --pitch-highlight (#4F6F64) und
+     damit fast unsichtbar auf dem grünen Balken (#0A734C), Kontrast ~1,1:1. */
+  :root[data-theme="light"] .file-header a:hover { color: #DBEADE; }
   /* Links auf hellen Flächen als Akzent-Grün. */
   :root[data-theme="light"] #notice a { color: var(--pitch-bright); }
   /* Weiche Schatten – die tiefen schwarzen Schatten wirken auf Hell zu hart */
@@ -1204,6 +1321,18 @@
     border-color: rgba(12, 36, 27, 0.12);
   }
   :root[data-theme="light"] .filter-group > legend { color: var(--pitch-bright); }
+  /* v6.13.1: Der Knopf „Seit dem letzten Besuch" trug die Dunkelmodus-Fläche
+     (dunkles Grün auf 40 % Deckkraft) und wirkte auf Hell als grauer Block mit
+     weißer Schrift. Jetzt dieselbe Sprache wie die Eingabefelder daneben. */
+  :root[data-theme="light"] .since-btn {
+    background: rgba(255, 255, 255, 0.85);
+    border-color: rgba(10, 115, 76, 0.45);
+    color: var(--text-primary);
+  }
+  :root[data-theme="light"] .since-btn:hover {
+    background: rgba(10, 115, 76, 0.10);
+    border-color: var(--pitch-bright);
+  }
   /* Team-/Kitset-Kopf: helle Sage-Fläche mit dunklem Text + grünem Akzent
      (im Dunkelmodus sind das grüne Verläufe mit weißem Text). */
   :root[data-theme="light"] .team-header,
@@ -1299,7 +1428,7 @@
   <h1>
     <span class="title-icon">⚽</span>
     <span class="title-main">Kitly</span>
-    <span class="title-badge" onclick="showChangelogModal()" style="cursor:pointer" title="Show changelog">v6.11.1</span>
+    <button type="button" class="title-badge" onclick="event.stopPropagation(); showChangelogModal();" title="Changelog anzeigen" aria-label="Changelog anzeigen">v6.15.0</button>
   </h1>
   
   <div class="header-actions">
@@ -1308,7 +1437,7 @@
       <span id="filterIcon">▼</span> <span data-de="Filter" data-en="Filters">Filters</span>
     </button>
     <button id="themeToggle" onclick="cycleTheme()" class="secondary-btn icon-btn" title="Theme: Auto / Light / Dark" aria-label="Toggle theme">🌗 <span id="themeLabel"></span></button>
-    <button id="langToggle" onclick="cycleLanguage()" class="secondary-btn icon-btn" title="Sprache / Language" aria-label="Toggle language">🌐 <span id="langLabel">DE</span></button>
+    <button onclick="cycleLanguage()" class="secondary-btn icon-btn" title="Sprache / Language" aria-label="Toggle language">🌐 <span id="langLabel">DE</span></button>
     <button id="notifyToggle" onclick="toggleNotify()" class="secondary-btn icon-btn" aria-pressed="false" aria-label="Toggle notifications">🔕 <span id="notifyLabel"></span></button>
   </div>
 
@@ -1317,19 +1446,32 @@
 
       <fieldset class="filter-group">
         <legend data-de="📥 Datenabruf" data-en="📥 Data retrieval">📥 Data retrieval</legend>
-        <div class="filter-grid">
+        <div class="filter-grid fetch-grid">
+          <div>
+            <!-- v6.12.0: Datenquelle umschaltbar. Commons-Suche fragt die
+                 Live-API direkt ab, PetScan geht über die Toolforge-Replik. -->
+            <label data-de="🛰️ Datenquelle" data-en="🛰️ Data source">🛰️ Data source</label>
+            <select id="dataSource">
+              <option value="commons" data-de="Commons-Suche (live)" data-en="Commons search (live)">Commons search (live)</option>
+              <option value="petscan" data-de="PetScan (Kategorien)" data-en="PetScan (categories)">PetScan (categories)</option>
+              <!-- v6.13.0: beide Quellen nacheinander, zusammengeführt über den Dateinamen. -->
+              <option value="both" data-de="Beide (Commons + PetScan)" data-en="Both (Commons + PetScan)">Both (Commons + PetScan)</option>
+            </select>
+          </div>
           <div>
             <label data-de="📅 Datum (nach)" data-en="📅 Date (after)">📅 Date (after)</label>
             <input type="date" id="after">
+            <!-- v6.13.0: setzt das Datum auf den letzten erfolgreichen Abruf. -->
+            <button type="button" id="sinceLastVisitBtn" class="since-btn" hidden
+                    data-de="⏱️ Seit dem letzten Besuch" data-en="⏱️ Since last visit">⏱️ Since last visit</button>
           </div>
           <div>
             <label data-de="🔢 Limit" data-en="🔢 Limit">🔢 Limit</label>
             <input type="number" id="limit" value="1000" min="1" max="10000">
           </div>
-          <div>
-            <label data-de="📊 Tiefe" data-en="📊 Depth">📊 Depth</label>
-            <input type="number" id="depth" value="50" min="1" max="100">
-          </div>
+          <!-- v6.13.1: Das Feld „Tiefe" ist entfallen. Der Kategorienlauf von
+               PetScan läuft jetzt fest mit PETSCAN_DEPTH (Maximum). Ein
+               niedrigerer Wert hat nur Treffer gekostet, ohne etwas zu bringen. -->
         </div>
       </fieldset>
 
@@ -1352,11 +1494,15 @@
             <input type="checkbox" id="filterTrikotTeile" checked>
             <span data-de="Nur Trikot-Teile" data-en="Kit parts only">Kit parts only</span>
           </label>
-          <label class="filter-check" title="Hides files that only received a new version in the period (first upload predates it).">
+          <label class="filter-check" title="Hides files that only received a new version in the period (first upload predates it)."
+                 data-title-de="Blendet Dateien aus, die im Zeitraum nur eine neue Version bekommen haben (Erst-Upload liegt davor)."
+                 data-title-en="Hides files that only received a new version in the period (first upload predates it).">
             <input type="checkbox" id="filterHideUpdates" checked>
             <span data-de="Datei-Updates ausblenden" data-en="Hide file updates">Hide file updates</span>
           </label>
-          <label class="filter-check" title="Shows per kit set where the files are already used (loads on scroll).">
+          <label class="filter-check" title="Shows per kit set where the files are already used (loads on scroll)."
+                 data-title-de="Zeigt je Trikotset, wo die Dateien bereits verwendet werden (lädt beim Scrollen nach)."
+                 data-title-en="Shows per kit set where the files are already used (loads on scroll).">
             <input type="checkbox" id="filterShowUsage" checked>
             <span data-de="Verwendung einblenden" data-en="Show usage inline">Show usage inline</span>
           </label>
@@ -1396,6 +1542,12 @@
   <div id="notice"></div>
   <!-- v6.11.1: Warnung, wenn PetScan am Ergebnis-Limit abgeschnitten hat. -->
   <div id="limitWarning" class="limit-warning" hidden></div>
+  <!-- v6.12.0: Warnung, wenn die Quelle sichtbar hinter dem aktuellen Stand liegt. -->
+  <div id="freshWarning" class="limit-warning" hidden></div>
+  <!-- v6.13.0: Warnung, wenn der Verwendungs-Cache nicht mehr geschrieben werden kann. -->
+  <div id="cacheWarning" class="limit-warning" hidden></div>
+  <!-- v6.12.0: einmaliger Hinweis nach der Umstellung der Abhak-Daten auf Schema 6. -->
+  <div id="migrationNotice" class="limit-warning" hidden></div>
   <!-- v5.2.0 Unified Storage Controls (compact) -->
   <div class="unified-storage-bar">
     <button id="btnToggleCompleted" onclick="toggleShowCompleted()" class="unified-toggle-btn" data-de="👁️ Erledigte anzeigen" data-en="👁️ Show completed">👁️ Show completed</button>
@@ -1414,6 +1566,13 @@
       <div class="loading-ball-shadow"></div>
     </div>
     <div class="loading-text"><span data-de="Lade Daten" data-en="Loading data">Loading data</span><span class="loading-dots" aria-hidden="true"><i></i><i></i><i></i></span></div>
+    <div class="loading-progress">
+      <div id="loadingStep" role="status"></div>
+      <progress id="loadingBar" max="100" value="0" aria-labelledby="loadingStep"></progress>
+      <div class="loading-detail" id="loadingDetail"></div>
+      <div class="loading-time" id="loadingTime"></div>
+      <button type="button" class="loading-cancel" id="loadingCancel" onclick="cancelRetrieval()" aria-describedby="loadingStep"><span data-de="Abbrechen" data-en="Cancel">Cancel</span></button>
+    </div>
   </div>
 </div>
 
@@ -1425,26 +1584,11 @@
 var I18N = {
   de: {
     "header.changelogTitle": "Changelog anzeigen",
-    "fieldset.dataRetrieval": "📥 Datenabruf",
-    "filter.dateAfter": "📅 Datum (nach)",
-    "filter.limit": "🔢 Limit",
-    "filter.depth": "📊 Tiefe",
-    "fieldset.filter": "🔎 Filter",
-    "filter.season": "⚽ Saison",
-    "filter.allSeasons": "Alle Saisons",
-    "filter.kitType": "👕 Trikottyp",
     "filter.allKitTypes": "Alle Trikottypen",
-    "filter.onlyKitParts": "Nur Trikot-Teile",
-    "fieldset.display": "🖥️ Darstellung",
-    "filter.view": "👁️ Ansicht",
-    "view.teams": "Teams",
-    "view.kitsets": "Trikotsets",
-    "view.single": "Einzeln",
-    "filter.thumbWidth": "🖼️ Thumb-Breite",
     "btn.showCompleted": "👁️ Erledigte anzeigen",
     "btn.hideCompleted": "👁️ Erledigte ausblenden",
     "btn.showCompletedPlain": "Erledigte anzeigen",
-    "stats.line": "📦 {vt}/{at} Teams | 📄 {vf}/{af} Dateien | ✅ {tc} Teams + {fc} Dateien erledigt",
+    "stats.line": "📦 {vt}/{at} Teams | 📄 {vf}/{af} Dateien | ✅ insgesamt erledigt: {kc} Kitsets + {fc} Dateien",
     "usage.loading": "⏳ Lädt Verwendungen...",
     "usage.empty": "📭 Diese Datei wird noch nicht verwendet.",
     "usage.error": "❌ Fehler beim Laden.",
@@ -1464,7 +1608,7 @@ var I18N = {
     "notify.enabledBody": "Benachrichtigungen aktiviert. Du wirst informiert, wenn eine Suche fertig ist.",
     "notify.enabledOk": "Benachrichtigungen aktiviert. Du bekommst eine Desktop-Benachrichtigung, wenn die Suche fertig ist. Zusätzlich blinkt der Tab-Titel „✅ Kitly“.",
     "notify.enabledFallback": "Benachrichtigungen aktiviert.\n\nDein Browser zeigt für lokale Dateien (file://) offenbar keine Desktop-Benachrichtigung. Stattdessen blinkt der Tab-Titel „✅ Kitly“, sobald die Suche fertig ist – das siehst du auch in einem anderen Tab.\n\nFür echte Desktop-Benachrichtigungen: Kitly über einen lokalen Server/HTTPS öffnen oder einen Browser nutzen, der file:// erlaubt (z. B. Chrome).",
-    "notice.limitReached": "⚠️ Limit erreicht: PetScan hat {n} Treffer geliefert – genau so viele, wie das Limit erlaubt. Weitere Dateien im Zeitraum wurden abgeschnitten. Erhöhe das „Limit“ (bis 10000) oder wähle ein kleineres Zeitfenster.",
+    "notice.limitReached": "⚠️ Limit erreicht: die Quelle hat {n} Treffer geliefert – genau so viele, wie das Limit erlaubt. Weitere Dateien im Zeitraum wurden abgeschnitten. Erhöhe das „Limit“ (bis 10000) oder wähle ein kleineres Zeitfenster.",
     "notice.noTeamsFiltered": "Keine Teams entsprechen den Filterkriterien.",
     "notice.noTeamsFound": "Keine Teams gefunden.",
     "notice.teamsFound": "{n} Teams gefunden.",
@@ -1478,6 +1622,37 @@ var I18N = {
     "notice.filesCount": "{n} von {total} Dateien.",
     "notice.checkingUploads": "Prüfe Upload-Daten … {n}/{total}",
     "notice.error": "Fehler: {msg}",
+    "notice.commonsSearching": "Durchsuche Commons … {part} ({n} Treffer)",
+    "notice.commonsDone": "Commons-Suche: {n} Dateien im Zeitraum.",
+    "notice.cancelled": "Abruf abgebrochen. Die Liste wurde nicht verändert.",
+    "prog.start": "Starte …",
+    "prog.step": "Schritt {i} von {n}: {name}",
+    "prog.titles": "Titelsuche",
+    "prog.cats": "Kategorien",
+    "prog.cup": "Upload-Daten prüfen",
+    "prog.pq": "PetScan-Abfrage",
+    "prog.pup": "Upload-Daten prüfen (PetScan)",
+    "prog.dTitles": "{part} · {n} Treffer",
+    "prog.dCats": "{cat} ({c}/{N}) · {n} Dateien",
+    "prog.dUp": "{n} von {total} Dateien",
+    "prog.dPet": "Warte auf PetScan …",
+    "prog.eta": "noch ca. {t}",
+    "prog.etaSoon": "gleich fertig",
+    "prog.etaCalc": "Restdauer wird berechnet …",
+    "prog.elapsed": "{t} vergangen",
+    "notice.rateLimited": "Commons bremst die Abfrage (429). Warte {s} s und versuche es erneut …",
+    "notice.staleSource": "⚠️ Die Quelle wirkt veraltet: der jüngste Treffer stammt vom {date}, das sind {days} Tage Rückstand. Bei PetScan liegt das an der Toolforge-Replik. Stelle die Datenquelle auf „Commons-Suche (live)“ um.",
+    "notice.staleSourceCommons": "⚠️ Der jüngste Treffer stammt vom {date}, das sind {days} Tage Rückstand. Prüfe das Datum bzw. das Limit.",
+    "notice.commonsCategories": "Durchsuche Kategorien … {cat} ({n} Dateien)",
+    "notice.bothDone": "Beide Quellen: {n} Dateien, davon {extra} nur über PetScan gefunden.",
+    "notice.bothPetscanFailed": "⚠️ PetScan nicht erreichbar, es werden nur die {n} Dateien der Commons-Suche angezeigt.",
+    "notice.bothCommonsFailed": "⚠️ Die Commons-Suche ist fehlgeschlagen, es werden nur die {n} Dateien von PetScan angezeigt.",
+    "notice.commonsPartial": "⚠️ {n} Dateien gefunden, aber {fail} Teilabfrage(n) wurden abgebrochen. Das Ergebnis kann unvollständig sein.",
+    "copy.fallbackHint": "Der Browser hat das automatische Kopieren abgelehnt (die Farbanalyse dauert länger als das Zeitfenster nach dem Klick). Der Code ist markiert, mit Strg+C bzw. ⌘C kopieren.",
+    "btn.sinceLastVisitTitle": "Setzt das Datum auf den letzten Abruf ({date}) und lädt neu.",
+    "warn.usageCacheFull": "⚠️ Der lokale Speicher ist voll. Verwendungsdaten werden diese Sitzung nicht zwischengespeichert, alles andere funktioniert weiter. Abhilfe: Browserdaten für diese Seite löschen.",
+    "storage.migrated": "ℹ️ Abhak-Daten auf Schema 6 umgestellt: {sets} Kitsets und {files} Dateien übernommen, {teams} Team-Haken aufgelöst (sie blendeten künftige Saisons dauerhaft aus). Der alte Stand liegt als Sicherung unter „kitStorage_v5_backup“.",
+    "storage.migrationFailed": "⚠️ Die alten Abhak-Daten konnten nicht gelesen werden. Sie wurden nicht gelöscht und liegen weiter unter „kitStorage_v5“.",
     "kitType.h": "Heim", "kitType.a": "Auswärts", "kitType.t": "Ausweich",
     "kitType.e": "Europa", "kitType.f": "Viertes", "kitType.gk": "Torhüter",
     "kitType.gkh": "Torhüter Heim", "kitType.gka": "Torhüter Auswärts", "kitType.gkt": "Torhüter Ausweich",
@@ -1503,8 +1678,8 @@ var I18N = {
     "btn.failed": "❌ Fehlgeschlagen",
     "aria.kitView": "Kit-Ansicht: {parts}",
     "aria.kitViewTitle": "Zusammengesetzte Kit-Ansicht (wie Wikipedia)",
+    "aria.markDone": "Als erledigt markieren",
     "thumb.noPreview": "Keine<br>Vorschau",
-    "empty.allDone": "Alle {n} Einträge erledigt!",
     "empty.allDone.teams": "Alle {n} Teams erledigt!",
     "empty.allDone.kitsets": "Alle {n} Trikotsets erledigt!",
     "empty.allDone.single": "Alle {n} Trikotteile erledigt!",
@@ -1513,26 +1688,11 @@ var I18N = {
   },
   en: {
     "header.changelogTitle": "Show changelog",
-    "fieldset.dataRetrieval": "📥 Data retrieval",
-    "filter.dateAfter": "📅 Date (after)",
-    "filter.limit": "🔢 Limit",
-    "filter.depth": "📊 Depth",
-    "fieldset.filter": "🔎 Filter",
-    "filter.season": "⚽ Season",
-    "filter.allSeasons": "All seasons",
-    "filter.kitType": "👕 Kit type",
     "filter.allKitTypes": "All kit types",
-    "filter.onlyKitParts": "Kit parts only",
-    "fieldset.display": "🖥️ Display",
-    "filter.view": "👁️ View",
-    "view.teams": "Teams",
-    "view.kitsets": "Kit sets",
-    "view.single": "Single",
-    "filter.thumbWidth": "🖼️ Thumb width",
     "btn.showCompleted": "👁️ Show completed",
     "btn.hideCompleted": "👁️ Hide completed",
     "btn.showCompletedPlain": "Show completed",
-    "stats.line": "📦 {vt}/{at} teams | 📄 {vf}/{af} files | ✅ {tc} teams + {fc} files completed",
+    "stats.line": "📦 {vt}/{at} teams | 📄 {vf}/{af} files | ✅ completed in total: {kc} kit sets + {fc} files",
     "usage.loading": "⏳ Loading usages…",
     "usage.empty": "📭 This file is not used yet.",
     "usage.error": "❌ Error while loading.",
@@ -1552,7 +1712,7 @@ var I18N = {
     "notify.enabledBody": "Notifications enabled. You'll be notified when a search finishes.",
     "notify.enabledOk": "Notifications enabled. You'll get a desktop notification when the search finishes. The tab title also flashes “✅ Kitly”.",
     "notify.enabledFallback": "Notifications enabled.\n\nYour browser apparently doesn't show desktop notifications for local files (file://). Instead, the tab title flashes “✅ Kitly” when the search finishes – visible even from another tab.\n\nFor real desktop notifications: open Kitly via a local server/HTTPS, or use a browser that allows file:// (e.g. Chrome).",
-    "notice.limitReached": "⚠️ Limit reached: PetScan returned {n} results – exactly as many as the limit allows. Further files in the period were cut off. Raise the “Limit” (up to 10000) or pick a smaller date range.",
+    "notice.limitReached": "⚠️ Limit reached: the source returned {n} results – exactly as many as the limit allows. Further files in the period were cut off. Raise the “Limit” (up to 10000) or pick a smaller date range.",
     "notice.noTeamsFiltered": "No teams match the filter criteria.",
     "notice.noTeamsFound": "No teams found.",
     "notice.teamsFound": "{n} teams found.",
@@ -1566,6 +1726,37 @@ var I18N = {
     "notice.filesCount": "{n} of {total} files.",
     "notice.checkingUploads": "Checking upload dates … {n}/{total}",
     "notice.error": "Error: {msg}",
+    "notice.commonsSearching": "Searching Commons … {part} ({n} hits)",
+    "notice.commonsDone": "Commons search: {n} files in range.",
+    "notice.cancelled": "Retrieval cancelled. The list was not changed.",
+    "prog.start": "Starting …",
+    "prog.step": "Step {i} of {n}: {name}",
+    "prog.titles": "Title search",
+    "prog.cats": "Categories",
+    "prog.cup": "Checking upload dates",
+    "prog.pq": "PetScan query",
+    "prog.pup": "Checking upload dates (PetScan)",
+    "prog.dTitles": "{part} · {n} hits",
+    "prog.dCats": "{cat} ({c}/{N}) · {n} files",
+    "prog.dUp": "{n} of {total} files",
+    "prog.dPet": "Waiting for PetScan …",
+    "prog.eta": "about {t} left",
+    "prog.etaSoon": "almost done",
+    "prog.etaCalc": "Estimating time left …",
+    "prog.elapsed": "{t} elapsed",
+    "notice.rateLimited": "Commons is throttling the request (429). Waiting {s} s and retrying …",
+    "notice.staleSource": "⚠️ The source looks stale: the newest hit is from {date}, {days} days behind. With PetScan this is the Toolforge replica lagging. Switch the data source to “Commons search (live)”.",
+    "notice.staleSourceCommons": "⚠️ The newest hit is from {date}, {days} days behind. Check the date and the limit.",
+    "notice.commonsCategories": "Scanning categories … {cat} ({n} files)",
+    "notice.bothDone": "Both sources: {n} files, {extra} of them found via PetScan only.",
+    "notice.bothPetscanFailed": "⚠️ PetScan unreachable, showing only the {n} files from the Commons search.",
+    "notice.bothCommonsFailed": "⚠️ The Commons search failed, showing only the {n} files from PetScan.",
+    "notice.commonsPartial": "⚠️ Found {n} files, but {fail} sub-queries were aborted. The result may be incomplete.",
+    "copy.fallbackHint": "The browser refused the automatic copy (the colour analysis takes longer than the window granted after the click). The code is selected, copy it with Ctrl+C or ⌘C.",
+    "btn.sinceLastVisitTitle": "Sets the date to your last retrieval ({date}) and reloads.",
+    "warn.usageCacheFull": "⚠️ Local storage is full. Usage data will not be cached this session; everything else keeps working. Fix: clear the browser data for this page.",
+    "storage.migrated": "ℹ️ Completion data migrated to schema 6: {sets} kit sets and {files} files carried over, {teams} team ticks dissolved (they permanently hid future seasons). The previous state is kept as a backup under “kitStorage_v5_backup”.",
+    "storage.migrationFailed": "⚠️ The old completion data could not be read. Nothing was deleted; it is still stored under “kitStorage_v5”.",
     "kitType.h": "Home", "kitType.a": "Away", "kitType.t": "Third",
     "kitType.e": "Europe", "kitType.f": "Fourth", "kitType.gk": "Goalkeeper",
     "kitType.gkh": "Goalkeeper home", "kitType.gka": "Goalkeeper away", "kitType.gkt": "Goalkeeper third",
@@ -1591,8 +1782,8 @@ var I18N = {
     "btn.failed": "❌ Failed",
     "aria.kitView": "Kit view: {parts}",
     "aria.kitViewTitle": "Composite kit view (like Wikipedia)",
+    "aria.markDone": "Mark as done",
     "thumb.noPreview": "No<br>preview",
-    "empty.allDone": "All {n} entries completed!",
     "empty.allDone.teams": "All {n} teams completed!",
     "empty.allDone.kitsets": "All {n} kit sets completed!",
     "empty.allDone.single": "All {n} kit parts completed!",
@@ -1638,7 +1829,10 @@ function kitTypeName(kt) {
 // v6.9.0: Datei-Meta-Zeile: „<Bytes> Bytes • <Datum> • <Autor>" (Autor nur wenn bekannt).
 // usageEscAttr escaped den Autornamen fürs innerHTML.
 function fileMetaHtml(file) {
-  var s = file.len + " Bytes • " + formatMwTimestamp(file.uploadTs || file.touched);
+  // v6.12.1: Die Commons-Quelle kennt `len` nicht immer – dann die Größe weglassen
+  // statt „undefined Bytes“ anzuzeigen.
+  var size = (file.len == null || isNaN(file.len)) ? '' : (Number(file.len).toLocaleString(currentLang === 'de' ? 'de-DE' : 'en-GB') + " Bytes • ");
+  var s = size + formatMwTimestamp(file.uploadTs || file.touched);
   if (file.author) s += " • " + usageEscAttr(file.author);
   return s;
 }
@@ -1649,8 +1843,22 @@ function applyStaticTranslations() {
     var v = els[i].getAttribute('data-' + currentLang);
     if (v != null) els[i].textContent = v;
   }
+  // v6.13.1: Tooltips waren fest englisch. data-title-de/-en werden jetzt
+  // genauso mitgezogen wie die Beschriftungen.
+  var tips = document.querySelectorAll('[data-title-de][data-title-en]');
+  for (var j = 0; j < tips.length; j++) {
+    var tv = tips[j].getAttribute('data-title-' + currentLang);
+    if (tv == null) continue;
+    tips[j].setAttribute('title', tv);
+    // v6.13.2: Trägt das Element zusätzlich ein aria-label (Buttons ohne sichtbaren
+    // Text), muss es dieselbe Sprache sprechen wie der Tooltip.
+    if (tips[j].hasAttribute('aria-label')) tips[j].setAttribute('aria-label', tv);
+  }
   var chg = document.querySelector('.title-badge');
-  if (chg) chg.setAttribute('title', t('header.changelogTitle'));
+  if (chg) {
+    chg.setAttribute('title', t('header.changelogTitle'));
+    chg.setAttribute('aria-label', t('header.changelogTitle'));
+  }
 }
 function cycleLanguage() {
   currentLang = (currentLang === 'de') ? 'en' : 'de';
@@ -1666,10 +1874,25 @@ function applyLanguage() {
   if (typeof updateNotifyButton === 'function') updateNotifyButton();
   if (typeof updateLimitWarning === 'function') updateLimitWarning();
   // Dynamische Inhalte neu aufbauen, wenn schon Daten geladen sind.
-  if (typeof isDataLoaded !== 'undefined' && isDataLoaded && typeof renderFiles === 'function') renderFiles();
+  // v6.13.0: Auch die Dropdowns neu befüllen, sonst bleiben „Keine Saison" und die
+  // Trikottyp-Namen nach dem Sprachwechsel in der alten Sprache stehen.
+  if (typeof isDataLoaded !== 'undefined' && isDataLoaded) {
+    if (typeof populateSeasonFilter === 'function') populateSeasonFilter();
+    if (typeof populateKitTypeFilter === 'function') populateKitTypeFilter();
+  }
+  if (typeof isDataLoaded !== 'undefined' && isDataLoaded && typeof renderFiles === 'function') {
+    renderFiles();
+    // v6.13.2: Nachlauf selbst anstoßen. Bis hierher erledigte das ein Wrapper um
+    // window.renderFiles, der bei JEDEM Render einen eigenen Timer startete.
+    if (typeof schedulePostRender === 'function') schedulePostRender();
+  }
   if (typeof updateStats === 'function') updateStats();
   if (typeof refreshCompletedToggleLabel === 'function') refreshCompletedToggleLabel();
   if (typeof populateUsageChips === 'function') populateUsageChips();
+  if (typeof refreshSinceLastVisitButton === 'function') refreshSinceLastVisitButton();
+  // v6.13.0: sichtbare Cache-Warnung in der neuen Sprache nachziehen.
+  var cw = document.getElementById('cacheWarning');
+  if (cw && !cw.hidden) cw.textContent = t('warn.usageCacheFull');
 }
 
 // --- Theme (Auto / Hell / Dunkel) ---
@@ -1795,13 +2018,26 @@ function yesterday() {
   d.setDate(d.getDate() - 1);
   return d.toISOString().slice(0,10);
 }
-function readControls() {
+// v6.13.0: Das Datumsfeld wird NUR noch beim Laden und unmittelbar vor einem
+// Abruf vorbelegt. Vorher tat das readControls(), das aus jedem Render- und
+// Filterpfad läuft – ein bewusst geleertes Feld füllte sich dadurch still wieder.
+function ensureAfterDefault() {
   const afterEl = document.getElementById("after");
   if (afterEl && !afterEl.value) afterEl.value = yesterday();
+}
+// v6.13.1: Feste Tiefe für den PetScan-Kategorienlauf. Sie war als Eingabefeld
+// sichtbar, hatte aber keinen sinnvollen Anwendungsfall: der Kategoriebaum der
+// Trikotvorlagen war schon bei 50 vollständig abgedeckt, jeder kleinere Wert
+// konnte nur Treffer verlieren. Die Funktion bleibt, nur einstellbar ist sie
+// nicht mehr.
+var PETSCAN_DEPTH = 100;
+
+function readControls() {
   return {
+	dataSource: (function(){ var el = document.getElementById("dataSource"); return (el && el.value) || 'commons'; })(),
 	after: document.getElementById("after").value,
 	limit: document.getElementById("limit").value,
-	depth: document.getElementById("depth").value,
+	depth: PETSCAN_DEPTH,
 	width: document.getElementById("width").value,
 	filterTrikotTeile: document.getElementById("filterTrikotTeile").checked,
 	hideUpdates: (function(){ var el = document.getElementById("filterHideUpdates"); return el ? el.checked : true; })(),
@@ -1816,9 +2052,99 @@ function getSelectedKitTypes() {
   if (!select || !select.value) return [];
   return [select.value];
 }
+var _loadingPrevFocus = null;
 function showLoading(on) {
   document.getElementById("loading").style.display = on ? "flex" : "none";
+  // v6.15.0: Fokus auf „Abbrechen“, solange das Overlay offen ist, danach zurück.
+  if (on) {
+    _loadingPrevFocus = document.activeElement;
+    document.getElementById('loadingCancel').focus();
+  } else if (_loadingPrevFocus && document.contains(_loadingPrevFocus)) {
+    _loadingPrevFocus.focus();
+    _loadingPrevFocus = null;
+  }
 }
+
+// ================================================
+// === v6.15.0: FORTSCHRITT IM LADE-OVERLAY ===
+// ================================================
+// Phasen je Quelle mit Gewicht. Der Balken ist der gewichtete Anteil über alle
+// Phasen der gewählten Quelle. shortcut: Gewichte sind Schätzwerte, keine Messung –
+// nur die Kategorien (8) und die Upload-Prüfung (n von Gesamt) haben einen echten
+// Nenner, die fünf Titelsuchen enden, sobald eine Seite nichts Neues bringt. Die
+// Restdauer springt deshalb zu Beginn; Gewichte nachjustieren, wenn sie stört.
+var PROG_PHASES = {
+  commons: [['titles', 50], ['cats', 25], ['cup', 25]],
+  petscan: [['pq', 30], ['pup', 70]],
+  both:    [['titles', 35], ['cats', 15], ['cup', 15], ['pq', 15], ['pup', 20]]
+};
+var RUN = null;   // laufender Abruf: { ctl, phases, total, frac, step, t0, est, timer }
+function runSignal() { return RUN ? RUN.ctl.signal : undefined; }
+function isAbort(e) { return !!e && e.name === 'AbortError'; }
+// Anteil (0..1) am Gesamtfortschritt, wenn Phase `key` zu `frac` erledigt ist.
+function progFraction(phases, key, frac) {
+  var total = 0, before = 0, w = 0, found = false;
+  phases.forEach(function(p) {
+    total += p[1];
+    if (p[0] === key) { found = true; w = p[1]; } else if (!found) before += p[1];
+  });
+  if (!found) return null;
+  return (before + w * Math.max(0, Math.min(1, frac))) / total;
+}
+function fmtDuration(sec) {
+  sec = Math.round(sec);
+  return sec < 60 ? sec + ' s' : Math.floor(sec / 60) + ' min ' + (sec % 60) + ' s';
+}
+// Restdauer auf 5 s bzw. ganze Minuten gerundet; unter 5 s: null („gleich fertig“).
+function fmtEta(sec) {
+  if (sec < 5) return null;
+  return sec < 90 ? (Math.round(sec / 5) * 5) + ' s' : Math.round(sec / 60) + ' min';
+}
+function progTick() {
+  var r = RUN; if (!r) return;
+  var elapsed = (Date.now() - r.t0) / 1000;
+  var eta = t('prog.etaCalc');
+  // Erst ab ~10 % und 3 s: davor ist jede Hochrechnung Raterei. Die Gesamtdauer wird
+  // geglättet, die Restdauer ist Gesamtdauer minus Verstrichenes.
+  if (r.frac >= 0.1 && elapsed >= 3) {
+    var total = elapsed / r.frac;
+    r.est = (r.est == null) ? total : 0.7 * r.est + 0.3 * total;
+    var e = fmtEta(Math.max(0, r.est - elapsed));
+    eta = e ? t('prog.eta', { t: e }) : t('prog.etaSoon');
+  }
+  document.getElementById('loadingTime').textContent = eta + ' · ' + t('prog.elapsed', { t: fmtDuration(elapsed) });
+}
+function progStart(source) {
+  var phases = PROG_PHASES[source] || PROG_PHASES.commons;
+  RUN = {
+    ctl: new AbortController(), phases: phases, frac: 0, step: -1, est: null, t0: Date.now(),
+    total: phases.reduce(function(s, p) { return s + p[1]; }, 0)
+  };
+  document.getElementById('loadingStep').textContent = t('prog.start');
+  document.getElementById('loadingDetail').textContent = '';
+  document.getElementById('loadingBar').value = 0;
+  RUN.timer = setInterval(progTick, 1000);
+  progTick();
+}
+function progEnd() {
+  if (RUN) { clearInterval(RUN.timer); RUN = null; }
+}
+// Phase `key` ist zu `frac` (0..1) erledigt; `detail` ersetzt die Detailzeile, wenn gegeben.
+function progAt(key, frac, detail) {
+  var r = RUN; if (!r) return;
+  var f = progFraction(r.phases, key, frac);
+  if (f == null) return;
+  if (f > r.frac) r.frac = f;   // der Balken läuft nie rückwärts
+  var i = r.phases.map(function(p) { return p[0]; }).indexOf(key);
+  if (i !== r.step) {
+    r.step = i;
+    document.getElementById('loadingStep').textContent =
+      t('prog.step', { i: i + 1, n: r.phases.length, name: t('prog.' + key) });
+  }
+  if (detail != null) document.getElementById('loadingDetail').textContent = detail;
+  document.getElementById('loadingBar').value = Math.round(r.frac * 100);
+}
+function cancelRetrieval() { if (RUN) RUN.ctl.abort(); }
 // v6.11.1: Warnung, wenn PetScan genau am Limit zurückkam – dann wurden weitere
 // Treffer im Zeitraum stillschweigend abgeschnitten. Der Hinweis lebt in einem
 // EIGENEN Element, weil die Statuszeile (#notice) mehrfach überschrieben wird.
@@ -1848,11 +2174,48 @@ function setNotice(text, link) {
 	n.textContent = text;
   }
 }
-async function fetchJSON(url) {
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(res.statusText);
-  return res.json();
+/**
+ * v6.13.2 – Gemeinsame Abrufschleife für alle JSON-Endpunkte.
+ * Wiederholt bei Netzfehler, HTTP 429 und 5xx mit steigender Wartezeit und
+ * respektiert Retry-After. Vorher hatte nur mwApi() diese Logik; der PetScan-Pfad
+ * über fetchJSON() brach beim ersten Schluckauf ab.
+ * @param {string} url
+ * @param {boolean} [mwErrors] true = {"error":…} im Body als Fehler werten (MediaWiki)
+ * @param {AbortSignal} [signal] v6.15.0: Abbruch durch den Nutzer; wird nie wiederholt
+ */
+async function fetchJsonRetry(url, mwErrors, signal) {
+  var waits = [1000, 3000, 8000]; // drei Versuche extra, steigend
+  for (var attempt = 0; ; attempt++) {
+    if (signal && signal.aborted) throw signal.reason;
+    var resp = null, netErr = null;
+    try { resp = await fetch(url, signal ? { signal: signal } : undefined); } catch (e) { netErr = e; }
+    if (netErr && signal && signal.aborted) throw netErr;
+    if (resp && resp.ok) {
+      var data = await resp.json();
+      // MediaWiki meldet Fehler mit HTTP 200 und {"error":…} im Body.
+      if (mwErrors && data && data.error) {
+        throw new Error('API-Fehler ' + (data.error.code || '?') + ': ' + (data.error.info || ''));
+      }
+      return data;
+    }
+    var status = resp ? resp.status : 0;
+    var retryable = !!netErr || status === 429 || status >= 500;
+    if (!retryable || attempt >= waits.length) {
+      // v6.13.2: res.statusText ist über HTTP/2 leer -> immer die Statusnummer nennen.
+      throw (netErr || new Error('HTTP ' + status + (resp && resp.statusText ? ' ' + resp.statusText : '')));
+    }
+    var wait = waits[attempt];
+    var ra = resp ? parseInt(resp.headers.get('Retry-After') || '', 10) : NaN;
+    if (ra > 0) wait = Math.max(wait, ra * 1000);
+    if (status === 429) setNotice(t('notice.rateLimited', { s: Math.round(wait / 1000) }));
+    // v6.15.0: Die Wartezeit endet sofort, wenn der Nutzer abbricht.
+    await new Promise(function(res, rej) {
+      var id = setTimeout(res, wait);
+      if (signal) signal.addEventListener('abort', function() { clearTimeout(id); rej(signal.reason); }, { once: true });
+    });
+  }
 }
+async function fetchJSON(url, signal) { return fetchJsonRetry(url, false, signal); }
 // v6.0.1: Echte Commons-Datei? PetScan liefert gelegentlich Nicht-Dateien
 // (z. B. Kategorien wie "Football_kit_body/VARAMAN_specific_patterns"). Solche
 // Einträge haben KEINE Bild-Endung und keinen Datei-Namensraum -> aussortieren.
@@ -1951,8 +2314,23 @@ function extractSeasons(filename) {
   var label = formatSeasonLabel(code);
   return label ? [label] : [];
 }
+// v6.13.0: Die Analyse ist rein und lief bisher vier- bis sechsmal pro Datei und
+// Render. Bei 10000 Dateien waren das Zehntausende Regex-Durchläufe je Filterklick.
+// Der Cache wird bei jedem neuen Abruf geleert (siehe fetchData).
+var ANALYSIS_CACHE = Object.create(null);
+function resetAnalysisCache() { ANALYSIS_CACHE = Object.create(null); }
 function analyzeKitFilename(filename) {
-  var cleanName = filename.replace(/\.(png|jpg|jpeg|gif|svg)$/i, '').replace(/^kit[_\s]/i, '');
+  var ck = String(filename);
+  var hit = ANALYSIS_CACHE[ck];
+  if (hit) return hit;
+  var res = analyzeKitFilenameUncached(filename);
+  ANALYSIS_CACHE[ck] = res;
+  return res;
+}
+function analyzeKitFilenameUncached(filename) {
+  // v6.14.0: dieselbe Endungsliste wie isCommonsFile(). Vorher fehlten tif/tiff/webp,
+  // die Endung blieb im Namen stehen und verdarb Typ- und Saisonerkennung.
+  var cleanName = filename.replace(/\.(png|jpe?g|gif|svg|tiff?|webp)$/i, '').replace(/^kit[_\s]/i, '');
   var result = { original: filename, part: null, team: null, season: null, kit_type: null, is_long_socks: false, is_teamware: false, manufacturer: null, set_id: null };
   var partPatterns = { body: /body/i, left_arm: /left[_\s]arm/i, right_arm: /right[_\s]arm/i, shorts: /shorts/i, socks: /socks/i };
   var workingName = cleanName;
@@ -1998,7 +2376,8 @@ function analyzeKitFilename(filename) {
       ? ((sep[2].length === 4 ? sep[2].slice(2) : sep[2]) + sep[3]) // Jahr1(+Jahr2) -> "XXYY"
       : sep[2];                                                     // einzelner 4-stelliger Block
     var sRaw = (sep[4] || '').toLowerCase().replace(/([a-z]+)\d+$/i, '$1'); // Variantenziffer weg
-    if (result.part === 'socks' && sRaw.length > 1 && sRaw.slice(-1) === 'l' && /^[haetf]l$/.test(sRaw)) {
+    // v6.14.0: auch Torwart-Stutzen können lang sein (gkhl, gkal, gktl, gkl).
+    if (result.part === 'socks' && sRaw.length > 1 && sRaw.slice(-1) === 'l' && /^(gk[hat]?|[haetf])l$/.test(sRaw)) {
       result.is_long_socks = true; sRaw = sRaw.slice(0, -1);
     }
     if (sRaw === '' || sRaw === 'home')      result.kit_type = 'h';
@@ -2018,7 +2397,8 @@ function analyzeKitFilename(filename) {
 	result.team = hyphenSeason[1].replace(/[\s_\-–\/]+$/, '').replace(/^[\s_\-–\/]+/, '').trim();
 	result.season = hyphenSeason[2] + hyphenSeason[3]; // "26"+"27" -> "2627"
 	var hkt = (hyphenSeason[4] || 'h').toLowerCase().replace(/([a-z]+)\d+$/i, '$1'); // Variantenziffer weg
-	if (result.part === 'socks' && hkt.length > 1 && hkt.slice(-1) === 'l' && /^[haetf]l$/.test(hkt)) { result.is_long_socks = true; hkt = hkt.slice(0, -1); }
+	// v6.14.0: auch Torwart-Stutzen können lang sein (gkhl, gkal, gktl, gkl).
+	if (result.part === 'socks' && hkt.length > 1 && hkt.slice(-1) === 'l' && /^(gk[hat]?|[haetf])l$/.test(hkt)) { result.is_long_socks = true; hkt = hkt.slice(0, -1); }
 	if (hkt === '' || hkt === 'home')      result.kit_type = 'h';
 	else if (hkt === 'away')               result.kit_type = 'a';
 	else if (hkt === 'third')              result.kit_type = 't';
@@ -2142,6 +2522,7 @@ function analyzeKitFilename(filename) {
 // Alle Filter AUSSER dem „Ausblenden-wenn-verwendet"-Filter (dieser braucht den Usage-Scan).
 // opts.skipKitType: den Trikottyp-Filter überspringen (für die Trikottyp-Dropdown-Zählung,
 // damit dort nicht nur der bereits gewählte Typ übrig bleibt).
+// opts.skipSeason: dasselbe für die Saison-Dropdown-Zählung (v6.13.2).
 function getBaseFilteredFiles(opts) {
   var ctrl = readControls();
   var filtered = allFiles.slice();
@@ -2153,7 +2534,7 @@ function getBaseFilteredFiles(opts) {
     var afterMw = ctrl.after.replace(/-/g, '') + '000000';
     filtered = filtered.filter(function(f) { return !f.firstUploadTs || f.firstUploadTs >= afterMw; });
   }
-  if (ctrl.seasonFilter && ctrl.seasonFilter !== '') {
+  if (!(opts && opts.skipSeason) && ctrl.seasonFilter && ctrl.seasonFilter !== '') {
 	if (ctrl.seasonFilter === 'keine') filtered = filtered.filter(function(f) { return extractSeasons(f.title).length === 0; });
 	else filtered = filtered.filter(function(f) { return extractSeasons(f.title).indexOf(ctrl.seasonFilter) !== -1; });
   }
@@ -2178,9 +2559,11 @@ function getFilteredFiles() {
   return filtered;
 }
 function populateSeasonFilter() {
-  var ctrl = readControls();
   var seasonCounts = {};
-  var relevantFiles = allFiles.filter(function(file) { return ctrl.filterTrikotTeile ? isTrikotTeil(file.title) : true; });
+  // v6.13.2: Dieselbe Grundlage wie beim Trikottyp-Dropdown. Vorher zählte hier nur
+  // der Trikotteile-Haken, „Dateiupdates ausblenden" fehlte – die Zahlen in Klammern
+  // lagen damit regelmäßig über der tatsächlichen Trefferzahl.
+  var relevantFiles = getBaseFilteredFiles({ skipSeason: true, skipKitType: true });
   relevantFiles.forEach(function(file) {
 	extractSeasons(file.title).forEach(function(season) { seasonCounts[season] = (seasonCounts[season] || 0) + 1; });
   });
@@ -2229,9 +2612,20 @@ function groupIntoKitsets(files) {
 	var k = kitsets[a.set_id];
 	k.parts.push({ file: file, analysis: a });
 	var fd = mwToDate(file.uploadTs || file.touched); // v5.4.0: nach echtem Upload sortieren
-	if (!k.newest_date || fd > k.newest_date) k.newest_date = fd;
+	// v6.13.1: Ein unlesbarer Zeitstempel ergab „Invalid Date". Stand der als
+	// erster in der Gruppe, blieb er hängen (jeder Vergleich damit ist false)
+	// und die Sortierung lief über NaN.
+	if (isValidDate(fd) && (!k.newest_date || fd > k.newest_date)) k.newest_date = fd;
   });
-  return Object.keys(kitsets).map(function(id) { return kitsets[id]; }).sort(function(a, b) { return b.newest_date - a.newest_date; });
+  return Object.keys(kitsets).map(function(id) { return kitsets[id]; }).sort(byNewestDateDesc);
+}
+// v6.13.1: Sortierhelfer, die mit fehlendem Datum umgehen (ohne Datum ans Ende).
+function isValidDate(d) { return d instanceof Date && !isNaN(d.getTime()); }
+function byNewestDateDesc(a, b) {
+  var av = isValidDate(a.newest_date) ? a.newest_date.getTime() : -Infinity;
+  var bv = isValidDate(b.newest_date) ? b.newest_date.getTime() : -Infinity;
+  if (av === bv) return 0;
+  return bv > av ? 1 : -1;
 }
 // v6.5.1: Saison-Sortierwert (Startjahr) – neueste Saison = höchster Wert.
 // Nutzt dieselbe Spannen-Logik wie die Anzeige (seasonSpan), damit Sortierung
@@ -2244,6 +2638,19 @@ function seasonSortValue(s) {
   if (/^\d{2}$/.test(s)) { var ty = new Date().getFullYear(), y = parseInt(s, 10); return (2000 + y <= ty + 2) ? 2000 + y : 1900 + y; }
   return -1;
 }
+// v6.13.1: Gruppierungsschlüssel für die Saison-Unterebene. „16" und „2016"
+// bezeichnen dieselbe Saison und werden auch gleich beschriftet – als getrennte
+// Schlüssel ergaben sie zwei Gruppen mit identischer Überschrift. Spannen
+// („1617") bleiben ausdrücklich eigenständig.
+function seasonGroupKey(s) {
+  if (!s) return 'noseason';
+  if (seasonSpan(s)) return 's' + s;
+  if (/^\d{2}$/.test(s) || /^\d{4}$/.test(s)) {
+    var v = seasonSortValue(s);
+    if (v > 0) return 'y' + v;
+  }
+  return 's' + s;
+}
 // v6.4.0: Alle Saisons eines Teams unter EINEM Team zusammenfassen (Team -> Saison -> Kitset -> Teile).
 function groupIntoTeams(files) {
   var teams = {};
@@ -2253,17 +2660,19 @@ function groupIntoTeams(files) {
     var teamKey = a.team; // nur Team; Saison ist jetzt Unterebene
     if (!teams[teamKey]) teams[teamKey] = { team: a.team, seasons: {}, total_parts: 0, newest_date: null };
     var tg = teams[teamKey];
-    var seasonKey = a.season || 'noseason';
+    var seasonKey = seasonGroupKey(a.season);
     if (!tg.seasons[seasonKey]) tg.seasons[seasonKey] = { season: a.season, kitsets: {}, total_parts: 0 };
     var sg = tg.seasons[seasonKey];
-    var kk = a.kit_type || 'unknown';
-    if (!sg.kitsets[kk]) sg.kitsets[kk] = { kit_type: a.kit_type, parts: [] };
+    // v6.12.0: nach set_id gruppieren, nicht nach Trikottyp. Damit trägt jedes
+    // Kitset in der Teams-Ansicht denselben Schlüssel wie in der Kitset-Ansicht.
+    var kk = a.set_id || (safeId(a.team) + '_' + safeId(a.season) + '_' + (a.kit_type || 'unknown'));
+    if (!sg.kitsets[kk]) sg.kitsets[kk] = { id: kk, kit_type: a.kit_type, parts: [] };
     sg.kitsets[kk].parts.push({ file: file, analysis: a });
     sg.total_parts++; tg.total_parts++;
     var fd = mwToDate(file.uploadTs || file.touched); // Team-Reihenfolge nach echtem Upload
-    if (!tg.newest_date || fd > tg.newest_date) tg.newest_date = fd;
+    if (isValidDate(fd) && (!tg.newest_date || fd > tg.newest_date)) tg.newest_date = fd;
   });
-  return Object.keys(teams).map(function(k) { return teams[k]; }).sort(function(a, b) { return b.newest_date - a.newest_date; });
+  return Object.keys(teams).map(function(k) { return teams[k]; }).sort(byNewestDateDesc);
 }
 function safeId(str) { if (!str) return 'unknown'; return str.replace(/[^a-zA-Z0-9_-]/g, '_'); }
 function renderTeams() {
@@ -2283,7 +2692,8 @@ function renderTeams() {
     var label = formatSeasonLabel(code);
     return label.indexOf('/') === -1 ? t('season.prefix', { label: label }) : label;
   }
-  function kitsetCardHtml(kitset, safeTeam, safeSeason, kitType) {
+  function kitsetCardHtml(kitset, teamName, seasonCode) {
+    var kitType = kitset.kit_type || 'unknown';
     kitset.parts.sort(function(a, b) { return partOrder.indexOf(a.analysis.part) - partOrder.indexOf(b.analysis.part); });
     var socksFiles = kitset.parts.filter(function(p) { return p.analysis.part === 'socks'; });
     if (socksFiles.length > 1 && socksFiles.some(function(p) { return p.analysis.is_long_socks; })) kitset.parts = kitset.parts.filter(function(p) { return p.analysis.part !== 'socks' || p.analysis.is_long_socks; });
@@ -2291,9 +2701,9 @@ function renderTeams() {
     var partsHtml = kitset.parts.map(function(part) {
       var pn = partName(part.analysis.part);
       if (part.analysis.part === 'socks' && part.analysis.is_long_socks) pn = t('part.socksLong');
-      return "<div class=\"file-card\" data-file=\"" + part.file.title.replace(/"/g, '&quot;') + "\"><button class=\"usage-btn\" title=\"" + t('btn.showUsage') + "\">📊</button><div class=\"file-header\"><a href=\"https://commons.wikimedia.org/wiki/File:" + encodeURIComponent(part.file.title) + "\" target=\"_blank\" rel=\"noopener noreferrer\">" + pn + "</a></div><div class=\"file-thumb\"><img class=\"lazy-thumb\" data-filename=\"" + part.file.title.replace(/\"/g, '&quot;') + "\" alt=\"\"></div><div class=\"file-meta\">" + fileMetaHtml(part.file) + "</div></div>";
+      return "<div class=\"file-card\" data-file=\"" + usageEscAttr(part.file.title) + "\" data-ts=\"" + usageEscAttr(part.file.uploadTs || part.file.touched || '') + "\"><button class=\"usage-btn\" title=\"" + t('btn.showUsage') + "\">📊</button><div class=\"file-header\"><a href=\"https://commons.wikimedia.org/wiki/File:" + encodeURIComponent(part.file.title) + "\" target=\"_blank\" rel=\"noopener noreferrer\">" + pn + "</a></div><div class=\"file-thumb\"><img class=\"lazy-thumb\" data-filename=\"" + usageEscAttr(part.file.title) + "\" alt=\"\"></div><div class=\"file-meta\">" + fileMetaHtml(part.file) + "</div></div>";
     }).join('');
-    return "<div class=\"kitset-card\" data-kitset-id=\"" + safeTeam + "-" + safeSeason + "-" + kitType + "\" data-kit-type=\"" + kitType + "\"><div class=\"kitset-header\"><div class=\"kitset-title\">" + displayName + "</div><div class=\"kitset-subtitle\">" + tp('label.parts', kitset.parts.length) + "</div></div>" + buildKitFigureHtml(kitset.parts) + "<div class=\"kitset-parts\">" + partsHtml + "</div>" + (showUsage ? "<div class=\"kitset-usage\" data-usage-pending=\"1\"></div>" : "") + "</div>";
+    return "<div class=\"kitset-card\" data-kitset-id=\"" + usageEscAttr(kitset.id) + "\" data-legacy-kitset-id=\"" + usageEscAttr(legacyTeamsViewKitsetKey(teamName, seasonCode, kitType)) + "\" data-kit-type=\"" + kitType + "\"><div class=\"kitset-header\"><div class=\"kitset-title\">" + displayName + "</div><div class=\"kitset-subtitle\">" + tp('label.parts', kitset.parts.length) + "</div></div>" + buildKitFigureHtml(kitset.parts) + "<div class=\"kitset-parts\">" + partsHtml + "</div>" + (showUsage ? "<div class=\"kitset-usage\" data-usage-pending=\"1\"></div>" : "") + "</div>";
   }
   teams.forEach(function(team) {
     var safeTeam = safeId(team.team);
@@ -2303,13 +2713,17 @@ function renderTeams() {
     teamCard.className = "team-group";
     teamCard.setAttribute("data-team-id", safeTeam);
     var subtitle = seasonCount + " " + (seasonCount === 1 ? t('label.seasonSingular') : t('label.seasonPlural')) + " • " + tp('label.parts', team.total_parts);
-    teamCard.innerHTML = "<div class=\"team-header\"><div class=\"team-title\">" + usageEscAttr(team.team.charAt(0).toUpperCase() + team.team.slice(1)) + "</div><div class=\"team-subtitle\">" + subtitle + "</div><button class=\"team-check-btn\" data-team-id=\"" + safeTeam + "\" role=\"checkbox\" aria-checked=\"false\" tabindex=\"0\"></button></div><div class=\"team-kits\"></div>";
+    teamCard.innerHTML = "<div class=\"team-header\"><div class=\"team-title\">" + usageEscAttr(team.team.charAt(0).toUpperCase() + team.team.slice(1)) + "</div><div class=\"team-subtitle\">" + subtitle + "</div><button class=\"team-check-btn\" data-team-id=\"" + safeTeam + "\" role=\"checkbox\" aria-checked=\"false\" tabindex=\"0\" aria-label=\"" + usageEscAttr(t('aria.markDone')) + "\"></button></div><div class=\"team-kits\"></div>";
     var teamKits = teamCard.querySelector(".team-kits");
     seasonKeys.forEach(function(sk) {
       var sg = team.seasons[sk];
-      var safeSeason = safeId(sg.season);
-      var kitTypes = Object.keys(sg.kitsets).sort(function(a, b) { return (kitTypeOrder[a] || 999) - (kitTypeOrder[b] || 999) || a.localeCompare(b); });
-      var kitsetsHtml = kitTypes.map(function(kt) { return kitsetCardHtml(sg.kitsets[kt], safeTeam, safeSeason, kt); }).join('');
+      // v6.12.0: Schlüssel sind jetzt set_ids, deshalb über den Trikottyp des
+      // Kitsets sortieren statt über den Objektschlüssel.
+      var setKeys = Object.keys(sg.kitsets).sort(function(a, b) {
+        var ka = sg.kitsets[a].kit_type || 'unknown', kb = sg.kitsets[b].kit_type || 'unknown';
+        return (kitTypeOrder[ka] || 999) - (kitTypeOrder[kb] || 999) || ka.localeCompare(kb) || a.localeCompare(b);
+      });
+      var kitsetsHtml = setKeys.map(function(sid) { return kitsetCardHtml(sg.kitsets[sid], team.team, sg.season); }).join('');
       var block = document.createElement("div");
       block.className = "season-block";
       block.innerHTML = "<div class=\"season-header\"><span class=\"season-title\">" + seasonLabel(sg.season) + "</span><button class=\"copy-infobox-btn\" onclick=\"event.stopPropagation(); copyTeamInfobox(this);\" title=\"" + t('btn.copyInfoboxTitle') + "\">" + t('btn.copyInfobox') + "</button></div><div class=\"season-kits\">" + kitsetsHtml + "</div>";
@@ -2334,10 +2748,24 @@ function renderKitsets() {
 	var card = document.createElement("div");
 	card.className = "kitset-card";
 	card.setAttribute("data-kitset-id", kitset.id);
-	var partsHtml = kitset.parts.sort(function(a, b) { return partOrder.indexOf(a.analysis.part) - partOrder.indexOf(b.analysis.part); }).map(function(part) {
+	// v6.12.0: Schlüssel, unter dem dieses Kitset bis v6.11.1 in der Teams-Ansicht
+	// abgehakt worden sein könnte – nur zum Wiedererkennen alter Haken.
+	card.setAttribute("data-legacy-kitset-id", legacyTeamsViewKitsetKey(kitset.team, kitset.season, kitset.kit_type || 'unknown'));
+	// v6.13.2: Gleichziehen mit der Teams-Ansicht. Ohne das Attribut liest
+	// ciBuildInfoboxCode() hier null und müsste die Kit-Nummer raten.
+	card.setAttribute("data-kit-type", kitset.kit_type || 'unknown');
+	kitset.parts.sort(function(a, b) { return partOrder.indexOf(a.analysis.part) - partOrder.indexOf(b.analysis.part); });
+	// v6.13.0: Kurzstutzen ausblenden, wenn es zum selben Kitset lange Stutzen gibt.
+	// Stand bisher nur in der Teams-Ansicht, dadurch hatte dasselbe Kitset je nach
+	// Ansicht unterschiedlich viele Teile und eine andere Kit-Figur.
+	var socksFiles = kitset.parts.filter(function(p) { return p.analysis.part === 'socks'; });
+	if (socksFiles.length > 1 && socksFiles.some(function(p) { return p.analysis.is_long_socks; })) {
+	  kitset.parts = kitset.parts.filter(function(p) { return p.analysis.part !== 'socks' || p.analysis.is_long_socks; });
+	}
+	var partsHtml = kitset.parts.map(function(part) {
 	  var pn = partName(part.analysis.part);
 	  if (part.analysis.part === 'socks' && part.analysis.is_long_socks) pn = t('part.socksLong');
-	  return "<div class=\"file-card\" data-file=\"" + part.file.title.replace(/"/g, '&quot;') + "\"><button class=\"usage-btn\" title=\"" + t('btn.showUsage') + "\">📊</button><div class=\"file-header\"><a href=\"https://commons.wikimedia.org/wiki/File:" + encodeURIComponent(part.file.title) + "\" target=\"_blank\" rel=\"noopener noreferrer\">" + pn + "</a></div><div class=\"file-thumb\"><img class=\"lazy-thumb\" data-filename=\"" + part.file.title.replace(/\"/g, '&quot;') + "\" alt=\"\"></div><div class=\"file-meta\">" + fileMetaHtml(part.file) + "</div></div>";
+	  return "<div class=\"file-card\" data-file=\"" + usageEscAttr(part.file.title) + "\" data-ts=\"" + usageEscAttr(part.file.uploadTs || part.file.touched || '') + "\"><button class=\"usage-btn\" title=\"" + t('btn.showUsage') + "\">📊</button><div class=\"file-header\"><a href=\"https://commons.wikimedia.org/wiki/File:" + encodeURIComponent(part.file.title) + "\" target=\"_blank\" rel=\"noopener noreferrer\">" + pn + "</a></div><div class=\"file-thumb\"><img class=\"lazy-thumb\" data-filename=\"" + usageEscAttr(part.file.title) + "\" alt=\"\"></div><div class=\"file-meta\">" + fileMetaHtml(part.file) + "</div></div>";
 	}).join('');
 	card.innerHTML = "<div class=\"kitset-header\"><div class=\"kitset-title\">" + title + "</div><div class=\"kitset-subtitle\">" + tp('label.parts', kitset.parts.length) + "</div></div>" + buildKitFigureHtml(kitset.parts) + "<div class=\"kitset-parts\">" + partsHtml + "</div>" + (showUsage ? "<div class=\"kitset-usage\" data-usage-pending=\"1\"></div>" : "");
 	grid.appendChild(card);
@@ -2355,7 +2783,8 @@ function renderSingleFiles() {
 	var div = document.createElement("div");
 	div.className = "file-card";
 	div.setAttribute("data-file", f.title);
-	div.innerHTML = "<button class=\"usage-btn\" title=\"" + t('btn.showUsage') + "\">📊</button><div class=\"file-header\"><a href=\"https://commons.wikimedia.org/wiki/File:" + encodeURIComponent(f.title) + "\" target=\"_blank\" rel=\"noopener noreferrer\">" + usageEscAttr(f.title) + "</a></div><div class=\"file-thumb\"><img class=\"lazy-thumb\" data-filename=\"" + f.title.replace(/\"/g, '&quot;') + "\" alt=\"\"></div><div class=\"file-meta\">" + fileMetaHtml(f) + "</div>";
+	div.setAttribute("data-ts", f.uploadTs || f.touched || "");
+	div.innerHTML = "<button class=\"usage-btn\" title=\"" + t('btn.showUsage') + "\">📊</button><div class=\"file-header\"><a href=\"https://commons.wikimedia.org/wiki/File:" + encodeURIComponent(f.title) + "\" target=\"_blank\" rel=\"noopener noreferrer\">" + usageEscAttr(f.title) + "</a></div><div class=\"file-thumb\"><img class=\"lazy-thumb\" data-filename=\"" + usageEscAttr(f.title) + "\" alt=\"\"></div><div class=\"file-meta\">" + fileMetaHtml(f) + "</div>";
 	grid.appendChild(div);
   });
 }
@@ -2373,13 +2802,38 @@ var kitColorCache = {}; // Dateiname -> Hex (ohne #) | null (keine Farbe)
 // v6.2.3: Farb-Cache über Sitzungen hinweg persistieren (Farben sind pro Datei
 // stabil). Nur erfolgreiche Werte werden gespeichert – Fehlschläge (null) werden
 // beim nächsten Laden erneut versucht.
-var KIT_COLOR_CACHE_KEY = 'kitColorCache_v1';
+// v6.14.0: Schlüssel auf _v2 gehoben und um den Upload-Zeitstempel ergänzt. Vorher
+// lag die Farbe allein am Dateinamen. Wird dieselbe Datei auf Commons durch eine neue
+// Version ersetzt (der Normalfall bei Trikot-Korrekturen), blieb die alte Farbe
+// dauerhaft stehen. Der alte Bestand (kitColorCache_v1) wird beim Start entfernt: er
+// ist reiner Ableitungs-Cache, enthält keine Nutzereingaben und wird bei Bedarf in
+// Sekunden neu berechnet.
+var KIT_COLOR_CACHE_KEY = 'kitColorCache_v2';
 var _kitColorSaveTimer = null;
 function loadKitColorCache() {
+  try { localStorage.removeItem('kitColorCache_v1'); } catch (e) {}
   try {
     var s = localStorage.getItem(KIT_COLOR_CACHE_KEY);
     if (s) { var obj = JSON.parse(s); if (obj && typeof obj === 'object') kitColorCache = obj; }
   } catch (e) { /* Cache ignorieren */ }
+}
+
+// Dateiname -> Upload-Zeitstempel der aktuellen Ergebnisliste. Wird bei jedem Abruf
+// neu aufgebaut; fehlt ein Eintrag, bleibt der Schlüssel ohne Zeitstempel und
+// verhält sich wie vorher.
+var kitUploadTsIndex = null;
+function rebuildUploadTsIndex() {
+  kitUploadTsIndex = {};
+  if (typeof allFiles === 'undefined' || !Array.isArray(allFiles)) return;
+  allFiles.forEach(function(f) {
+    if (!f || !f.title) return;
+    kitUploadTsIndex[String(f.title).replace(/_/g, ' ')] = String(f.uploadTs || f.touched || '');
+  });
+}
+function kitColorKey(fn) {
+  if (!kitUploadTsIndex) rebuildUploadTsIndex();
+  var ts = kitUploadTsIndex[String(fn).replace(/_/g, ' ')] || '';
+  return ts ? fn + '|' + ts : fn;
 }
 function saveKitColorCache() {
   if (_kitColorSaveTimer) return;              // entprellt: max. 1 Schreibvorgang/800ms
@@ -2403,21 +2857,119 @@ function saveKitColorCache() {
 var KIT_COLOR_CACHE_MAX = 6000;
 // v6.9.0: Abgelaufene Usage-Cache-Einträge (usage_v2_*) aufräumen, damit localStorage
 // nicht unbegrenzt wächst. Läuft einmal beim Start; entfernt Einträge > 24 h.
+// v6.13.0: zusätzlich harte Obergrenze, ein einheitlicher Schlüssel je Datei und
+// eine sichtbare Warnung, statt den Quota-Fehler stumm zu verschlucken.
+// v6.13.1: Schlüssel auf usage_v3_ gehoben. Der alte Bestand (usage_v2_*) kann
+// unvollständige Verwendungsdaten enthalten, weil gulimit/fulimit Budgets PRO
+// ANFRAGE sind und die Fortsetzung (`continue`) früher nicht ausgewertet wurde.
+// Solche Einträge werden verworfen statt 24 h lang weiterbenutzt.
+var USAGE_CACHE_PREFIX = 'usage_v3_';
+var USAGE_CACHE_LEGACY_PREFIXES = ['usage_v2_'];
+var USAGE_CACHE_MAX = 400;
+var USAGE_CACHE_MAX_BYTES = 100000;
+var usageCacheWrites = 0;
+var usageCacheWarned = false;
+
+// Ein Schlüssel je Datei: die API liefert denselben Namen mal mit Unterstrich,
+// mal mit Leerzeichen. Vorher landeten dadurch bis zu drei Kopien im Speicher.
+function usageCacheKey(name) {
+  return USAGE_CACHE_PREFIX + String(name).replace(/_/g, ' ');
+}
+
+// v6.14.0: Lesezugriff auf den Cache, bisher nur in fetchGlobalUsage inline vorhanden.
+// Gibt die Liste zurück oder null, wenn nichts Frisches da ist.
+var USAGE_CACHE_TTL = 24 * 60 * 60 * 1000;
+function readUsageCache(name) {
+  try {
+    var raw = localStorage.getItem(usageCacheKey(name));
+    if (!raw) return null;
+    var data = JSON.parse(raw);
+    if (!data || !Array.isArray(data.usage)) return null;
+    if (Date.now() - (data.timestamp || 0) >= USAGE_CACHE_TTL) return null;
+    return data.usage;
+  } catch (e) { return null; }
+}
+
+// Alle Cache-Schlüssel mit Zeitstempel, älteste zuerst.
+function usageCacheEntries() {
+  var out = [];
+  try {
+    for (var i = 0; i < localStorage.length; i++) {
+      var k = localStorage.key(i);
+      if (!k || k.indexOf(USAGE_CACHE_PREFIX) !== 0) continue;
+      var ts = 0;
+      try { var d = JSON.parse(localStorage.getItem(k)); ts = (d && d.timestamp) || 0; } catch (e) {}
+      out.push({ key: k, ts: ts });
+    }
+  } catch (e) {}
+  out.sort(function(a, b) { return a.ts - b.ts; });
+  return out;
+}
+
+// Auf `keep` Einträge stutzen, älteste zuerst. Gibt zurück, wie viele weg sind.
+function pruneUsageCache(keep) {
+  var entries = usageCacheEntries();
+  var drop = entries.length - Math.max(0, keep);
+  if (drop <= 0) return 0;
+  for (var i = 0; i < drop; i++) {
+    try { localStorage.removeItem(entries[i].key); } catch (e) {}
+  }
+  return drop;
+}
+
+function warnUsageCacheFull() {
+  if (usageCacheWarned) return;
+  usageCacheWarned = true;
+  console.warn('[UsageCache] localStorage voll – Verwendungsdaten werden diese Sitzung nicht zwischengespeichert.');
+  var el = document.getElementById('cacheWarning');
+  if (!el) return;
+  el.textContent = t('warn.usageCacheFull');
+  el.hidden = false;
+}
+
+// Schreibt einen Cache-Eintrag. Bei Quota-Fehler wird einmal aggressiv gestutzt
+// und erneut versucht; scheitert auch das, gibt es eine sichtbare Warnung.
+function writeUsageCache(name, usage) {
+  var key = usageCacheKey(name);
+  var payload = JSON.stringify({ usage: usage, timestamp: Date.now() });
+  // v6.13.1: Ein einzelner Ausreißer (Dateien mit Tausenden Einbindungen) darf
+  // den Cache nicht allein füllen. Solche Einträge werden neu geholt.
+  if (payload.length > USAGE_CACHE_MAX_BYTES) return false;
+  try {
+    localStorage.setItem(key, payload);
+    // Nicht bei jedem Schreibvorgang über den gesamten Speicher laufen.
+    if (++usageCacheWrites % 25 === 0) pruneUsageCache(USAGE_CACHE_MAX);
+    return true;
+  } catch (e) {
+    pruneUsageCache(Math.floor(USAGE_CACHE_MAX / 2));
+    try { localStorage.setItem(key, payload); return true; }
+    catch (e2) { warnUsageCacheFull(); return false; }
+  }
+}
+
 function cleanupUsageCache() {
   try {
     var now = Date.now(), MAX_AGE = 24 * 60 * 60 * 1000, toRemove = [];
     for (var i = 0; i < localStorage.length; i++) {
       var k = localStorage.key(i);
-      if (!k || k.indexOf('usage_v2_') !== 0) continue;
+      if (!k) continue;
+      // v6.13.1: Altbestand mit möglicherweise unvollständigen Daten entfernen.
+      var legacy = USAGE_CACHE_LEGACY_PREFIXES.some(function(p) { return k.indexOf(p) === 0; });
+      if (legacy) { toRemove.push(k); continue; }
+      if (k.indexOf(USAGE_CACHE_PREFIX) !== 0) continue;
       var ok = false;
       try { var d = JSON.parse(localStorage.getItem(k)); ok = d && d.timestamp && (now - d.timestamp) < MAX_AGE; } catch (e) {}
       if (!ok) toRemove.push(k);
     }
     toRemove.forEach(function(k) { try { localStorage.removeItem(k); } catch (e) {} });
+    pruneUsageCache(USAGE_CACHE_MAX);
   } catch (e) {}
 }
 loadKitColorCache();
 cleanupUsageCache();
+// v6.13.2: Das Tiefe-Feld ist in v6.13.1 entfallen; der gespeicherte Wert blieb bei
+// allen Bestandsnutzern als toter Schlüssel liegen und wird von nichts mehr gelesen.
+try { localStorage.removeItem('filter_depth'); } catch (e) {}
 
 // Teil-Analyse -> Zellen-Kürzel der Figur.
 var KIT_PART_TO_CELL = { left_arm: 'la', body: 'b', right_arm: 'ra', shorts: 'sh', socks: 'so' };
@@ -2437,7 +2989,7 @@ function buildKitFigureHtml(parts) {
   function cellHtml(cell) {
     var fn = byCell[cell];
     if (!fn) return '';
-    var esc = fn.replace(/"/g, '&quot;');
+    var esc = usageEscAttr(fn);
     return '<div class="kit-cell kc-' + cell + '" data-file="' + esc + '" data-part="' + cell + '">' +
            '<img class="lazy-thumb" data-filename="' + esc + '" alt=""></div>';
   }
@@ -2468,17 +3020,23 @@ function buildKitFigureHtml(parts) {
  * @returns {Promise<string|null>} Hex ohne # oder null
  */
 async function kitPartColor(fn, urlMap) {
-  if (fn in kitColorCache) return kitColorCache[fn];
+  var ck = kitColorKey(fn);
+  if (ck in kitColorCache) return kitColorCache[ck];
   var url = ciResolveUrl(urlMap, fn);
-  if (!url) { kitColorCache[fn] = null; return null; }
+  // v6.13.2: Fehlschläge nicht mehr im Cache festschreiben. Vorher genügte ein
+  // missglückter URL-Abruf, damit die Datei bis zum Neuladen der Seite grau blieb –
+  // die Prüfung „fn in kitColorCache" verhinderte jeden zweiten Versuch.
+  // Ein erfolgreich geladenes Bild OHNE erkennbare Farbe wird weiterhin als null
+  // gemerkt, das ist ein gültiges Ergebnis und kein Fehler.
+  if (!url) return null;
   try {
     var img = await ciLoadImage(ciOriginalUrl(url));
     var c = ciModeColor(img);
-    kitColorCache[fn] = c ? ciRgbToHex(c.r, c.g, c.b) : null;
+    kitColorCache[ck] = c ? ciRgbToHex(c.r, c.g, c.b) : null;
   } catch (e) {
-    kitColorCache[fn] = null;
+    return null;
   }
-  return kitColorCache[fn];
+  return kitColorCache[ck];
 }
 
 /**
@@ -2502,7 +3060,7 @@ async function colorizeKitFigures(figs) {
   var need = [], seen = {};
   allCells.forEach(function(c) {
     var fn = c.getAttribute('data-file');
-    if (!(fn in kitColorCache) && !seen[fn]) { seen[fn] = 1; need.push(fn); }
+    if (!(kitColorKey(fn) in kitColorCache) && !seen[fn]) { seen[fn] = 1; need.push(fn); }
   });
   var urlMap = need.length ? await ciFetchOriginalUrls(need) : {};
 
@@ -2567,6 +3125,7 @@ function usageWikiRank(w) {
 // v6.8.0 „Ausblenden-wenn-verwendet"-Filter: Zustand.
 var usageWikiMap = {};     // Dateiname -> { wikiHost: true, ... }
 var usageScanDone = false; // wurde die Verwendung für die aktuelle Ergebnisliste gescannt?
+var usageScannedNames = {}; // v6.13.1: welche Dateien der Scan tatsächlich angefragt hat
 var activeUsageWikis = {}; // wikiHost -> true: in diesen Wikis bereits verwendete Dateien AUSBLENDEN
 // v6.8.0: Inline-Verwendung pro Kitset – lazy beim Sichtbarwerden (wie Thumbnails/Farben).
 var usageObserver = null;
@@ -2676,54 +3235,220 @@ function fillKitsetUsage(el) {
 // hunderten Anfragen eine Handvoll – schnell und ohne den Thumbnail-Lader zu stören.
 // Nebeneffekt: füllt den 24-h-Cache, den auch 📊 und die Inline-Anzeige nutzen.
 var usageScanRunning = false;
+var usageScanGen = 0;          // v6.13.1: nur der jüngste Scan darf schreiben
+var USAGE_CONT_GUARD = 12;     // Schutz gegen eine endlose Fortsetzungskette
+var USAGE_SPLIT_DEPTH = 6;     // Halbierungen je Block, reicht von 50 bis auf einen Titel
+
+/**
+ * v6.13.1 – Verwendung für bis zu 50 Titel holen, inklusive Fortsetzung.
+ *
+ * `gulimit`/`fulimit` sind Budgets PRO ANFRAGE, nicht pro Titel. Eine einzige
+ * stark eingebundene Datei kann das Budget allein aufbrauchen; alle weiteren
+ * Titel derselben Anfrage kommen dann leer zurück, obwohl sie verwendet werden.
+ * MediaWiki signalisiert den Rest über `continue.gucontinue`/`fucontinue`.
+ * Ohne Auswertung galten diese Dateien als unverwendet – und das wurde 24 h
+ * lang zwischengespeichert.
+ *
+ * @param {string[]} names  Dateinamen OHNE "File:"-Präfix
+ * @returns {Promise<{usage:Object, complete:boolean}>} usage: Name -> Eintragsliste
+ */
+async function fetchUsageBatch(names) {
+  var base = {
+    action: 'query',
+    titles: names.map(function(n) { return 'File:' + n; }).join('|'),
+    prop: 'globalusage|fileusage',
+    gulimit: '500', fulimit: '500'
+  };
+  var byTitle = {};            // "File:X" -> { local: [], global: [] }
+  var aliases = {};            // "File:X" (normalisiert) -> angefragte Schreibweise
+  var cont = null, guard = 0, complete = false;
+  while (guard++ < USAGE_CONT_GUARD) {
+    var q = Object.assign({}, base);
+    if (cont) Object.keys(cont).forEach(function(k) { q[k] = cont[k]; });
+    var data = await mwApi(q);
+    var query = data.query || {};
+    (query.normalized || []).forEach(function(n) { aliases[n.to] = n.from; });
+    (query.pages || []).forEach(function(page) {
+      if (page.missing) return;
+      var e = byTitle[page.title] || (byTitle[page.title] = { local: [], global: [] });
+      (page.fileusage || []).forEach(function(u) { e.local.push(u); });
+      (page.globalusage || []).forEach(function(u) { e.global.push(u); });
+    });
+    if (!data.continue) { complete = true; break; }
+    cont = data.continue;
+  }
+  var usage = {};
+  Object.keys(byTitle).forEach(function(full) {
+    var e = byTitle[full];
+    var list = e.local.map(function(u) {
+      return {
+        title: u.title,
+        url: 'https://commons.wikimedia.org/wiki/' + encodeURIComponent(String(u.title).replace(/ /g, '_')),
+        wiki: 'commons.wikimedia.org'
+      };
+    }).concat(e.global.map(function(u) {
+      return { title: u.title, url: u.url, wiki: u.wiki };
+    }));
+    [full, aliases[full]].forEach(function(variant) {
+      if (variant) usage[variant.replace(/^File:/, '')] = list;
+    });
+  });
+  return { usage: usage, complete: complete };
+}
+
+/**
+ * v6.13.1 – Auflösen eines Blocks, notfalls in kleineren Gruppen.
+ *
+ * Die Fortsetzung arbeitet die Titel der Reihe nach ab: eine Datei mit
+ * zehntausenden Einbindungen (z. B. File:Kit body.svg) verbraucht jede Runde
+ * das gesamte Budget, die Titel dahinter kämen auch nach vielen Fortsetzungen
+ * nie dran. Deshalb werden leer gebliebene Titel eines unvollständigen Blocks
+ * halbiert neu geholt, bis sie einzeln stehen oder die Tiefe erreicht ist.
+ *
+ * @returns {Promise<{usage:Object, done:Object}>} done: Name -> Ergebnis ist vollständig
+ */
+async function fetchUsageResolved(names, depth) {
+  var res = await fetchUsageBatch(names);
+  var done = {};
+  if (res.complete) {
+    names.forEach(function(n) { done[n] = true; });
+    return { usage: res.usage, done: done };
+  }
+  // v6.14.0: Bei einem unvollständigen Block gilt KEIN Titel als gesichert, nicht nur
+  // die leer gebliebenen. Die Fortsetzung arbeitet die Titel der Reihe nach ab: der
+  // Titel, an dem das Budget ausgeht, bekommt eine abgeschnittene Liste, keine leere,
+  // und wurde deshalb bisher als fertig durchgewunken. Ein einzelner Titel ist davon
+  // ausgenommen, dort ist die Fortsetzung eindeutig.
+  // Die Tiefe muss reichen, um einen 50er-Block bis auf einzelne Titel zu halbieren
+  // (50 → 25 → 13 → 7 → 4 → 2 → 1); mit der alten 3 blieb der Ausreißer ungeklärt und
+  // damit auch der Rest seiner Gruppe dauerhaft ungecacht.
+  var unresolved = names.slice();
+  if (!unresolved.length || names.length <= 1 || depth >= USAGE_SPLIT_DEPTH) return { usage: res.usage, done: done };
+  var mid = Math.ceil(unresolved.length / 2);
+  var groups = [unresolved.slice(0, mid), unresolved.slice(mid)].filter(function(g) { return g.length; });
+  for (var gi = 0; gi < groups.length; gi++) {
+    // v6.14.0: Seit ein unvollständiger Block komplett geteilt wird, können hier
+    // spürbar mehr Anfragen entstehen. Dieselbe Pause wie zwischen den Blöcken im
+    // Sammel-Scan, damit die API nicht im Sekundentakt getroffen wird.
+    if (gi > 0 || depth > 0) await new Promise(function(r) { setTimeout(r, 120); });
+    var sub = await fetchUsageResolved(groups[gi], depth + 1);
+    Object.keys(sub.usage).forEach(function(k) { res.usage[k] = sub.usage[k]; });
+    Object.keys(sub.done).forEach(function(k) { done[k] = true; });
+  }
+  return { usage: res.usage, done: done };
+}
+
+// v6.14.0: Eintrag in usageWikiMap unter allen drei Schreibweisen. Vorher stand das
+// zweimal fast gleich im Code (Scan und Cache-Pfad).
+function applyUsageToMap(name, list) {
+  var m = {};
+  (list || []).forEach(function(u) { if (u && u.wiki) m[u.wiki] = true; });
+  usageWikiMap[name] = m;
+  usageWikiMap[name.replace(/ /g, '_')] = m;
+  usageWikiMap[name.replace(/_/g, ' ')] = m;
+}
+
 async function scanAllUsage() {
+  var myGen = ++usageScanGen;
   var files = getBaseFilteredFiles();
   var total = files.length;
   usageWikiMap = {};
-  if (!total) { usageScanDone = true; return; }
+  usageScannedNames = {};
+  // v6.13.2: Das Flag VOR dem Leer-Fall setzen. Kehrte ein zweiter Scan mit leerer
+  // Liste hier zurück, blieb usageScanRunning vom ersten Lauf dauerhaft auf true
+  // (dessen finally greift wegen der fremden Generation nicht mehr) und
+  // ensureUsageScan()/maybeRescanUsage() waren für den Rest der Sitzung tot.
   usageScanRunning = true;
-  var BATCH = 50, done = 0;
-  setNotice(t('usage.scanning', { n: 0, total: total }));
-  for (var i = 0; i < total; i += BATCH) {
-    var batch = files.slice(i, i + BATCH);
-    var titlesParam = batch.map(function(f) { return 'File:' + f.title; }).join('|');
-    var apiUrl = 'https://commons.wikimedia.org/w/api.php?' + new URLSearchParams({
-      action: 'query', titles: titlesParam, prop: 'globalusage|fileusage',
-      gulimit: '500', fulimit: '500', format: 'json', origin: '*'
-    });
-    try {
-      var data = await apiFetchJsonRetry(apiUrl, 3);
-      var normalMap = {};
-      if (data.query.normalized) data.query.normalized.forEach(function(n) { normalMap[n.to] = n.from; });
-      Object.values(data.query.pages).forEach(function(page) {
-        if (page.missing !== undefined) return;
-        var localUsage = (page.fileusage || []).map(function(u) {
-          return { title: u.title, url: 'https://commons.wikimedia.org/wiki/' + encodeURIComponent(u.title.replace(/ /g, '_')), wiki: 'commons.wikimedia.org' };
-        });
-        var globalUsage = (page.globalusage || []).map(function(u) { return { title: u.title, url: u.url, wiki: u.wiki }; });
-        var usage = localUsage.concat(globalUsage);
-        var m = {};
-        usage.forEach(function(u) { if (u.wiki) m[u.wiki] = true; });
-        // unter beiden Namensvarianten ablegen (API normalisiert _ ↔ Leerzeichen)
-        [page.title, normalMap[page.title]].forEach(function(full) {
-          if (!full) return;
-          var name = full.replace(/^File:/, '');
-          usageWikiMap[name] = m;
-          usageWikiMap[name.replace(/ /g, '_')] = m;
-          usageWikiMap[name.replace(/_/g, ' ')] = m;
-          try { localStorage.setItem('usage_v2_' + name, JSON.stringify({ usage: usage, timestamp: Date.now() })); } catch (e) {}
-        });
+  var BATCH = 50, done = 0, incomplete = 0, failed = 0, fromCache = 0;
+  try {
+    if (!total) { usageScanDone = true; return; }
+    setNotice(t('usage.scanning', { n: 0, total: total }));
+    for (var i = 0; i < total; i += BATCH) {
+      // Ein neuer Scan hat übernommen -> dieser hier schreibt nichts mehr.
+      if (myGen !== usageScanGen) return;
+      var batchNames = files.slice(i, i + BATCH).map(function(f) { return f.title; });
+      // v6.14.0: Der Sammel-Scan hat den Cache bisher nur beschrieben, nie gelesen.
+      // Nach jedem Neuladen wurde deshalb alles erneut geholt, obwohl die Daten 24 h
+      // lang gültig sind. Nur der Rest geht an die API.
+      var names = [];
+      batchNames.forEach(function(n) {
+        var cachedList = readUsageCache(n);
+        if (!cachedList) { names.push(n); return; }
+        fromCache++;
+        applyUsageToMap(n, cachedList);
+        usageScannedNames[String(n).replace(/_/g, ' ')] = true;
       });
-    } catch (e) { console.error('[UsageScan] Batch-Fehler:', e); }
-    done = Math.min(i + BATCH, total);
-    setNotice(t('usage.scanning', { n: done, total: total }));
-    if (i + BATCH < total) await new Promise(function(r) { setTimeout(r, 120); });
+      if (!names.length) {
+        done = Math.min(i + BATCH, total);
+        setNotice(t('usage.scanning', { n: done, total: total }));
+        continue;
+      }
+      try {
+        var res = await fetchUsageResolved(names, 0);
+        if (myGen !== usageScanGen) return;
+        // v6.13.2: Erst NACH dem erfolgreichen Batch als gescannt markieren. Vorher
+        // galten die Dateien eines gescheiterten Batches als erledigt, fehlten aber
+        // in usageWikiMap – maybeRescanUsage() fand die Lücke danach nie wieder.
+        names.forEach(function(n) { usageScannedNames[String(n).replace(/_/g, ' ')] = true; });
+        names.forEach(function(n) { if (!res.done[n]) incomplete++; });
+        Object.keys(res.usage).forEach(function(name) {
+          var list = res.usage[name];
+          applyUsageToMap(name, list);
+          // Nur vollständige Ergebnisse zwischenspeichern – ein abgeschnittenes
+          // wäre 24 h lang falsch.
+          if (res.done[name]) writeUsageCache(name, list);
+        });
+      } catch (e) { failed += names.length; console.error('[UsageScan] Batch-Fehler:', e); }
+      done = Math.min(i + BATCH, total);
+      setNotice(t('usage.scanning', { n: done, total: total }));
+      if (i + BATCH < total) await new Promise(function(r) { setTimeout(r, 120); });
+    }
+    if (incomplete) console.warn('[UsageScan] ' + incomplete + ' Datei(en) ohne gesichert vollständige Verwendung – nicht zwischengespeichert.');
+    if (failed) console.warn('[UsageScan] ' + failed + ' Datei(en) konnten nicht abgerufen werden – bleiben ungescannt.');
+    if (fromCache) console.info('[UsageScan] ' + fromCache + ' von ' + total + ' Datei(en) aus dem Cache.');
+    usageScanDone = true;
+  } finally {
+    if (myGen === usageScanGen) usageScanRunning = false;
   }
-  usageScanDone = true;
-  usageScanRunning = false;
 }
 // Sicherstellen, dass ein Scan für die aktuelle Ergebnisliste vorliegt.
-async function ensureUsageScan() { if (!usageScanDone && !usageScanRunning) await scanAllUsage(); }
+/**
+ * v6.13.2 – Einstiegspunkt für JEDEN Scan-Start.
+ * Läuft bereits einer, wird dessen Promise zurückgegeben statt eines zweiten
+ * Laufs. Vorher kehrte ensureUsageScan() bei laufendem Scan sofort zurück; der
+ * Klick auf „Länder laden" wirkte dann folgenlos und löschte mit setNotice('')
+ * sogar die Fortschrittsanzeige des laufenden Scans.
+ */
+var usageScanPromise = null;
+function startUsageScan() {
+  if (usageScanPromise) return usageScanPromise;
+  usageScanPromise = scanAllUsage();
+  usageScanPromise.catch(function() { /* Aufrufer behandelt den Fehler */ })
+    .then(function() { usageScanPromise = null; });
+  return usageScanPromise;
+}
+async function ensureUsageScan() { if (!usageScanDone) await startUsageScan(); }
+
+/**
+ * v6.13.1 – Nachscannen, wenn ein Basisfilter gelockert wurde.
+ * Der Scan deckt immer nur die zum Scan-Zeitpunkt sichtbare Liste ab. Kommen
+ * danach Dateien dazu (Haken „nur Trikotteile" weg, Saison-Filter geleert …),
+ * fehlen sie in usageWikiMap und der Ausschluss-Filter greift bei ihnen nicht.
+ */
+function maybeRescanUsage() {
+  if (!usageScanDone || usageScanRunning) return;
+  if (!Object.keys(activeUsageWikis).length) return;
+  // Maßstab ist, was ANGEFRAGT wurde: gelöschte Dateien liefern kein Ergebnis
+  // und würden sonst bei jedem Filterwechsel einen neuen Scan auslösen.
+  var missing = getBaseFilteredFiles().some(function(f) {
+    return !usageScannedNames[String(f.title).replace(/_/g, ' ')];
+  });
+  if (!missing) return;
+  usageScanDone = false;
+  startUsageScan()
+    .then(function() { setNotice(''); populateUsageChips(); renderFiles(); schedulePostRender(); })
+    .catch(function(err) { console.error('[UsageScan]', err); usageScanDone = true; });
+}
 // Chips aus den tatsächlich gefundenen Wikis bauen (sortiert de → en → pt → Commons → Rest).
 function populateUsageChips() {
   var box = document.getElementById('usageFilterChips');
@@ -2756,7 +3481,8 @@ async function loadUsageCountries() {
   if (!isDataLoaded) return;
   var box = document.getElementById('usageFilterChips');
   if (box) box.innerHTML = '<span class="uf-empty">⏳ …</span>';
-  await ensureUsageScan();
+  try { await ensureUsageScan(); }
+  catch (e) { console.error('[UsageScan]', e); usageScanDone = true; }
   populateUsageChips();
   setNotice(''); applyFilters();
 }
@@ -2805,69 +3531,127 @@ function renderFiles() {
  * @param {string} afterDate  Untergrenze als "YYYY-MM-DD" (inklusive)
  * @returns {Promise<Array>} gefilterte Dateien (jeweils ggf. mit `.uploadTs`)
  */
+// v6.12.0: Ein Aufruf der Commons-Action-API mit Wiederholung. Wikimedia
+// antwortet bei zu schnellen Serien mit HTTP 429; ohne Backoff bricht der Abruf
+// dann mitten in der Liste ab und das Ergebnis wirkt einfach nur leer.
+var MW_API = 'https://commons.wikimedia.org/w/api.php';
+async function mwApi(params, signal) {
+  var p = Object.assign({ format: 'json', formatversion: '2', origin: '*' }, params);
+  // v6.13.2: Wiederholung, Retry-After und die Prüfung auf {"error":…} stecken
+  // jetzt in fetchJsonRetry(), damit der PetScan-Pfad dieselbe Härtung bekommt.
+  return fetchJsonRetry(MW_API + '?' + new URLSearchParams(p), true, signal);
+}
+
+/**
+ * Upload-Historie für eine Titelliste auflösen.
+ * @param {string[]} titles  Dateinamen OHNE "File:"-Präfix
+ * @param {function} [onProgress]  (erledigt, gesamt)
+ * @returns {Promise<Object>} Name -> { latest, first, author }, Schreibweise mit
+ *          Leerzeichen UND Unterstrich als Schlüssel
+ */
+async function resolveUploadInfo(titles, onProgress) {
+  var BATCH = 50;      // MediaWiki erlaubt max. 50 Titel pro Anfrage
+  var IILIMIT = 50;    // Versionen je Datei in der Sammelabfrage
+  var DELAY_MS = 120;  // kleine Pause zwischen Batches (API-Freundlichkeit)
+  var uploadMap = {};
+  // v6.14.0: Dateien, die genau IILIMIT Versionen zurückgeben, sind womöglich
+  // abgeschnitten. Bei mehreren Titeln liefert die API dafür KEINE Fortsetzung, die
+  // älteste zurückgegebene Version ist dann nicht der Erst-Upload. Solche Titel
+  // werden unten einzeln nachgeholt.
+  var truncated = [];
+  for (var i = 0; i < titles.length; i += BATCH) {
+    var chunk = titles.slice(i, i + BATCH);
+    try {
+      var data = await mwApi({
+        action: 'query',
+        titles: chunk.map(function(n) { return 'File:' + n; }).join('|'),
+        prop:   'imageinfo',
+        iiprop: 'timestamp|user|size',
+        iilimit: String(IILIMIT)   // v6.7.0: mehrere Versionen -> jüngste UND älteste (Erst-Upload)
+      }, runSignal());
+      // Normalisierungs-Map: die API gleicht Leerzeichen <-> Unterstriche an.
+      var normalMap = {};
+      if (data.query && data.query.normalized) {
+        data.query.normalized.forEach(function(n) { normalMap[n.to] = n.from.replace(/^File:/, ''); });
+      }
+      var pages = (data.query && data.query.pages) || [];
+      // formatversion=2 liefert ein Array, ältere Antworten ein Objekt.
+      (Array.isArray(pages) ? pages : Object.keys(pages).map(function(k) { return pages[k]; })).forEach(function(page) {
+        if (page.missing) return; // Datei existiert nicht
+        var revs = page.imageinfo;
+        if (!revs || !revs.length || !revs[0].timestamp) return;
+        // imageinfo ist neueste-zuerst: [0] = jüngster Upload, [len-1] = Erst-Upload.
+        var toMw = function(iso) { return iso.replace(/[^0-9]/g, '').slice(0, 14); };
+        var rec = { latest: toMw(revs[0].timestamp), first: toMw(revs[revs.length - 1].timestamp), author: (revs[revs.length - 1].user || ''), size: (typeof revs[0].size === 'number' ? revs[0].size : null) };
+        var apiName = page.title.replace(/^File:/, '');
+        uploadMap[apiName] = rec;
+        uploadMap[apiName.replace(/ /g, '_')] = rec;
+        if (normalMap[page.title]) uploadMap[normalMap[page.title]] = rec;
+        if (revs.length >= IILIMIT) {
+          truncated.push({ title: page.title, names: [apiName, apiName.replace(/ /g, '_'), normalMap[page.title]] });
+        }
+      });
+    } catch (err) {
+      if (isAbort(err)) throw err;   // v6.15.0: Abbruch ist kein Batch-Fehler
+      // Netzwerk-/API-Fehler: betroffene Dateien bleiben unentschieden und
+      // werden von den Aufrufern sicherheitshalber BEHALTEN (kein Datenverlust).
+      console.error('[UploadInfo] Batch-Fehler:', err);
+    }
+    if (onProgress) onProgress(Math.min(i + BATCH, titles.length), titles.length);
+    if (i + BATCH < titles.length) await new Promise(function(r) { setTimeout(r, DELAY_MS); });
+  }
+
+  // v6.14.0: Abgeschnittene Versionslisten einzeln nachholen. Nur bei EINEM Titel
+  // liefert die API eine Fortsetzung (continue.iistart), deshalb der Einzelabruf.
+  for (var ti = 0; ti < truncated.length; ti++) {
+    var entry = truncated[ti];
+    try {
+      var oldest = null, iistart = null, guard = 0;
+      while (guard++ < 10) {
+        var q = {
+          action: 'query', titles: entry.title, prop: 'imageinfo',
+          iiprop: 'timestamp|user|size', iilimit: 'max'
+        };
+        if (iistart) q.iistart = iistart;
+        var d = await mwApi(q, runSignal());
+        var pgs = (d.query && d.query.pages) || [];
+        var pg = (Array.isArray(pgs) ? pgs : Object.keys(pgs).map(function(k) { return pgs[k]; }))[0];
+        var list = (pg && pg.imageinfo) || [];
+        if (list.length) oldest = list[list.length - 1];
+        if (!d.continue || !d.continue.iistart) break;
+        iistart = d.continue.iistart;
+      }
+      if (!oldest || !oldest.timestamp) continue;
+      var firstTs = oldest.timestamp.replace(/[^0-9]/g, '').slice(0, 14);
+      entry.names.forEach(function(n) {
+        if (!n || !uploadMap[n]) return;
+        uploadMap[n].first = firstTs;
+        uploadMap[n].author = oldest.user || uploadMap[n].author;
+      });
+    } catch (err) {
+      if (isAbort(err)) throw err;
+      console.error('[UploadInfo] Nachfassen für ' + entry.title + ' fehlgeschlagen:', err);
+    }
+    await new Promise(function(r) { setTimeout(r, DELAY_MS); });
+  }
+  return uploadMap;
+}
+
 async function filterByRealUpload(files, afterDate) {
   // Leere / ungültige Eingaben robust behandeln.
   if (!Array.isArray(files) || files.length === 0) return files || [];
 
-  var BATCH = 50;      // MediaWiki erlaubt max. 50 Titel pro Anfrage
-  var DELAY_MS = 100;  // kleine Pause zwischen Batches (API-Freundlichkeit)
   // Untergrenze als 14-stelliger MW-Zeitstempel; da diese fix-breit und
   // null-aufgefüllt sind, entspricht der String-Vergleich der Chronologie.
   var minMw = (afterDate || '').replace(/-/g, '') + '000000';
 
-  var uploadMap = {}; // Dateiname -> 14-stelliger MW-Upload-Zeitstempel
-
-  for (var i = 0; i < files.length; i += BATCH) {
-    var chunk = files.slice(i, i + BATCH);
-    var titlesParam = chunk.map(function(f) { return 'File:' + f.title; }).join('|');
-
-    var apiUrl = 'https://commons.wikimedia.org/w/api.php?' + new URLSearchParams({
-      action: 'query',
-      titles: titlesParam,
-      prop:   'imageinfo',
-      iiprop: 'timestamp|user',
-      iilimit:'50',       // v6.7.0: mehrere Versionen -> jüngste UND älteste (Erst-Upload)
-      format: 'json',
-      origin: '*'         // Pflicht für CORS (auch von file://)
-    });
-
-    try {
-      var resp = await fetch(apiUrl);
-      if (!resp.ok) throw new Error('API HTTP ' + resp.status);
-      var data = await resp.json();
-
-      // Normalisierungs-Map: API gleicht Leerzeichen <-> Unterstriche an.
-      var normalMap = {};
-      if (data.query && data.query.normalized) {
-        data.query.normalized.forEach(function(n) {
-          normalMap[n.to] = n.from.replace(/^File:/, '');
-        });
-      }
-
-      if (data.query && data.query.pages) {
-        Object.values(data.query.pages).forEach(function(page) {
-          if (page.missing !== undefined) return; // Datei existiert nicht
-          var revs = page.imageinfo;
-          if (!revs || !revs.length || !revs[0].timestamp) return;
-          // imageinfo ist neueste-zuerst: [0] = jüngster Upload, [len-1] = Erst-Upload.
-          var toMw = function(iso) { return iso.replace(/[^0-9]/g, '').slice(0, 14); };
-          var rec = { latest: toMw(revs[0].timestamp), first: toMw(revs[revs.length - 1].timestamp), author: (revs[revs.length - 1].user || '') };
-          var apiName = page.title.replace(/^File:/, '');
-          uploadMap[apiName] = rec;
-          if (normalMap[page.title]) uploadMap[normalMap[page.title]] = rec;
-        });
-      }
-    } catch (err) {
-      // Netzwerk-/API-Fehler: betroffene Dateien bleiben unentschieden und
-      // werden weiter unten sicherheitshalber BEHALTEN (kein Datenverlust).
-      console.error('[UploadFilter] Batch-Fehler:', err);
+  var uploadMap = await resolveUploadInfo(
+    files.map(function(f) { return f.title; }),
+    function(n, total) {
+      setNotice(t('notice.checkingUploads', { n: n, total: total }));
+      progAt('pup', n / total, t('prog.dUp', { n: n, total: total }));
     }
-
-    setNotice(t('notice.checkingUploads', { n: Math.min(i + BATCH, files.length), total: files.length }));
-    if (i + BATCH < files.length) {
-      await new Promise(function(r) { setTimeout(r, DELAY_MS); });
-    }
-  }
+  );
 
   // Filtern + Upload-Zeitstempel anhängen.
   var kept = [];
@@ -2880,6 +3664,7 @@ async function filterByRealUpload(files, afterDate) {
       f.uploadTs = rec.latest;            // für Anzeige + Sortierung (jüngster Upload)
       f.firstUploadTs = rec.first;        // v6.7.0: Erst-Upload -> unterscheidet Neu von Update
       if (rec.author) f.author = rec.author; // v6.9.0: Ersteller (Uploader der ältesten Version)
+      if (f.len == null && rec.size != null) f.len = rec.size; // v6.12.1: Dateigröße für die Meta-Zeile
       if (rec.latest >= minMw) kept.push(f); // Datei hatte im Zeitraum echte Upload-Aktivität
     } else {
       // Upload-Datum unbekannt (fehlend/Fehler) -> behalten, Anzeige nutzt `touched`.
@@ -2889,59 +3674,394 @@ async function filterByRealUpload(files, afterDate) {
   return kept;
 }
 
-async function fetchData() {
-  var ctrl = readControls();
+// ================================================
+// === DATENQUELLEN (v6.12.0) ===
+// ================================================
+// Zwei Wege zu denselben Dateien, mit unterschiedlichen Stärken:
+//
+//  PetScan   geht über die Kategorien und damit über die Toolforge-Replik der
+//            Wikimedia-Datenbank. Es findet auch Trikotteile, deren Dateiname
+//            vom Schema abweicht, hängt aber am Replikationsstand: läuft die
+//            Replik nach, liefert PetScan für die letzten Tage schlicht nichts.
+//  Commons   fragt die Live-Suche (CirrusSearch) direkt ab, ohne Proxy, und ist
+//            deshalb immer aktuell. Sie findet Dateien über den Titel, also nur
+//            das Namensschema "Kit body/shorts/socks/left arm/right arm …".
+//            Neue VERSIONEN alter Dateien findet sie nur, wenn die Datei
+//            ohnehin in den obersten Treffern nach Anlagedatum steht.
+//
+// Beide liefern dieselbe Struktur: [{ title, touched? }, …].
+
+async function fetchFromPetScan(ctrl) {
   var params = new URLSearchParams({
-	language: "commons", project: "wikimedia", ns: "1", depth: ctrl.depth,
+	// v6.14.0: PetScan erwartet den Namensraum als ns[6]=1 (6 = Datei). Das bisherige
+	// ns=1 war kein gültiger Parameter und wurde ignoriert; die Abfrage lief also ohne
+	// Namensraumfilter. Live geprüft: das Ergebnis ist mit und ohne identisch, weil die
+	// Kit-Kategorien praktisch nur Dateien enthalten. Trotzdem richtig gestellt.
+	language: "commons", project: "wikimedia", "ns[6]": "1", depth: ctrl.depth,
 	combination: "union", sortorder: "descending", output_limit: ctrl.limit,
-	categories: "Football kit templates\nAssociation football kits", // v6.3.2: redundante Unterkategorie entfernt (bei Tiefe 50 bereits abgedeckt, Ergebnis unverändert)
+	categories: "Football kit templates\nAssociation football kits", // v6.3.2: redundante Unterkategorie entfernt (über PETSCAN_DEPTH bereits abgedeckt, Ergebnis unverändert)
 	format: "json", doit: "1",
 	after: ctrl.after.replace(/-/g, "") + "000000"
   });
   var url = PETSCAN_PROXY + "?" + params.toString();
-  showLoading(true);
   setNotice("", url);
-  setLimitWarning(0, 0); // alte Warnung zurücksetzen
+  progAt('pq', 0, t('prog.dPet'));
+  var data = await fetchJSON(url, runSignal());
+  progAt('pq', 1);
+  var rows = (data["*"] && data["*"][0] && data["*"][0].a && data["*"][0].a["*"]) ? data["*"][0].a["*"] : [];
+  return { files: rows, rawCount: rows.length, resolved: false };
+}
+
+// Ein intitle:-Ausdruck pro Teil. Die ODER-Form (intitle:A OR intitle:B) liefert
+// in CirrusSearch null Treffer, die Regex-Form ist teuer und wird gedrosselt –
+// deshalb fünf getrennte Ströme.
+var COMMONS_TITLE_PHRASES = ['Kit body', 'Kit shorts', 'Kit socks', 'Kit left arm', 'Kit right arm'];
+
+// v6.13.0: Zweiter Commons-Strom über die Kategorien, live und ohne Proxy. Er holt
+// genau das, wofür bisher PetScan nötig war: Trikotteile, deren Dateiname vom
+// Schema abweicht. `cmsort=timestamp` mit `cmdir=desc` und `cmend` liefert nur die
+// Einträge seit dem gewählten Datum, der Abruf ist deshalb billig.
+// Keine Rekursion in Unterkategorien: die API kann das nicht, und die oberen
+// Kategorien decken die Teile bereits ab (Stand 2026-09-14 zusammen > 280.000 Dateien).
+var COMMONS_CATEGORIES = [
+  'Category:Association football kit body',
+  'Category:Association football kit sleeves',
+  'Category:Association football kit left arm',
+  'Category:Association football kit right arm',
+  'Category:Association football kit shorts',
+  'Category:Association football kit socks',
+  'Category:Association football kits',
+  'Category:Football kit templates'
+];
+
+async function fetchCommonsCategoryTitles(ctrl, report) {
+  var cmend = ctrl.after + 'T00:00:00Z';
+  var seen = {};
+  // v6.14.0: Je Kategorie höchstens so viele Einträge holen, wie das Limit am Ende
+  // überhaupt übrig lässt. Die Kategorie ist absteigend nach dem Zeitpunkt der
+  // Einsortierung geordnet; was hier wegfällt, wurde später als `cap` andere Treffer
+  // derselben Kategorie einsortiert. Vorher lief jede der acht Kategorien bis zur
+  // Notbremse durch, also bis zu 10.000 Einträge, auch wenn das Limit auf 100 stand.
+  // Rest-Risiko: Einsortierung und Upload fallen bei nachträglich kategorisierten
+  // Altdateien auseinander, die spätere Auswahl sortiert nach Upload. Betroffen sind
+  // nur Dateien, die der Filter „Dateiupdates ausblenden" ohnehin verwirft.
+  var cap = Math.max(1, parseInt(ctrl.limit, 10) || 1000);
+  for (var c = 0; c < COMMONS_CATEGORIES.length; c++) {
+    var cat = COMMONS_CATEGORIES[c];
+    var cont = null, guard = 0, taken = 0;
+    // Notbremse: 20 Seiten à 500 Einträge pro Kategorie reichen für jeden
+    // sinnvollen Zeitraum und verhindern eine Endlosschleife bei kaputtem continue.
+    while (guard++ < 20) {
+      var q = {
+        action: 'query', list: 'categorymembers',
+        cmtitle: cat, cmtype: 'file',
+        cmsort: 'timestamp', cmdir: 'desc', cmend: cmend,
+        cmlimit: String(Math.min(500, cap)), cmprop: 'title|timestamp'
+      };
+      if (cont) q.cmcontinue = cont;
+      var data = await mwApi(q, runSignal());
+      var mem = (data.query && data.query.categorymembers) || [];
+      mem.forEach(function(m) { seen[String(m.title).replace(/^File:/, '')] = true; });
+      taken += mem.length;
+      setNotice(t('notice.commonsCategories', {
+        cat: cat.replace(/^Category:/, ''), n: Object.keys(seen).length
+      }));
+      progAt('cats', c / COMMONS_CATEGORIES.length, t('prog.dCats', {
+        cat: cat.replace(/^Category:/, ''), c: c + 1, N: COMMONS_CATEGORIES.length, n: Object.keys(seen).length
+      }));
+      if (taken >= cap) break;
+      if (!data.continue || !data.continue.cmcontinue) break;
+      cont = data.continue.cmcontinue;
+      // v6.13.1: Greift die Notbremse wirklich, fehlen Einträge – das wurde
+      // bisher verschwiegen. Der Aufrufer meldet es als unvollständig.
+      if (guard >= 20) {
+        console.warn('[Kategorien] Notbremse bei ' + cat + ' – Ergebnis unvollständig.');
+        if (typeof report === 'function') report(cat);
+      }
+    }
+  }
+  progAt('cats', 1);
+  return Object.keys(seen);
+}
+
+// Ergebnisliste auf das Limit kürzen, jüngste zuerst.
+function capFiles(files, cap) {
+  if (files.length <= cap) return files;
+  return files.slice().sort(function(a, b) {
+    return String(b.uploadTs || b.touched || '').localeCompare(String(a.uploadTs || a.touched || ''));
+  }).slice(0, cap);
+}
+
+async function fetchFromCommons(ctrl, opts) {
+  var minMw = ctrl.after.replace(/-/g, '') + '000000';
+  var cap = Math.max(1, parseInt(ctrl.limit, 10) || 1000);
+  // v6.13.1: In der Quelle „beide" wird erst nach dem Zusammenführen gekürzt,
+  // sonst schneidet der erste Schnitt Treffer weg, die PetScan gar nicht liefert.
+  var noCap = !!(opts && opts.noCap);
+  var PAGE = 100;
+  var byName = {};
+  var incompleteParts = 0;   // v6.13.1: Zahl der abgebrochenen Teilabfragen
+
+  // v6.13.1: Früher hatte jeder der fünf Ströme ein eigenes Fünftel des Limits.
+  // Bei einem Teil mit vielen Neuzugängen brach der Strom deshalb ab, obwohl das
+  // Gesamtlimit noch lange nicht erreicht war. Jetzt gilt nur das Gesamtlimit.
+  var taken = 0;
+  streams:
+  for (var s = 0; s < COMMONS_TITLE_PHRASES.length; s++) {
+    var phrase = COMMONS_TITLE_PHRASES[s];
+    var sroffset = 0, pageNo = 0;
+    try {
+    while (taken < cap) {
+      var q = {
+        action: 'query', list: 'search',
+        srsearch: 'intitle:"' + phrase + '"',
+        srnamespace: '6',
+        srlimit: String(PAGE),
+        srsort: 'create_timestamp_desc', // nach ANLAGE sortiert, neueste zuerst
+        srprop: 'timestamp'
+      };
+      if (sroffset) q.sroffset = String(sroffset);
+      var data = await mwApi(q, runSignal());
+      var hits = (data.query && data.query.search) || [];
+      if (!hits.length) break;
+
+      // srsort liefert die Anlage-Reihenfolge, der zurückgegebene `timestamp`
+      // ist aber die letzte Bearbeitung. Das echte Anlagedatum steht nur in der
+      // Upload-Historie, also wird jede Seite direkt aufgelöst.
+      var titles = hits.map(function(h) { return String(h.title).replace(/^File:/, ''); });
+      setNotice(t('notice.commonsSearching', { part: phrase, n: Object.keys(byName).length }));
+      // Seitenzahl je Strom unbekannt: der Strom füllt seinen Fünftel asymptotisch (0,4 → 0,64 → …).
+      progAt('titles', (s + 1 - Math.pow(0.6, ++pageNo)) / COMMONS_TITLE_PHRASES.length,
+        t('prog.dTitles', { part: phrase, n: Object.keys(byName).length }));
+      var info = await resolveUploadInfo(titles);
+
+      var freshOnPage = 0;
+      for (var i = 0; i < titles.length; i++) {
+        var nm = titles[i];
+        var rec = info[nm] || info[nm.replace(/ /g, '_')];
+        if (!rec) {
+          // Auflösung fehlgeschlagen: behalten, der Upload-Filter entscheidet später.
+          if (!byName[nm]) { byName[nm] = { title: nm }; taken++; }
+          freshOnPage++;   // unbekannt zählt als „könnte neu sein“, sonst bricht der Strom zu früh ab
+          continue;
+        }
+        if (rec.first >= minMw) freshOnPage++;
+        if (rec.latest >= minMw && !byName[nm]) {
+          byName[nm] = { title: nm, uploadTs: rec.latest, firstUploadTs: rec.first, author: rec.author, len: rec.size };
+          taken++;
+        }
+      }
+      // Keine einzige Neuanlage im Zeitraum auf dieser Seite: da nach Anlage
+      // absteigend sortiert ist, kommt danach nichts Neueres mehr.
+      if (!freshOnPage) break;
+      if (!data.continue || data.continue.sroffset === undefined) break;
+      sroffset = data.continue.sroffset;
+    }
+    } catch (e) {
+      if (isAbort(e)) throw e;   // v6.15.0: Abbruch geht durch, auch wenn ein Teilergebnis bliebe
+      // v6.13.1: Ein gescheiterter Strom darf die vier anderen nicht mitreißen.
+      incompleteParts++;
+      console.error('[Commons-Suche] Strom "' + phrase + '" abgebrochen:', e);
+    }
+    if (taken >= cap) break streams;
+  }
+
+  progAt('titles', 1);
+  // v6.13.0: Zweiter Durchgang über die Kategorien. Die Titelsuche kennt nur das
+  // Namensschema, die Kategorien fangen die Ausreißer ab.
+  var catTitles = [];
   try {
-	var data = await fetchJSON(url);
-	allFiles = (data["*"] && data["*"][0] && data["*"][0].a && data["*"][0].a["*"]) ? data["*"][0].a["*"] : [];
+    catTitles = (await fetchCommonsCategoryTitles(ctrl, function() { incompleteParts++; }))
+      .filter(function(nm) { return !byName[nm]; });
+  } catch (e) {
+    if (isAbort(e)) throw e;
+    incompleteParts++;
+    console.error('[Commons-Kategorien] Durchlauf abgebrochen:', e);
+  }
+  if (catTitles.length) {
+    var info2 = await resolveUploadInfo(catTitles, function(n, total) {
+      setNotice(t('notice.checkingUploads', { n: n, total: total }));
+      progAt('cup', n / total, t('prog.dUp', { n: n, total: total }));
+    });
+    catTitles.forEach(function(nm) {
+      var rec = info2[nm] || info2[nm.replace(/ /g, '_')];
+      if (!rec) { byName[nm] = { title: nm }; return; } // unentschieden -> behalten
+      if (rec.latest >= minMw) {
+        byName[nm] = { title: nm, uploadTs: rec.latest, firstUploadTs: rec.first, author: rec.author, len: rec.size };
+      }
+    });
+  }
+
+  var out = Object.keys(byName).map(function(k) { return byName[k]; });
+  setNotice(incompleteParts
+    ? t('notice.commonsPartial', { n: out.length, fail: incompleteParts })
+    : t('notice.commonsDone', { n: out.length }));
+  // v6.12.1: Als Rohzahl die BEHALTENEN Treffer melden, nicht die Zahl der
+  // durchsuchten Suchtreffer. Sonst schlägt die Limit-Warnung fast immer an,
+  // obwohl nichts abgeschnitten wurde.
+  // resolved: true -> die Upload-Daten hängen bereits an, kein zweiter Durchlauf nötig.
+  return { files: noCap ? out : capFiles(out, cap), rawCount: out.length, resolved: true };
+}
+
+// v6.13.0: Beide Quellen nacheinander, zusammengeführt über den Dateinamen.
+// Commons zuerst, weil dessen Treffer bereits aufgelöst sind; aus PetScan kommen
+// nur die Namen dazu, die Commons nicht kennt. Fällt PetScan aus (Proxy, Timeout),
+// bleibt das Commons-Ergebnis stehen und der Hinweis sagt es.
+async function fetchFromBoth(ctrl) {
+  var norm = function(n) { return String(n || '').replace(/_/g, ' ').trim(); };
+  var byName = {};
+  // v6.13.1: Auch der Commons-Teil kann scheitern. Vorher riss er den ganzen
+  // Abruf mit, obwohl PetScan noch hätte liefern können.
+  var commonsFailed = false;
+  try {
+    var commons = await fetchFromCommons(ctrl, { noCap: true });
+    commons.files.forEach(function(f) { byName[norm(f.title)] = f; });
+  } catch (e) {
+    if (isAbort(e)) throw e;
+    commonsFailed = true;
+    console.error('[Quelle beide] Commons-Teil fehlgeschlagen:', e);
+  }
+
+  var petFailed = false, added = 0;
+  try {
+    var pet = await fetchFromPetScan(ctrl);
+    var extra = pet.files.filter(function(r) { return r && r.title && !byName[norm(r.title)]; });
+    if (extra.length) {
+      var resolved = await filterByRealUpload(extra, ctrl.after);
+      resolved.forEach(function(f) {
+        var k = norm(f.title);
+        if (!byName[k]) { byName[k] = f; added++; }
+      });
+    }
+  } catch (e) {
+    if (isAbort(e)) throw e;
+    petFailed = true;
+    console.error('[Quelle beide] PetScan-Teil fehlgeschlagen:', e);
+  }
+
+  if (commonsFailed && petFailed) throw new Error('Beide Quellen fehlgeschlagen');
+
+  var out = Object.keys(byName).map(function(k) { return byName[k]; });
+  var doneKey = petFailed ? 'notice.bothPetscanFailed'
+    : (commonsFailed ? 'notice.bothCommonsFailed' : 'notice.bothDone');
+  setNotice(t(doneKey, { n: out.length, extra: added }));
+  var cap = Math.max(1, parseInt(ctrl.limit, 10) || 1000);
+  return { files: capFiles(out, cap), rawCount: out.length, resolved: true };
+}
+
+// v6.12.0: Warnen, wenn die Quelle sichtbar hinter dem heutigen Stand liegt.
+// Genau dieses Symptom hatte PetScan: keine Fehlermeldung, nur keine Treffer.
+function updateFreshWarning(files, source) {
+  var el = document.getElementById('freshWarning');
+  if (!el) return;
+  el.textContent = ''; el.hidden = true;
+  if (!files || !files.length) return;
+  var newest = '';
+  files.forEach(function(f) {
+    var ts = f.uploadTs || f.touched || '';
+    ts = String(ts).replace(/[^0-9]/g, '').slice(0, 14);
+    if (ts > newest) newest = ts;
+  });
+  if (newest.length < 8) return;
+  var d = new Date(Date.UTC(+newest.slice(0, 4), +newest.slice(4, 6) - 1, +newest.slice(6, 8)));
+  var days = Math.floor((Date.now() - d.getTime()) / 86400000);
+  if (days < 2) return; // ein Tag Rückstand ist normal
+  el.textContent = t(source === 'petscan' ? 'notice.staleSource' : 'notice.staleSourceCommons', {
+    date: d.toISOString().slice(0, 10), days: days
+  });
+  el.hidden = false;
+}
+
+// v6.14.0: Doppelklick auf „Daten abrufen" (oder Abrufen während ein Abruf läuft)
+// startete einen zweiten Durchlauf. Beide schrieben nach allFiles; wer später
+// fertig wurde, gewann, unabhängig davon, mit welchen Filtern er gestartet war.
+var fetchDataRunning = false;
+async function fetchData() {
+  if (fetchDataRunning) return;
+  fetchDataRunning = true;
+  ensureAfterDefault();
+  resetAnalysisCache();
+  var ctrl = readControls();
+  progStart(ctrl.dataSource);
+  showLoading(true);
+  // v6.15.0: Stand der Warnungen merken – bei „Abbrechen“ bleibt die alte Liste stehen.
+  var prevLimit = [lastRawResultCount, lastLimitReached];
+  setLimitWarning(0, 0); // alte Warnung zurücksetzen
+  var fw = document.getElementById('freshWarning');
+  var prevFresh = fw ? [fw.textContent, fw.hidden] : null;
+  if (fw) { fw.textContent = ''; fw.hidden = true; }
+  try {
+	var res = (ctrl.dataSource === 'petscan') ? await fetchFromPetScan(ctrl)
+	        : (ctrl.dataSource === 'both')    ? await fetchFromBoth(ctrl)
+	        : await fetchFromCommons(ctrl);
+	allFiles = res.files;
 	// v6.11.1: Roh-Trefferzahl VOR allen Filtern mit dem Limit vergleichen.
-	setLimitWarning(allFiles.length, ctrl.limit);
+	setLimitWarning(res.rawCount, ctrl.limit);
 	// v6.0.1: Nicht-Dateien (Kategorien o. Ä.) direkt an der Quelle aussortieren.
 	allFiles = allFiles.filter(function(f) { return f && isCommonsFile(f.title); });
 	// v5.4.0: PetScan filtert nach `touched` (jede Bearbeitung). Nachgelagert nur
 	// echte Neu-Uploads behalten (Upload-Datum via imageinfo) – ignoriert reine
-	// Text-/Metadaten-Änderungen.
-	if (allFiles.length) {
+	// Text-/Metadaten-Änderungen. Der Commons-Pfad hat das schon erledigt.
+	if (allFiles.length && !res.resolved) {
 	  allFiles = await filterByRealUpload(allFiles, ctrl.after);
 	}
+	updateFreshWarning(allFiles, ctrl.dataSource);
 	isDataLoaded = true;
+	// v6.14.0: Der Farb-Cache hängt am Upload-Zeitstempel; der Index muss zur neuen
+	// Ergebnisliste passen, bevor die ersten Figuren eingefärbt werden.
+	rebuildUploadTsIndex();
+	// v6.13.0: Tag des letzten erfolgreichen Abrufs für „Seit dem letzten Besuch".
+	rememberFetchDay();
+	refreshSinceLastVisitButton();
 	// v6.8.0: Usage-Scan für die neue Ergebnisliste zurücksetzen.
-	usageScanDone = false; usageWikiMap = {};
+	usageScanDone = false; usageWikiMap = {}; usageScannedNames = {};
 	// ZUERST rendern (nicht auf den Scan warten!), sonst blockiert ein aktiver
 	// Ausschluss-Filter das gesamte Laden ("Lade Daten…" hängt).
 	populateSeasonFilter();
 	populateKitTypeFilter();
 	populateUsageChips();
 	renderFiles();
-	setTimeout(function() {
-	  if (typeof applyCompletedState === 'function') applyCompletedState();
-	  if (typeof updateStats === 'function') updateStats();
-	}, 200);
+	schedulePostRender();
 	// v6.11.0: Nach Abschluss benachrichtigen, falls der Tab nicht im Blick ist.
-	notifySearchDone(allFiles.length);
+	// v6.13.2: Die tatsächlich angezeigte Zahl melden, nicht alle Rohtreffer –
+	// „nur Trikotteile" und „Dateiupdates ausblenden" hatten gefehlt.
+	notifySearchDone(getFilteredFiles().length);
 	// Bei aktivem Ausschluss-Filter die Verwendung IM HINTERGRUND scannen und
 	// danach neu filtern – die Oberfläche bleibt sofort nutzbar.
 	if (Object.keys(activeUsageWikis).length) {
-	  scanAllUsage()
+	  startUsageScan()
 	    .then(function() { setNotice(''); populateUsageChips(); applyFilters(); })
 	    .catch(function(err) { console.error('[UsageScan]', err); usageScanDone = true; });
 	}
   } catch (e) {
+	if (RUN && RUN.ctl.signal.aborted && isAbort(e)) {
+	  // v6.15.0: Abbruch durch den Nutzer – keine Fehlermeldung, die bisherige Liste und
+	  // ihre Warnungen bleiben, Tag des letzten Abrufs und Benachrichtigung entfallen.
+	  lastRawResultCount = prevLimit[0]; lastLimitReached = prevLimit[1]; updateLimitWarning();
+	  if (fw && prevFresh) { fw.textContent = prevFresh[0]; fw.hidden = prevFresh[1]; }
+	  setNotice(t('notice.cancelled'));
+	} else {
 	console.error("Fehler in fetchData:", e);
-	setNotice(t('notice.error', { msg: e.message }));
 	allFiles = [];
 	isDataLoaded = false;
+	// v6.13.1: Ohne Neuzeichnen blieb die alte Trefferliste stehen, obwohl die
+	// Daten verworfen wurden – die Anzeige log dann über den Zustand.
+	usageScanDone = false; usageWikiMap = {}; usageScannedNames = {};
+	try {
+	  populateSeasonFilter();
+	  populateKitTypeFilter();
+	  populateUsageChips();
+	  renderFiles();
+	  if (typeof updateStats === 'function') updateStats();
+	} catch (e2) { console.error('[fetchData] Neuzeichnen nach Fehler:', e2); }
+	// v6.13.2: Die Meldung ZULETZT setzen. renderFiles() schreibt im Leerfall
+	// „Keine Teams gefunden." in dieselbe Zeile und verdeckte damit seit v6.13.1
+	// jede Fehlerursache; sie stand nur noch in der Konsole.
+	setNotice(t('notice.error', { msg: e.message }));
+	}
+  } finally {
+	progEnd();
+	fetchDataRunning = false;
   }
   showLoading(false);
 }
@@ -2987,7 +4107,9 @@ function ciPartFromFilename(fn) {
 
 /** Pattern-Token aus Dateiname ("Kit_body_kaizerchiefs2627h.png" -> "_kaizerchiefs2627h"). */
 function ciTokenFromFilename(fn) {
-  var base = (fn || '').replace(/\.(png|jpg|jpeg|gif|svg)$/i, '');
+  // v6.14.0: dieselbe Endungsliste wie isCommonsFile(); tif/tiff/webp fehlten, die
+  // Endung blieb im Token stehen und die Teile fanden im Infobox-Code nicht zusammen.
+  var base = (fn || '').replace(/\.(png|jpe?g|gif|svg|tiff?|webp)$/i, '');
   // führendes "Kit_<teil>_" entfernen (Teil kann Unterstriche enthalten: left_arm)
   base = base.replace(/^kit[_\s](?:body|left[_\s]arm|right[_\s]arm|shorts|socks)[_\s]/i, '');
   return '_' + base;
@@ -3105,14 +4227,14 @@ async function ciFetchOriginalUrls(filenames) {
   for (var i = 0; i < filenames.length; i += BATCH) {
     var chunk = filenames.slice(i, i + BATCH);
     var titlesParam = chunk.map(function(f) { return 'File:' + f; }).join('|');
-    var apiUrl = 'https://commons.wikimedia.org/w/api.php?' + new URLSearchParams({
-      action: 'query', titles: titlesParam, prop: 'imageinfo',
-      iiprop: 'url', format: 'json', origin: '*'
-    });
     try {
-      var resp = await fetch(apiUrl);
-      if (!resp.ok) throw new Error('API HTTP ' + resp.status);
-      var data = await resp.json();
+      // v6.13.2: Über mwApi() statt rohem fetch – damit gelten hier dieselbe
+      // Wiederholung bei 429/5xx und dieselbe Prüfung auf {"error":…} bei HTTP 200.
+      // Ein einzelnes 429 ließ vorher einen ganzen Bildschirm Figuren grau bleiben.
+      var data = await mwApi({
+        action: 'query', titles: titlesParam, prop: 'imageinfo',
+        iiprop: 'url', formatversion: '1'
+      });
       var normalMap = {};
       if (data.query && data.query.normalized) {
         data.query.normalized.forEach(function(n) { normalMap[n.to] = n.from.replace(/^File:/, ''); });
@@ -3170,7 +4292,7 @@ async function ciBuildInfoboxCode(teamGroup) {
 
   // 2) Original-URLs holen und Farben je Datei parallel bestimmen.
   // v6.1: Nur noch nicht gecachte Dateien anfragen; kitColorCache wird geteilt.
-  var needUrls = allFilenames.filter(function(fn) { return !(fn in kitColorCache); });
+  var needUrls = allFilenames.filter(function(fn) { return !(kitColorKey(fn) in kitColorCache); });
   var urlMap = needUrls.length ? await ciFetchOriginalUrls(needUrls) : {};
   var colorByFile = {};
   await Promise.all(allFilenames.map(async function(fn) {
@@ -3179,13 +4301,29 @@ async function ciBuildInfoboxCode(teamGroup) {
   }));
   saveKitColorCache(); // v6.2.3: neu erkannte Farben persistieren
 
-  // 3) Zeilen je Kit zusammenbauen.
+  // 3) Kit-Nummern vergeben – v6.3.8: nach Trikottyp (Heim=1, Auswärts=2, Ausweich=3, …)
+  // statt nach Reihenfolge, damit ein reines Auswärtsset korrekt "2" bekommt.
+  // v6.13.2: In zwei Durchgängen. Typen ohne festen Slot (libh, tr, Jubiläum, unknown)
+  // bekamen vorher idx+1 und konnten damit auf eine bereits vergebene feste Nummer
+  // treffen; der kopierte Block enthielt dann z. B. pattern_la3 zweimal.
+  var usedNumbers = {};
+  kits.forEach(function(kit) {
+    var fixed = CI_KIT_NUMBER[kit.type];
+    if (fixed && !usedNumbers[fixed]) { kit.num = fixed; usedNumbers[fixed] = true; }
+  });
+  var nextFree = 1;
+  kits.forEach(function(kit) {
+    if (kit.num) return;
+    while (usedNumbers[nextFree]) nextFree++;
+    kit.num = nextFree;
+    usedNumbers[nextFree] = true;
+  });
+
+  // 4) Zeilen je Kit zusammenbauen.
   var lines = [];
-  kits.forEach(function(kit, idx) {
+  kits.forEach(function(kit) {
     var byPart = kit.parts;
-    // v6.3.8: Kit-Nummer nach Trikottyp (Heim=1, Auswärts=2, Ausweich=3, …) statt nach
-    // Reihenfolge -> ein reines Auswärtsset bekommt korrekt "2".
-    var n = CI_KIT_NUMBER[kit.type] || (idx + 1);
+    var n = kit.num;
     var tokens = {};                        // pattern-Basisname -> token
     var colors = {};                        // color-Basisname   -> hex
     ['la', 'b', 'ra', 'sh', 'so'].forEach(function(part) {
@@ -3229,6 +4367,55 @@ async function ciCopyToClipboard(text) {
   } catch (e) { return false; }
 }
 
+// v6.13.1: Auffangnetz, wenn beide Kopierwege scheitern.
+// Der Code wird erst nach der Farbanalyse gebaut, also mehrere Sekunden nach dem
+// Klick. Safari wertet die Nutzeraktion bis dahin als abgelaufen und verweigert
+// sowohl navigator.clipboard als auch execCommand. Bisher blieb der Code dann nur
+// in der Konsole. Jetzt erscheint er in einem Dialog, vorselektiert zum manuellen
+// Kopieren.
+var copyFallbackEl = null;
+function showCopyFallback(text) {
+  if (!copyFallbackEl) {
+    var ov = document.createElement('div');
+    ov.className = 'usage-modal';
+    ov.id = 'copyFallback';
+    ov.setAttribute('role', 'dialog');
+    ov.setAttribute('aria-modal', 'true');
+    ov.setAttribute('aria-labelledby', 'copyFallbackTitle');
+    ov.innerHTML =
+      '<div class="usage-content">' +
+        '<div class="usage-header">' +
+          '<h2 id="copyFallbackTitle">📋 <span data-de="Code manuell kopieren" data-en="Copy the code manually">Copy the code manually</span></h2>' +
+          '<button class="usage-close" type="button" data-title-de="Dialog schließen" data-title-en="Close dialog" aria-label="Dialog schließen">×</button>' +
+        '</div>' +
+        '<div class="usage-body">' +
+          '<p id="copyFallbackHint" style="margin:0 0 12px;"></p>' +
+          '<textarea id="copyFallbackText" readonly spellcheck="false" ' +
+            'style="width:100%;min-height:220px;font-family:monospace;font-size:0.85rem;' +
+            'background:var(--surface);color:var(--text);border:1px solid var(--pitch-bright);' +
+            'border-radius:6px;padding:10px;resize:vertical;"></textarea>' +
+        '</div>' +
+      '</div>';
+    document.body.appendChild(ov);
+    function hide() { ov.classList.remove('active'); modalFocusClose(ov); }
+    ov.querySelector('.usage-close').addEventListener('click', hide);
+    ov.addEventListener('click', function(e) { if (e.target === ov) hide(); });
+    document.addEventListener('keydown', function(e) {
+      if ((e.key === 'Escape' || e.key === 'Esc') && ov.classList.contains('active')) hide();
+    });
+    copyFallbackEl = ov;
+  }
+  var hint = copyFallbackEl.querySelector('#copyFallbackHint');
+  if (hint) hint.textContent = t('copy.fallbackHint');
+  if (typeof applyStaticTranslations === 'function') applyStaticTranslations();
+  var ta = copyFallbackEl.querySelector('#copyFallbackText');
+  ta.value = text;
+  var wasOpen = copyFallbackEl.classList.contains('active');
+  copyFallbackEl.classList.add('active');
+  if (!wasOpen) modalFocusOpen(copyFallbackEl, ta);
+  try { ta.select(); } catch (e) { /* egal */ }
+}
+
 /**
  * Klick-Handler des „Infobox-Code kopieren"-Buttons.
  * Zeigt Lade-/Erfolgs-/Fehler-Zustand direkt am Button an.
@@ -3248,7 +4435,10 @@ async function copyTeamInfobox(btn) {
     var ok = await ciCopyToClipboard(code);
     btn.classList.toggle('copied', ok);
     btn.textContent = ok ? t('btn.copied') : t('btn.copyFailed');
-    if (!ok) console.warn('[Schneider] Zwischenablage nicht verfügbar. Code:\n' + code);
+    if (!ok) {
+      console.warn('[Schneider] Zwischenablage nicht verfügbar. Code:\n' + code);
+      showCopyFallback(code);
+    }
   } catch (e) {
     console.error('[Schneider] Fehler:', e);
     btn.textContent = t('btn.failed');
@@ -3263,171 +4453,321 @@ async function copyTeamInfobox(btn) {
 }
 
 // ================================================
-// === UNIFIED STORAGE SYSTEM v5.2.0 ===
+// === UNIFIED STORAGE SYSTEM – Schema v6 (Kitly v6.12.0) ===
 // ================================================
-const STORAGE_KEY = 'kitStorage_v5';
+// Warum sich das Schema geändert hat:
+//
+//  1. Der Team-Haken war nur der Vereinsname (safeId(team)), ohne Saison und
+//     ohne Zeitbezug. Einmal "Chelsea" abgehakt hieß: jedes künftige
+//     Chelsea-Trikot jeder Saison blieb dauerhaft ausgeblendet, auch Dateien,
+//     die es beim Abhaken noch gar nicht gab. Ein Team ist keine stabile
+//     Einheit, sein Inhalt wechselt mit jeder Abfrage. Der Team-Haken wird
+//     deshalb abgeleitet: alle Kitsets erledigt = Team erledigt.
+//  2. Der Kitset-Schlüssel ist jetzt in beiden Ansichten derselbe (set_id).
+//     Vorher nutzte die Teams-Ansicht "Team-Saison-Typ", die Kitset-Ansicht
+//     "Team_Saison_Typ"; ein Haken in der einen war in der anderen unsichtbar.
+//  3. Erledigte Einträge merken sich ihren Stand: ein Kitset die Dateien, die
+//     es beim Abhaken enthielt, eine Datei ihren Upload-Zeitstempel. Kommt ein
+//     Teil dazu oder eine neue Dateiversion, gilt der Eintrag wieder als offen.
+const STORAGE_KEY        = 'kitStorage_v6';
+const LEGACY_STORAGE_KEY = 'kitStorage_v5';
+const STORAGE_BACKUP_KEY = 'kitStorage_v5_backup';
+const SCHEMA_VERSION     = 6;
 const MAX_ENTRIES = 100000;
 
-// Globale Storage-Objekte (EINZIGER Abhak-Store, v6.4.0 konsolidiert)
+// Einziger Abhak-Store.
+//   kitsets[setId] = { touched, files: [Dateiname, …] }  files leer = Stand unbekannt
+//   files[name]    = { touched, ts }                     ts = Upload-Zeitstempel beim Abhaken
+//   legacyKitsets[altSchlüssel] = true                   exakte Treffer aus Schema 5
 let completedItems = {
-  teams: {},      // teamId => { touched, files: [] }
-  kitsets: {},    // kitsetId => { touched }
-  files: {}       // filename => { touched, teamId }
+  v: SCHEMA_VERSION,
+  kitsets: {},
+  files: {},
+  legacyKitsets: {}
 };
 
 let showCompletedItems = false;
+// Ergebnis einer Migration beim Laden; wird nach dem Sprach-Setup als Hinweis angezeigt.
+let storageMigrationStats = null;
+
+// === SCHLÜSSEL ===
+// Kanonischer Kitset-Schlüssel ist die set_id aus der Dateinamen-Analyse, also über
+// Abfragen hinweg stabil und in beiden Ansichten identisch. Alle Stellen lesen sie
+// direkt über kitset.id bzw. dataset.kitsetId.
+// v6.13.2: Die nie aufgerufene Hilfsfunktion kitsetKeyOf() ist entfallen.
+// Schlüsselformat der Teams-Ansicht bis v6.11.1. Nur zum Wiedererkennen alter
+// Haken; in diesem Format wird nie wieder geschrieben.
+function legacyTeamsViewKitsetKey(team, season, kitType) {
+  return safeId(team) + '-' + safeId(season) + '-' + (kitType || 'unknown');
+}
 
 // === LADEN & SPEICHERN ===
+// Vorwärts-Migration beim Laden, nicht beim Speichern: lesen, Schema erkennen,
+// einmal umschreiben, danach erst die UI darauf loslassen. Gespeicherte Daten
+// gelten als nicht vertrauenswürdig (fremde Version, handeditiert, abgeschnitten).
 function loadStorage() {
+  completedItems = { v: SCHEMA_VERSION, kitsets: {}, files: {}, legacyKitsets: {} };
+  storageMigrationStats = null;
+
+  var raw = null;
+  try { raw = localStorage.getItem(STORAGE_KEY); } catch (e) { return; }
+
+  if (raw) {
+    try {
+      var d = JSON.parse(raw) || {};
+      if (d.kitsets       && typeof d.kitsets       === 'object') completedItems.kitsets       = d.kitsets;
+      if (d.files         && typeof d.files         === 'object') completedItems.files         = d.files;
+      if (d.legacyKitsets && typeof d.legacyKitsets === 'object') completedItems.legacyKitsets = d.legacyKitsets;
+    } catch (e) { /* defekt: Standardwerte, das Tool startet trotzdem */ }
+    return;
+  }
+
+  // Kein Schema-6-Stand vorhanden: einmalig aus Schema 5 übernehmen.
+  var old = null;
+  try { old = localStorage.getItem(LEGACY_STORAGE_KEY); } catch (e) { return; }
+  if (!old) return;
+
+  // Original nie verwerfen: erst sichern, dann migrieren.
   try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) {
-      completedItems = JSON.parse(stored) || {};
-      // Robust gegen alte/teilweise Datenstände.
-      if (!completedItems.teams)   completedItems.teams = {};
-      if (!completedItems.kitsets) completedItems.kitsets = {};
-      if (!completedItems.files)   completedItems.files = {};
+    if (!localStorage.getItem(STORAGE_BACKUP_KEY)) localStorage.setItem(STORAGE_BACKUP_KEY, old);
+  } catch (e) { /* Quota: Migration läuft trotzdem, nur ohne Backup */ }
+
+  try {
+    var o = JSON.parse(old) || {};
+    var nTeams = 0, nFiles = 0, nSets = 0;
+
+    if (o.files && typeof o.files === 'object') {
+      Object.keys(o.files).forEach(function(name) {
+        var e = o.files[name] || {};
+        completedItems.files[name] = { touched: e.touched || '', ts: '' };
+        nFiles++;
+      });
     }
+
+    // Team-Haken auflösen: die beim Abhaken gespeicherte Dateiliste bleibt als
+    // Datei-Haken erhalten, der schädliche Team-Schlüssel selbst entfällt.
+    if (o.teams && typeof o.teams === 'object') {
+      Object.keys(o.teams).forEach(function(tid) {
+        var e = o.teams[tid] || {};
+        nTeams++;
+        (Array.isArray(e.files) ? e.files : []).forEach(function(name) {
+          if (!name || completedItems.files[name]) return;
+          completedItems.files[name] = { touched: e.touched || '', ts: '' };
+          nFiles++;
+        });
+      });
+    }
+
+    // In Schema 5 gab es zwei Kitset-Schlüsselformate, die sich nachträglich
+    // nicht sicher auseinanderhalten lassen. Statt zu raten wandert jeder alte
+    // Schlüssel in beide Töpfe; verglichen wird exakt, ein falsch einsortierter
+    // Schlüssel trifft schlicht nie.
+    if (o.kitsets && typeof o.kitsets === 'object') {
+      Object.keys(o.kitsets).forEach(function(kid) {
+        var e = o.kitsets[kid] || {};
+        completedItems.kitsets[kid] = { touched: e.touched || '', files: [] };
+        completedItems.legacyKitsets[kid] = true;
+        nSets++;
+      });
+    }
+
+    storageMigrationStats = { teams: nTeams, files: nFiles, sets: nSets, ok: true };
+    saveStorage();
   } catch (e) {
-    completedItems = { teams: {}, kitsets: {}, files: {} };
+    // Unlesbar: Standardwerte nutzen. Das Original liegt weiterhin unter
+    // LEGACY_STORAGE_KEY bzw. STORAGE_BACKUP_KEY, nichts wird still gelöscht.
+    storageMigrationStats = { ok: false };
   }
 }
 
 function saveStorage() {
   try {
-    const total = Object.keys(completedItems.teams).length
-      + Object.keys(completedItems.kitsets).length
+    const total = Object.keys(completedItems.kitsets).length
       + Object.keys(completedItems.files).length;
     if (total > MAX_ENTRIES) cleanupOldEntries();
+    completedItems.v = SCHEMA_VERSION;
     localStorage.setItem(STORAGE_KEY, JSON.stringify(completedItems));
   } catch (e) { /* z.B. Quota – unkritisch */ }
 }
 
 function cleanupOldEntries() {
-  // Behalte die 80% neuesten Einträge
+  // Behalte die 80% neuesten Datei-Einträge; Kitsets und Alt-Schlüssel bleiben.
   const maxKeep = Math.floor(MAX_ENTRIES * 0.8);
-
-  const allEntries = [
-    ...Object.entries(completedItems.teams).map(([k, v]) => ({type: 'team', key: k, ...v})),
-    ...Object.entries(completedItems.files).map(([k, v]) => ({type: 'file', key: k, ...v}))
-  ];
-
-  const kitsetEntries = Object.entries(completedItems.kitsets || {});
-  allEntries.sort((a, b) => new Date(b.touched) - new Date(a.touched));
-
-  completedItems = { teams: {}, kitsets: {}, files: {} };
-  kitsetEntries.forEach(([k, v]) => { completedItems.kitsets[k] = v; }); // Kitsets bleiben erhalten
-
-  allEntries.slice(0, maxKeep).forEach(entry => {
-    if (entry.type === 'team') {
-      completedItems.teams[entry.key] = { touched: entry.touched, files: entry.files || [] };
-    } else {
-      completedItems.files[entry.key] = { touched: entry.touched, teamId: entry.teamId };
-    }
+  const entries = Object.keys(completedItems.files).map(function(k) {
+    return { key: k, val: completedItems.files[k] || {} };
   });
+  entries.sort(function(a, b) {
+    return new Date(b.val.touched || 0) - new Date(a.val.touched || 0);
+  });
+  const kept = {};
+  entries.slice(0, maxKeep).forEach(function(e) { kept[e.key] = e.val; });
+  completedItems.files = kept;
 }
 
-// === TEAM-FUNKTIONEN ===
-function markTeamCompleted(teamId, filesList = []) {
-  const now = new Date().toISOString();
-
-  // Markiere Team
-  completedItems.teams[teamId] = {
-    touched: now,
-    files: filesList
+// === KITSET-FUNKTIONEN ===
+// currentFiles = die Dateinamen, die das Kitset jetzt enthält. Taucht später
+// eine Datei auf, die beim Abhaken nicht dabei war, gilt das Set wieder als offen.
+function markKitsetCompleted(setId, currentFiles) {
+  if (!setId) return;
+  completedItems.kitsets[setId] = {
+    touched: new Date().toISOString(),
+    files: Array.isArray(currentFiles) ? currentFiles.slice() : []
   };
-
-  // Markiere alle Dateien des Teams
-  filesList.forEach(filename => {
-    completedItems.files[filename] = {
-      touched: now,
-      teamId: teamId
-    };
-  });
-
   saveStorage();
   applyCompletedState();
   updateStats();
 }
 
-function unmarkTeamCompleted(teamId) {
-  if (completedItems.teams[teamId]) {
-    const files = completedItems.teams[teamId].files || [];
-
-    // Entferne alle Dateien des Teams
-    files.forEach(filename => {
-      delete completedItems.files[filename];
-    });
-
-    delete completedItems.teams[teamId];
+function unmarkKitsetCompleted(setId, legacyKey) {
+  var changed = false;
+  if (completedItems.kitsets[setId])       { delete completedItems.kitsets[setId];       changed = true; }
+  if (completedItems.legacyKitsets[setId]) { delete completedItems.legacyKitsets[setId]; changed = true; }
+  if (legacyKey && completedItems.legacyKitsets[legacyKey]) { delete completedItems.legacyKitsets[legacyKey]; changed = true; }
+  if (legacyKey && completedItems.kitsets[legacyKey])       { delete completedItems.kitsets[legacyKey];       changed = true; }
+  if (changed) {
     saveStorage();
     applyCompletedState();
     updateStats();
   }
 }
 
-function isTeamCompleted(teamId) {
-  return !!completedItems.teams[teamId];
-}
-
-// === KITSET-FUNKTIONEN (v6.4.0) ===
-function markKitsetCompleted(kitsetId) {
-  completedItems.kitsets[kitsetId] = { touched: new Date().toISOString() };
-  saveStorage();
-  applyCompletedState();
-  updateStats();
-}
-
-function unmarkKitsetCompleted(kitsetId) {
-  if (completedItems.kitsets[kitsetId]) {
-    delete completedItems.kitsets[kitsetId];
-    saveStorage();
-    applyCompletedState();
-    updateStats();
+function isKitsetCompleted(setId, currentFiles, legacyKey) {
+  var entry = completedItems.kitsets[setId];
+  if (!entry) {
+    // Alter Haken aus Schema 5: Stand unbekannt, gilt als erledigt.
+    if (completedItems.legacyKitsets[setId]) return true;
+    if (legacyKey && (completedItems.legacyKitsets[legacyKey] || completedItems.kitsets[legacyKey])) return true;
+    return false;
   }
-}
-
-function isKitsetCompleted(kitsetId) {
-  return !!completedItems.kitsets[kitsetId];
+  var known = Array.isArray(entry.files) ? entry.files : [];
+  if (!known.length) return true; // migrierter Eintrag ohne Stand, nicht künstlich wieder öffnen
+  var now = currentFiles || [];
+  for (var i = 0; i < now.length; i++) {
+    if (known.indexOf(now[i]) === -1) return false; // neues Teil dazugekommen
+  }
+  return true;
 }
 
 // === DATEI-FUNKTIONEN ===
-function markFileCompleted(filename, teamId = null) {
+// ts = Upload-Zeitstempel der Datei beim Abhaken. Wird später eine neue Version
+// hochgeladen, ist die Datei wieder offen.
+function markFileCompleted(filename, ts) {
+  if (!filename) return;
   completedItems.files[filename] = {
     touched: new Date().toISOString(),
-    teamId: teamId
+    ts: ts || ''
   };
-
   saveStorage();
   applyCompletedState();
   updateStats();
 }
 
+// v6.13.1: Die API liefert denselben Dateinamen mal mit Unterstrich, mal mit
+// Leerzeichen. Gespeichert wurde, was gerade anlag – gelesen wurde nur exakt.
+// Ein Haken konnte dadurch beim nächsten Abruf verschwinden. Geschrieben wird
+// weiterhin unverändert (keine Umschreibung des Bestands), gelesen tolerant.
+function fileKeyVariants(filename) {
+  var n = String(filename || '');
+  var out = [n];
+  var sp = n.replace(/_/g, ' '), us = n.replace(/ /g, '_');
+  if (out.indexOf(sp) < 0) out.push(sp);
+  if (out.indexOf(us) < 0) out.push(us);
+  return out;
+}
+
+function findFileEntry(filename) {
+  var v = fileKeyVariants(filename);
+  for (var i = 0; i < v.length; i++) {
+    if (completedItems.files[v[i]]) return completedItems.files[v[i]];
+  }
+  return null;
+}
+
 function unmarkFileCompleted(filename) {
-  if (completedItems.files[filename]) {
-    delete completedItems.files[filename];
+  var hit = false;
+  fileKeyVariants(filename).forEach(function(k) {
+    if (completedItems.files[k]) { delete completedItems.files[k]; hit = true; }
+  });
+  if (hit) {
     saveStorage();
     applyCompletedState();
     updateStats();
   }
 }
 
-function isFileCompleted(filename) {
-  return !!completedItems.files[filename];
+function isFileCompleted(filename, ts) {
+  var e = findFileEntry(filename);
+  if (!e) return false;
+  if (e.ts && ts && String(ts) > String(e.ts)) return false; // neue Dateiversion
+  return true;
 }
 
-// === DOM-ANWENDUNG === (v6.4.0: Teams, Kitsets UND Dateien aus einem Store)
+// === TEAM-FUNKTIONEN (abgeleitet, kein eigener Speichereintrag mehr) ===
+// Ein Team gilt als erledigt, wenn es mindestens ein Kitset enthält und alle
+// davon erledigt sind. Damit kann ein Team-Haken nichts mehr verdecken, was
+// erst nach dem Abhaken dazugekommen ist.
+function teamKitsetsOf(teamGroup) {
+  return [].slice.call(teamGroup.querySelectorAll('.kitset-card'));
+}
+function kitsetFilesOf(card) {
+  return [].slice.call(card.querySelectorAll('.file-card')).map(function(fc) {
+    return fc.dataset.file || '';
+  }).filter(Boolean);
+}
+function isTeamCompleted(teamGroup) {
+  var cards = teamKitsetsOf(teamGroup);
+  if (!cards.length) return false;
+  for (var i = 0; i < cards.length; i++) {
+    if (!isKitsetCompleted(cards[i].dataset.kitsetId, kitsetFilesOf(cards[i]), cards[i].dataset.legacyKitsetId)) return false;
+  }
+  return true;
+}
+function markTeamCompleted(teamGroup) {
+  var now = new Date().toISOString();
+  teamKitsetsOf(teamGroup).forEach(function(card) {
+    var files = kitsetFilesOf(card);
+    if (card.dataset.kitsetId) completedItems.kitsets[card.dataset.kitsetId] = { touched: now, files: files };
+    [].slice.call(card.querySelectorAll('.file-card')).forEach(function(fc) {
+      if (fc.dataset.file) completedItems.files[fc.dataset.file] = { touched: now, ts: fc.dataset.ts || '' };
+    });
+  });
+  saveStorage();
+  applyCompletedState();
+  updateStats();
+}
+function unmarkTeamCompleted(teamGroup) {
+  teamKitsetsOf(teamGroup).forEach(function(card) {
+    delete completedItems.kitsets[card.dataset.kitsetId];
+    delete completedItems.legacyKitsets[card.dataset.kitsetId];
+    if (card.dataset.legacyKitsetId) {
+      delete completedItems.legacyKitsets[card.dataset.legacyKitsetId];
+      delete completedItems.kitsets[card.dataset.legacyKitsetId];
+    }
+    [].slice.call(card.querySelectorAll('.file-card')).forEach(function(fc) {
+      // v6.13.1: auch die andere Schreibweise entfernen, sonst bleibt ein
+      // Geister-Haken zurück, der die Datei später wieder ausblendet.
+      fileKeyVariants(fc.dataset.file).forEach(function(k) { delete completedItems.files[k]; });
+    });
+  });
+  saveStorage();
+  applyCompletedState();
+  updateStats();
+}
+
+// === DOM-ANWENDUNG ===
+// Reihenfolge ist wichtig: erst Dateien, dann Kitsets (brauchen die Dateiliste),
+// dann Teams (werden aus den Kitsets abgeleitet).
 function applyCompletedState() {
   const hide = function(done) { return (done && !showCompletedItems) ? 'none' : ''; };
 
-  // Teams (ganze Team-Karte = alle Saisons)
-  document.querySelectorAll('.team-group').forEach(teamGroup => {
-    const teamBtn = teamGroup.querySelector('.team-check-btn');
-    const teamId = (teamBtn && teamBtn.dataset.teamId) || teamGroup.dataset.teamId;
-    if (!teamId) return;
-    const done = isTeamCompleted(teamId);
-    if (teamBtn) { teamBtn.classList.toggle('checked', done); teamBtn.setAttribute('aria-checked', done ? 'true' : 'false'); }
-    teamGroup.style.display = hide(done);
+  // Einzelne Dateien
+  document.querySelectorAll('.file-card').forEach(card => {
+    const checkBtn = card.querySelector('.check-btn');
+    const filename = card.dataset.file || (checkBtn && checkBtn.dataset.filename);
+    if (!filename) return;
+    const done = isFileCompleted(filename, card.dataset.ts);
+    if (checkBtn) { checkBtn.classList.toggle('checked', done); checkBtn.setAttribute('aria-checked', done ? 'true' : 'false'); }
+    card.style.display = hide(done);
   });
 
   // Kitsets (ganze Kitset-Karte)
@@ -3435,19 +4775,17 @@ function applyCompletedState() {
     const kBtn = card.querySelector('.kitset-check-btn');
     const kid = card.dataset.kitsetId;
     if (!kid) return;
-    const done = isKitsetCompleted(kid);
+    const done = isKitsetCompleted(kid, kitsetFilesOf(card), card.dataset.legacyKitsetId);
     if (kBtn) { kBtn.classList.toggle('checked', done); kBtn.setAttribute('aria-checked', done ? 'true' : 'false'); }
     card.style.display = hide(done);
   });
 
-  // Einzelne Dateien
-  document.querySelectorAll('.file-card').forEach(card => {
-    const checkBtn = card.querySelector('.check-btn');
-    const filename = card.dataset.file || (checkBtn && checkBtn.dataset.filename);
-    if (!filename) return;
-    const done = isFileCompleted(filename);
-    if (checkBtn) { checkBtn.classList.toggle('checked', done); checkBtn.setAttribute('aria-checked', done ? 'true' : 'false'); }
-    card.style.display = hide(done);
+  // Teams: abgeleitet aus ihren Kitsets
+  document.querySelectorAll('.team-group').forEach(teamGroup => {
+    const teamBtn = teamGroup.querySelector('.team-check-btn');
+    const done = isTeamCompleted(teamGroup);
+    if (teamBtn) { teamBtn.classList.toggle('checked', done); teamBtn.setAttribute('aria-checked', done ? 'true' : 'false'); }
+    teamGroup.style.display = hide(done);
   });
 
   checkEmptyState();
@@ -3455,11 +4793,13 @@ function applyCompletedState() {
 
 // === STATISTIK ===
 function updateStats() {
-  const teamCount = Object.keys(completedItems.teams).length;
+  const kitsetCount = Object.keys(completedItems.kitsets).length;
   const fileCount = Object.keys(completedItems.files).length;
 
+  // v6.13.2: hieß vorher allFiles und verdeckte damit die gleichnamige globale
+  // Dateiliste innerhalb dieser Funktion.
   const allTeams = document.querySelectorAll('.team-group').length;
-  const allFiles = document.querySelectorAll('.file-card').length;
+  const renderedFiles = document.querySelectorAll('.file-card').length;
 
   // v6.5.1: tatsächliche Sichtbarkeit prüfen (offsetParent === null, wenn das Element
   // ODER ein Vorfahr display:none hat) – Dateien in ausgeblendeten Teams zählen nicht mehr mit.
@@ -3470,7 +4810,7 @@ function updateStats() {
   const statsDiv = document.getElementById('unified-stats');
   if (statsDiv) {
     statsDiv.textContent = t('stats.line', {
-      vt: visibleTeams, at: allTeams, vf: visibleFiles, af: allFiles, tc: teamCount, fc: fileCount
+      vt: visibleTeams, at: allTeams, vf: visibleFiles, af: renderedFiles, kc: kitsetCount, fc: fileCount
     });
   }
 }
@@ -3556,16 +4896,16 @@ function toggleFilters() {
 function saveFilterValues() {
   const after = document.getElementById('after');
   const limit = document.getElementById('limit');
-  const depth = document.getElementById('depth');
   const width = document.getElementById('width');
   const filterTrikotTeile = document.getElementById('filterTrikotTeile');
   const seasonFilter = document.getElementById('seasonFilter');
   const kitTypeFilter = document.getElementById('kitTypeFilter');
   const viewMode = document.getElementById('viewMode');
 
+  const dataSource = document.getElementById('dataSource');
+  if (dataSource) localStorage.setItem('filter_dataSource', dataSource.value);
   if (after) localStorage.setItem('filter_after', after.value);
   if (limit) localStorage.setItem('filter_limit', limit.value);
-  if (depth) localStorage.setItem('filter_depth', depth.value);
   if (width) localStorage.setItem('filter_width', width.value);
   if (filterTrikotTeile) localStorage.setItem('filter_trikotTeile', filterTrikotTeile.checked);
   const hideUpdates = document.getElementById('filterHideUpdates');
@@ -3577,14 +4917,66 @@ function saveFilterValues() {
   if (viewMode) localStorage.setItem('filter_viewMode', viewMode.value);
 }
 
+// v6.13.1: Das quellenabhängige Ein- und Ausblenden des Tiefe-Feldes ist
+// entfallen, weil es das Feld nicht mehr gibt. Die Funktion bleibt als einziger
+// Anlaufpunkt für alles, was am Quellenwechsel hängt.
+function syncDataSourceUi() {
+  refreshSinceLastVisitButton();
+}
+
+// ================================================================
+// === v6.13.0: „Seit dem letzten Besuch" =========================
+// ================================================================
+// Nach jedem erfolgreichen Abruf wird der Tag festgehalten. Beim nächsten Öffnen
+// setzt der Knopf das Datumsfeld darauf, statt dass von Hand ein Datum gesucht
+// werden muss. Bewusst tagesgenau: das Datumsfeld kann nichts Feineres.
+const LAST_FETCH_KEY = 'kitly_lastFetch';
+function getLastFetchDay() {
+  try {
+    var v = localStorage.getItem(LAST_FETCH_KEY) || '';
+    return /^\d{4}-\d{2}-\d{2}$/.test(v) ? v : '';
+  } catch (e) { return ''; }
+}
+function rememberFetchDay() {
+  try { localStorage.setItem(LAST_FETCH_KEY, new Date().toISOString().slice(0, 10)); } catch (e) {}
+}
+function refreshSinceLastVisitButton() {
+  var btn = document.getElementById('sinceLastVisitBtn');
+  if (!btn) return;
+  var day = getLastFetchDay();
+  var after = document.getElementById('after');
+  // Nur zeigen, wenn es einen gespeicherten Tag gibt und er nicht schon eingestellt ist.
+  btn.hidden = !day || (after && after.value === day);
+  if (day) btn.title = t('btn.sinceLastVisitTitle', { date: day });
+}
+function applySinceLastVisit() {
+  var day = getLastFetchDay();
+  if (!day) return;
+  var after = document.getElementById('after');
+  if (!after) return;
+  after.value = day;
+  saveFilterValues();
+  refreshSinceLastVisitButton();
+  fetchData();
+}
+
 function loadFilterValues() {
   const after = document.getElementById('after');
   const limit = document.getElementById('limit');
-  const depth = document.getElementById('depth');
   const width = document.getElementById('width');
   const filterTrikotTeile = document.getElementById('filterTrikotTeile');
   const seasonFilter = document.getElementById('seasonFilter');
   const viewMode = document.getElementById('viewMode');
+
+  // v6.12.0: Datenquelle – gespeicherter Wert, sonst Standard "commons".
+  // Nur bekannte Werte übernehmen, damit ein alter oder manipulierter Eintrag
+  // nicht in einen leeren Select läuft.
+  const dataSource = document.getElementById('dataSource');
+  if (dataSource) {
+    const savedDS = localStorage.getItem('filter_dataSource');
+    dataSource.value = (savedDS === 'petscan' || savedDS === 'commons' || savedDS === 'both') ? savedDS : 'commons';
+    syncDataSourceUi();
+  }
 
   // Datum: gespeicherter Wert oder gestern
   if (after) {
@@ -3595,9 +4987,6 @@ function loadFilterValues() {
   // Andere Werte wiederherstellen (falls vorhanden)
   if (limit && localStorage.getItem('filter_limit')) {
     limit.value = localStorage.getItem('filter_limit');
-  }
-  if (depth && localStorage.getItem('filter_depth')) {
-    depth.value = localStorage.getItem('filter_depth');
   }
   if (width && localStorage.getItem('filter_width')) {
     width.value = localStorage.getItem('filter_width');
@@ -3645,25 +5034,42 @@ function loadFilterValues() {
   if (viewMode && localStorage.getItem('filter_viewMode')) {
     viewMode.value = localStorage.getItem('filter_viewMode');
   }
+
+  // v6.13.0: erst jetzt, das Datumsfeld steht oben schon.
+  refreshSinceLastVisitButton();
 }
 
 // v6.0.2: Client-seitige Filter live anwenden (ohne Neu-Laden von der API).
 // Aktualisiert abhängige Dropdowns (Saison/Trikottyp – Auswahl bleibt erhalten)
 // und rendert die Liste neu. Programmatisches Setzen von select.value löst KEIN
 // 'change'-Event aus -> keine Endlosschleife.
+// v6.13.1: Ein einziger Nachlauf-Timer statt je einem pro Render. Bei schnell
+// aufeinander folgenden Filterwechseln liefen bisher mehrere Durchläufe von
+// applyCompletedState()/updateStats() parallel über das gesamte DOM.
+var postRenderTimer = null;
+function schedulePostRender(delay) {
+  if (postRenderTimer) clearTimeout(postRenderTimer);
+  postRenderTimer = setTimeout(function() {
+    postRenderTimer = null;
+    if (typeof applyCompletedState === 'function') applyCompletedState();
+    if (typeof updateStats === 'function') updateStats();
+  }, delay || 200);
+}
+
 function applyFilters() {
   if (!isDataLoaded) return;
+  // v6.13.1: Wird ein Basisfilter gelockert, enthält die Liste Dateien, die der
+  // Verwendungs-Scan nie gesehen hat. Die galten bisher dauerhaft als „unbekannt"
+  // und blieben trotz aktivem Ausschluss sichtbar. Jetzt wird nachgescannt.
+  maybeRescanUsage();
   populateSeasonFilter();
   populateKitTypeFilter();
   renderFiles();
   // Abhak-Status/Statistik nach dem Neu-Rendern wieder anwenden.
-  setTimeout(function() {
-    if (typeof applyCompletedState === 'function') applyCompletedState();
-    if (typeof updateStats === 'function') updateStats();
-  }, 200);
+  schedulePostRender();
 }
 // v6.9.0: Filter auf Standard zurücksetzen (die Anzeige-/Filter-Optionen, NICHT den
-// Datenabruf mit Datum/Limit/Tiefe – die würden ein Neuladen erfordern).
+// Datenabruf mit Datum/Limit – die würden ein Neuladen erfordern).
 function resetFilters() {
   var setChecked = function(id, v) { var el = document.getElementById(id); if (el) el.checked = v; };
   var setVal = function(id, v) { var el = document.getElementById(id); if (el) el.value = v; };
@@ -3691,14 +5097,31 @@ function attachFilterListeners() {
     }
   });
 
-  // v6.0.2: Query-Filter (PetScan-Parameter) erfordern ein echtes Neu-Laden.
-  const queryFilters = ['after', 'limit', 'depth'];
+  // v6.0.2: Query-Filter (Abrufparameter) erfordern ein echtes Neu-Laden.
+  const queryFilters = ['after', 'limit']; // v6.13.1: 'depth' entfallen
   queryFilters.forEach(id => {
     const elem = document.getElementById(id);
     if (elem) {
-      elem.addEventListener('change', () => { saveFilterValues(); if (isDataLoaded) fetchData(); });
+      elem.addEventListener('change', () => {
+        saveFilterValues();
+        if (id === 'after') refreshSinceLastVisitButton();
+        if (isDataLoaded) fetchData();
+      });
     }
   });
+
+  // v6.13.0: Datum auf den letzten erfolgreichen Abruf setzen.
+  const slv = document.getElementById('sinceLastVisitBtn');
+  if (slv) slv.addEventListener('click', applySinceLastVisit);
+
+  const ds = document.getElementById('dataSource');
+  if (ds) {
+    ds.addEventListener('change', () => {
+      syncDataSourceUi();
+      saveFilterValues();
+      if (isDataLoaded) fetchData();
+    });
+  }
 }
 
 // Beim Laden der Seite
@@ -3708,6 +5131,17 @@ window.addEventListener('load', function() {
   // v6.6.0: Theme + Sprache anwenden (Theme wurde bereits im <head> vor-gesetzt).
   applyTheme();
   applyLanguage();
+  // v6.12.0: Ergebnis der Schema-Migration melden, sobald die Sprache steht.
+  // Lieber ein sichtbarer Hinweis als eine stille Umstellung der Abhak-Daten.
+  if (storageMigrationStats) {
+    var mnEl = document.getElementById('migrationNotice');
+    if (mnEl) {
+      mnEl.textContent = storageMigrationStats.ok
+        ? t('storage.migrated', storageMigrationStats)
+        : t('storage.migrationFailed');
+      mnEl.hidden = false;
+    }
+  }
 });
 
 
@@ -3717,13 +5151,14 @@ window.addEventListener('load', function() {
 async function fetchGlobalUsage(filename) {
   // v5.4.2: Cache-Key-Version erhöht (v2), damit alte, rein globale Einträge
   // (ohne lokale Commons-Verwendung) nicht weiter ausgeliefert werden.
-  const cacheKey = 'usage_v2_' + filename;
+  // v6.13.0: einheitlicher, normalisierter Schlüssel (siehe usageCacheKey).
+  const cacheKey = usageCacheKey(filename);
   const cached = localStorage.getItem(cacheKey);
 
   if (cached) {
     try {
       const data = JSON.parse(cached);
-      if (Date.now() - data.timestamp < 24 * 60 * 60 * 1000) {
+      if (Date.now() - data.timestamp < USAGE_CACHE_TTL) {
         return data.usage;
       }
     } catch (e) {}
@@ -3732,41 +5167,58 @@ async function fetchGlobalUsage(filename) {
   // v5.4.2: `prop=globalusage` liefert NUR die Verwendung auf ANDEREN Wikis –
   // die lokale Commons-Verwendung (Abschnitt "Dateiverwendung", z. B. Galerie-
   // seiten) fehlt dort. `prop=fileusage` ergänzt genau diese lokalen Seiten.
-  const url = 'https://commons.wikimedia.org/w/api.php?' +
-    'action=query&prop=globalusage|fileusage&titles=File:' + encodeURIComponent(filename) +
-    '&format=json&origin=*&gulimit=500&fulimit=500';
-
-  const response = await fetch(url);
-  const data = await response.json();
-
-  const pages = (data.query && data.query.pages) || {};
-  const pageId = Object.keys(pages)[0];
-  const page = (pageId !== undefined ? pages[pageId] : {}) || {};
-
-  // Globale Verwendung (andere Wikis): { title, url, wiki }
-  const globalUsage = (page.globalusage || []).map(function(u) {
-    return { title: u.title, url: u.url, wiki: u.wiki };
-  });
-
-  // Lokale Commons-Verwendung: fileusage liefert { pageid, ns, title } ohne URL/Wiki.
-  const localUsage = (page.fileusage || []).map(function(u) {
-    return {
-      title: u.title,
-      url: 'https://commons.wikimedia.org/wiki/' + encodeURIComponent(u.title.replace(/ /g, '_')),
-      wiki: 'commons.wikimedia.org'
-    };
-  });
-
-  // Lokale Treffer zuerst, danach globale.
-  const usage = localUsage.concat(globalUsage);
+  // v6.13.1: derselbe Weg wie im Sammel-Scan – mit Wiederholung, Fehlerprüfung
+  // und Auswertung der Fortsetzung. Vorher fehlte alles drei, und eine Datei mit
+  // mehr als 500 Einbindungen wurde stillschweigend abgeschnitten.
+  // Ein einzelner Titel wird ohnehin nicht weiter geteilt; die Tiefe ist hier egal.
+  const res = await fetchUsageResolved([filename], USAGE_SPLIT_DEPTH);
+  const keys = Object.keys(res.usage);
+  // Lokale Treffer zuerst, danach globale (so baut fetchUsageBatch die Liste).
+  const usage = keys.length ? res.usage[keys[0]] : [];
 
   // v6.9.0: guarded – ein Quota-Fehler darf einen erfolgreichen Abruf NICHT in einen
   // abgelehnten Promise (Fehler-Anzeige) verwandeln.
-  try {
-    localStorage.setItem(cacheKey, JSON.stringify({ usage: usage, timestamp: Date.now() }));
-  } catch (e) {}
+  // v6.13.0: writeUsageCache stutzt den Cache und warnt sichtbar, statt still zu scheitern.
+  if (res.done[filename]) writeUsageCache(filename, usage);
 
   return usage;
+}
+
+// v6.13.2: Fokusverwaltung für die Dialoge. Bisher blieb der Fokus beim Öffnen im
+// Hintergrund stehen; mit der Tastatur landete man hinter dem Overlay statt darin.
+// modalFocusOpen() merkt sich das zuletzt fokussierte Element, setzt den Fokus in den
+// Dialog und hält ihn per Tab-Falle dort; modalFocusClose() gibt ihn zurück.
+var modalFocusStack = [];
+function modalFocusables(root) {
+  var sel = 'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
+  return [].filter.call(root.querySelectorAll(sel), function(el) { return el.offsetParent !== null; });
+}
+function modalFocusOpen(root, preferred) {
+  if (!root) return;
+  var entry = { root: root, prev: document.activeElement, handler: null };
+  entry.handler = function(e) {
+    if (e.key !== 'Tab') return;
+    var items = modalFocusables(root);
+    if (!items.length) { e.preventDefault(); return; }
+    var first = items[0], last = items[items.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  };
+  document.addEventListener('keydown', entry.handler, true);
+  modalFocusStack.push(entry);
+  var target = preferred || modalFocusables(root)[0];
+  if (target) { try { target.focus(); } catch (e) { /* egal */ } }
+}
+function modalFocusClose(root) {
+  for (var i = modalFocusStack.length - 1; i >= 0; i--) {
+    if (modalFocusStack[i].root !== root) continue;
+    var entry = modalFocusStack.splice(i, 1)[0];
+    document.removeEventListener('keydown', entry.handler, true);
+    if (entry.prev && typeof entry.prev.focus === 'function') {
+      try { entry.prev.focus(); } catch (e) { /* egal */ }
+    }
+    return;
+  }
 }
 
 function showUsageModal(filename) {
@@ -3775,7 +5227,9 @@ function showUsageModal(filename) {
 
   if (!modal || !body) return;
 
+  var wasOpen = modal.classList.contains('active');
   modal.classList.add('active');
+  if (!wasOpen) modalFocusOpen(modal, modal.querySelector('.usage-close'));
 
   // Event Listener für ESC und Click-Outside (nur wenn noch nicht registriert)
   if (!modal.hasAttribute('data-listeners-attached')) {
@@ -3839,6 +5293,7 @@ function closeUsageModal() {
   if (modal) {
     modal.classList.remove('active');
     document.body.style.overflow = '';
+    modalFocusClose(modal);
   }
 }
 
@@ -3850,11 +5305,11 @@ function closeUsageModal() {
 </script>
 
   <!-- GlobalUsage Modal -->
-  <div id="usageModal" class="usage-modal">
+  <div id="usageModal" class="usage-modal" role="dialog" aria-modal="true" aria-labelledby="usageModalTitle">
     <div class="usage-content">
       <div class="usage-header">
-        <h2>📊 <span data-de="Verwendung auf Wikipedia" data-en="Usage on Wikipedia">Usage on Wikipedia</span></h2>
-        <button class="usage-close" onclick="closeUsageModal()">×</button>
+        <h2 id="usageModalTitle">📊 <span data-de="Verwendung auf Wikipedia" data-en="Usage on Wikipedia">Usage on Wikipedia</span></h2>
+        <button class="usage-close" onclick="closeUsageModal()" data-title-de="Dialog schließen" data-title-en="Close dialog" aria-label="Dialog schließen">×</button>
       </div>
       <div id="usageBody" class="usage-body"></div>
     </div>
@@ -3866,7 +5321,16 @@ function closeUsageModal() {
 // Fügt Team-/Kitset-/Datei-Checkbuttons hinzu. Klick-Logik + Speicherung liegen
 // zentral im Unified-Storage-System oben (markTeam/Kitset/File...). KEIN eigener Store mehr.
 (function() {
-  function mkBtn(cls) { var b = document.createElement('button'); b.className = cls; return b; }
+  // v6.13.2: dieselbe ARIA-Semantik wie die in renderTeams() erzeugten Buttons,
+  // sonst setzt applyCompletedState() aria-checked auf Elemente ohne checkbox-Rolle.
+  function mkBtn(cls) {
+    var b = document.createElement('button');
+    b.className = cls;
+    b.setAttribute('role', 'checkbox');
+    b.setAttribute('aria-checked', 'false');
+    b.setAttribute('aria-label', typeof t === 'function' ? t('aria.markDone') : 'Als erledigt markieren');
+    return b;
+  }
   function addButtons() {
     document.querySelectorAll('.team-group').forEach(function(card) {
       if (card.querySelector('.team-check-btn')) return; // renderTeams liefert ihn i.d.R. schon
@@ -3939,28 +5403,28 @@ document.addEventListener('click', function(e) {
     return false;
   }
 
-  // Team-Check-Button -> hidet die ganze Team-Karte (alle Saisons)
+  // Team-Check-Button -> hakt alle Kitsets der Team-Karte ab (v6.12.0: kein
+  // eigener Team-Eintrag mehr, der Zustand ergibt sich aus den Kitsets).
   var teamBtn = e.target.closest('.team-check-btn');
   if (teamBtn) {
     e.preventDefault(); e.stopPropagation();
     var teamGroup = teamBtn.closest('.team-group');
-    var teamId = teamBtn.dataset.teamId || (teamGroup && teamGroup.dataset.teamId);
-    if (!teamId || !teamGroup) return false;
-    var filesList = Array.from(teamGroup.querySelectorAll('.file-card')).map(function(card) {
-      return card.dataset.file || (card.querySelector('.file-header a') && card.querySelector('.file-header a').textContent.trim()) || '';
-    }).filter(function(f) { return f; });
-    if (isTeamCompleted(teamId)) unmarkTeamCompleted(teamId); else markTeamCompleted(teamId, filesList);
+    if (!teamGroup) return false;
+    if (isTeamCompleted(teamGroup)) unmarkTeamCompleted(teamGroup); else markTeamCompleted(teamGroup);
     return false;
   }
 
-  // Kitset-Check-Button (v6.4.0)
+  // Kitset-Check-Button
   var kBtn = e.target.closest('.kitset-check-btn');
   if (kBtn) {
     e.preventDefault(); e.stopPropagation();
     var kcard = kBtn.closest('.kitset-card');
     var kid = kcard && kcard.dataset.kitsetId;
     if (!kid) return false;
-    if (isKitsetCompleted(kid)) unmarkKitsetCompleted(kid); else markKitsetCompleted(kid);
+    var kfiles = kitsetFilesOf(kcard);
+    var klegacy = kcard.dataset.legacyKitsetId;
+    if (isKitsetCompleted(kid, kfiles, klegacy)) unmarkKitsetCompleted(kid, klegacy);
+    else markKitsetCompleted(kid, kfiles);
     return false;
   }
 
@@ -3972,27 +5436,19 @@ document.addEventListener('click', function(e) {
     if (!card) return false;
     var filename = card.dataset.file || (card.querySelector('.file-header a') && card.querySelector('.file-header a').textContent.trim()) || '';
     if (!filename) return false;
-    if (isFileCompleted(filename)) {
+    if (isFileCompleted(filename, card.dataset.ts)) {
       unmarkFileCompleted(filename);
     } else {
-      var tg = card.closest('.team-group');
-      var tb = tg && tg.querySelector('.team-check-btn');
-      markFileCompleted(filename, (tb && tb.dataset.teamId) || null);
+      markFileCompleted(filename, card.dataset.ts || '');
     }
     return false;
   }
 });
 
-// Nach renderFiles() die States anwenden
-const originalRenderFiles = window.renderFiles || function() {};
-window.renderFiles = function() {
-  originalRenderFiles.apply(this, arguments);
-
-  setTimeout(() => {
-    applyCompletedState();
-    updateStats();
-  }, 100);
-};
+// v6.13.2: Der Wrapper um window.renderFiles ist entfallen. Er stammte aus v5.2 und
+// startete bei JEDEM Render einen zusätzlichen, nicht entprellten 100-ms-Timer – genau
+// das, was schedulePostRender() seit v6.13.1 verhindern sollte. Die Aufrufer stoßen den
+// Nachlauf jetzt selbst an (fetchData, applyFilters, applyLanguage, maybeRescanUsage).
 
 // ============================================================
 // v5.3.0 - THUMBNAIL LAZY LOADER via MediaWiki API
@@ -4221,6 +5677,97 @@ function checkEmptyState() {
 	<button class="cl-close" onclick="closeChangelogModal()" aria-label="Close">&#x2715;</button>
 	<h2>&#x26BD; Changelog &mdash; Kitly</h2>
 	<div class="cl-version">
+	  <h3>v6.15.0 &mdash; 2026-11-16 &mdash; &bdquo;Anzeigetafel&ldquo;</h3>
+	  <ul>
+		<li><strong>A progress bar replaces the plain &quot;Loading data&quot; text.</strong> Below the bouncing ball the overlay now shows the current step (&quot;Step 2 of 3: Categories&quot;), a bar, a detail line (which title search or category, how many files so far, &quot;n of total&quot; while upload dates are checked) and the time elapsed.</li>
+		<li><strong>Estimated time left.</strong> Calculated from elapsed time and progress, shown from about 10&nbsp;% onwards and rounded to 5 seconds; before that the overlay says it is still estimating. It is an estimate, not a measurement: the five title searches have no fixed number of pages (each stops once a page holds nothing new), so the figure can jump early on. The bar is a weighted share across the steps of the chosen source (Commons search, PetScan, or both).</li>
+		<li><strong>Cancel button.</strong> Stops the retrieval at once, including a request still in flight or waiting after a rate limit, and leaves the list from the previous retrieval untouched: no error message, no notification, and the &quot;since last visit&quot; day is not updated. Background work such as the usage scan is not affected.</li>
+		<li>Keyboard: focus moves to the Cancel button while the overlay is open and returns to where it was afterwards. Screen readers announce the step line.</li>
+		<li>Internal: the shared API helper accepts an optional abort signal, and the error handlers that swallow a failure to keep a partial result now let a cancellation through.</li>
+	  </ul>
+	</div>
+	<div class="cl-version">
+	  <h3>v6.14.0 &mdash; 2026-09-14 &mdash; &bdquo;Nachspielzeit&ldquo;</h3>
+	  <ul>
+		<li><strong>Colours are cached per file version, not per filename.</strong> Replacing a file on Commons with a corrected version left the old colour in place until local storage was cleared. The key now carries the upload timestamp. The previous colour cache (<code>kitColorCache_v1</code>) is removed on first start of this version: it is a pure derived cache, holds nothing you entered, and is rebuilt within seconds. Nothing else in local storage is touched.</li>
+		<li><strong>The usage scan reads its own cache.</strong> It has been writing it since v6.13.0 but never reading it, so every reload fetched everything again even though the data is valid for 24 hours. A second run over the same files now costs no requests at all.</li>
+		<li><strong>The first-upload date of files with more than 50 versions was wrong.</strong> A batch query returns at most 50 versions per file and gives no continuation marker, so the oldest version returned was mistaken for the original upload. Affected files are fetched individually now, which matters for the "hide file updates" filter: those files were classified as new uploads.</li>
+		<li><strong>The category walk stops at the limit.</strong> Each of the eight kit categories used to page through up to 10,000 entries even when the limit was 100. It now stops once the limit is reached; a category is ordered by the time entries were filed, newest first, so what drops out was filed after the limit's worth of other entries in the same category.</li>
+		<li><strong>A batch whose usage list ran into the API budget is split fully.</strong> Until now only files that came back empty were re-fetched. The file at which the budget ran out gets a truncated list rather than an empty one and was waved through as complete. Splitting also goes deep enough to reach individual files, so their result is cached instead of being fetched afresh every time.</li>
+		<li>Fix: long goalkeeper socks (<code>gkhl</code>, <code>gkal</code>, <code>gktl</code>) were not recognised as long, so they showed up alongside the short ones instead of replacing them.</li>
+		<li>Fix: <code>.tif</code>, <code>.tiff</code> and <code>.webp</code> were missing from the filename analysis and from the pattern token of the infobox code, so the extension stayed in the name and broke kit-type and season detection for those files.</li>
+		<li>Fix: clicking "Fetch data" twice no longer starts a second retrieval alongside the first, where whichever finished last won regardless of the filters it started with.</li>
+		<li>Fix: the PetScan query passed the namespace as <code>ns=1</code>, which is not a valid parameter and was ignored. It is <code>ns[6]=1</code> now. Checked live: the result is identical either way, because the kit categories contain practically nothing but files.</li>
+		<li>The statistics line says "completed in total" for the tick counts; they cover everything you have ever ticked, not just the current view.</li>
+	  </ul>
+	</div>
+	<div class="cl-version">
+	  <h3>v6.13.2 &mdash; 2026-09-14 &mdash; Bug fix</h3>
+	  <ul>
+		<li>Fix: <strong>the error message from a failed retrieval was overwritten immediately.</strong> Since v6.13.1 the redraw ran after the message was set, so all that remained on screen was &bdquo;No teams found&ldquo; instead of the reason. Introduced in v6.13.1, fixed here.</li>
+		<li>Fix: <strong>the post-render timer existed twice.</strong> The wrapper from v5.2 survived alongside the shared timer introduced in v6.13.1, so every redraw scheduled two passes. The wrapper is gone; the five call sites schedule the pass themselves. Introduced in v6.13.1, fixed here.</li>
+		<li>Fix: the <strong>season filter</strong> no longer narrows its own list of options. Picking a season used to remove every other season from the dropdown, so getting back required resetting the filter.</li>
+		<li>Fix: <strong>numbering in the generated infobox code.</strong> Kit parts with a fixed number could collide with automatically numbered ones, which produced two kits sharing a number.</li>
+		<li>Fix: a failed colour analysis is no longer cached. Until now a single failed image load stored an empty colour for that file for the rest of the session.</li>
+		<li>Fix: the kit-set heading no longer runs underneath the tick button, and in light mode links in the card header keep a readable hover colour.</li>
+		<li>Accessibility: the tick buttons carry a label and the checkbox role in every view, the three dialogs announce themselves as dialogs, keep the focus inside while open and hand it back on close, and the version badge is a real button reachable by keyboard.</li>
+		<li>Internal: retries and error handling for all API calls now sit in one place, dead code and 15 unused translation keys removed, several stale comments corrected.</li>
+	  </ul>
+	</div>
+	<div class="cl-version">
+	  <h3>v6.13.1 &mdash; 2026-09-14 &mdash; Bug fix</h3>
+	  <ul>
+		<li>Fix: <strong>usage figures were wrong and stayed wrong.</strong> The usage query asks for up to 500 entries, but that budget applies <em>per request</em>, not per file. A single heavily used file (<code>File:Kit body.svg</code> has tens of thousands of usages) consumed the whole budget, and every file behind it in the same batch came back with nothing. Kitly then cached that nothing for 24 hours. It now follows the API's continuation, splits a batch that runs into the budget, and caches a file only once its list is provably complete.</li>
+		<li>The usage cache key moves to <code>usage_v3_</code>; the old entries are dropped rather than reused, because they may hold exactly the incomplete data described above. Nothing else in local storage is touched, and no completion data is affected.</li>
+		<li>Fix: <strong>a failing part of the retrieval no longer discards the rest.</strong> If one of the five title searches, the category walk or one of the two sources fails, Kitly keeps what the others delivered and says how much is missing. API errors that Commons returns with HTTP 200 and an error body are now recognised as errors, and only genuinely retryable failures (429, 5xx, network) are retried; <code>Retry-After</code> is respected.</li>
+		<li>Fix: <strong>ticks no longer get lost through the spelling of a filename.</strong> Commons treats <code>Kit body x.png</code> and <code>Kit_body_x.png</code> as the same file; Kitly stored them as two keys, so a tick set in one view could be invisible in another. Both spellings are now read, and unticking clears every variant. Stored data is left untouched.</li>
+		<li>The <strong>&bdquo;Depth&ldquo;</strong> field is gone from the interface. The PetScan category crawl always runs at maximum depth now. The setting had no useful case: the kit-template category tree was already covered in full, so any lower value could only lose hits. The functionality itself is unchanged.</li>
+		<li>Fix: an unparseable date no longer sinks a kit set to the bottom of the list. Invalid dates are ignored for the "newest" date and for sorting.</li>
+		<li>Fix: a season written two ways in filenames (<code>16</code> and <code>2016</code>) produced two groups under one and the same heading. Both land in the same season group now; genuine spans such as <code>1617</code> stay separate.</li>
+		<li>Fix: loosening a filter after a usage scan re-scans the files that were not covered before, instead of showing them with an empty usage list.</li>
+		<li>Fix: a refresh started while a usage scan is still running no longer lets the old scan write its results into the new list.</li>
+		<li>Fix: if a retrieval fails, the list from the previous retrieval is cleared instead of staying on screen underneath the error message.</li>
+		<li>Fix: if the browser refuses the automatic copy of the infobox code (Safari, after the colour analysis), the code now appears in a dialog ready to be copied by hand, instead of only in the console.</li>
+		<li>Fix: in the retrieval panel the data source and the limit sat lower than the date field, because the whole row was aligned to the bottom edge of the &bdquo;Since last visit&ldquo; button. The three fields line up again now, with the button below the date. That button also carried its dark-mode surface into light mode, where it appeared as a grey block with white text.</li>
+		<li>Fix: the hover colour of the view toggle no longer turns the label white on a light background; the tooltips of two filter labels are translated as well.</li>
+		<li>Internal: one shared post-render timer instead of one per render, and filenames containing quotation marks are escaped consistently in the generated markup.</li>
+	  </ul>
+	</div>
+	<div class="cl-version">
+	  <h3>v6.13.0 &mdash; 2026-09-14 &mdash; &bdquo;Fl&uuml;gelspiel&ldquo;</h3>
+	  <ul>
+		<li>New: a third data source, <strong>Both (Commons + PetScan)</strong>. It runs the Commons search first, then adds everything PetScan knows on top and merges the two by filename. If PetScan fails or is unreachable, the Commons result is still shown, with a note.</li>
+		<li>New: the Commons source no longer relies on the title alone. On top of the five title searches it now walks the <strong>kit categories live</strong> via the Commons API (<code>categorymembers</code>, newest first, bounded by the chosen date), so files whose name breaks the usual scheme are found as well &ndash; without the Toolforge replica. Note: brand-new uploads are often not categorised at all yet, so the title search still carries most of the load.</li>
+		<li>New: a <strong>&bdquo;Since last visit&ldquo;</strong> button below the date field. Kitly remembers the day of your last successful retrieval and sets the date to it on one click. The button only appears when there is something to jump back to.</li>
+		<li>The <strong>usage cache</strong> is now bounded: one key per file instead of up to three spellings, at most 400 entries, oldest pruned first. If local storage runs out anyway, Kitly says so visibly instead of failing silently.</li>
+		<li>Fix: in the <strong>Kit sets</strong> view, a kit set containing both short and long socks now shows only the long ones, the same way the Teams view has always done.</li>
+		<li>Fix: switching the language now also relabels the <strong>Season</strong> and <strong>Kit type</strong> dropdowns instead of leaving them in the previous language.</li>
+		<li>Fix: the changelog and usage dialogs used two undefined colour variables, which could leave white text on a white background in light mode.</li>
+		<li>Fix: a ticked team button showed <strong>two check marks</strong>, and it ignored the theme setting in dark mode because it read the operating-system preference directly.</li>
+		<li>Fix: the filter panel could cut off its content on short windows; it now scrolls.</li>
+		<li>Internal: filename analysis is cached per retrieval instead of running repeatedly for the same file, and reading the controls no longer changes the date field as a side effect.</li>
+	  </ul>
+	</div>
+	<div class="cl-version">
+	  <h3>v6.12.1 &mdash; 2026-09-14 &mdash; Bug fix</h3>
+	  <ul>
+		<li>Fix: the file meta line showed <code>undefined Bytes</code> for the Commons source, which does not deliver a file size the way PetScan does. The size now comes from the <code>imageinfo</code> query and is left out entirely when it is unknown.</li>
+		<li>Fix: the limit warning fired almost every time with the Commons source. It compared the number of search hits scanned against the limit instead of the number of files actually kept.</li>
+	  </ul>
+	</div>
+	<div class="cl-version">
+	  <h3>v6.12.0 &mdash; 2026-09-14 &mdash; &bdquo;Doppelpass&ldquo;</h3>
+	  <ul>
+		<li>New: <strong>selectable data source</strong> under &bdquo;Data retrieval&ldquo;. <strong>Commons search (live)</strong> is the new default and queries the Commons API directly, so it always sees today's uploads. <strong>PetScan (categories)</strong> is still available and still finds kit parts whose filename breaks the usual scheme, but it reads a Toolforge database replica: while that replica lags, PetScan returns nothing for the most recent days, which is why Kitly appeared to stop finding new kits. The Commons source matches on the title (<code>Kit body/shorts/socks/left arm/right arm</code>) and therefore reports new files reliably, new versions of older files only incidentally.</li>
+		<li>New: a <strong>warning when the source looks stale</strong>. If the newest hit is more than a day behind, Kitly now says so instead of just showing an empty list.</li>
+		<li>Fix: <strong>ticking a team no longer hides its future kits</strong>. The team tick was stored under the club name alone, without a season, so once &bdquo;Chelsea&ldquo; was ticked every Chelsea kit of every later season stayed hidden, including files that did not exist at the time. Team state is now derived from its kit sets.</li>
+		<li>Fix: <strong>a tick in the Teams view and in the Kit sets view is now the same tick.</strong> The two views used different key formats for the same kit set.</li>
+		<li>New: a ticked kit set <strong>reopens when a new part appears</strong>, and a ticked file reopens when a new version is uploaded.</li>
+		<li>Data migration: completion data moves from <code>kitStorage_v5</code> to <code>kitStorage_v6</code> on first start. Kit-set and file ticks are carried over, team ticks are dissolved into their files. Nothing is deleted; the previous state is kept under <code>kitStorage_v5_backup</code> and the result is reported once in the header.</li>
+		<li>Robustness: Commons API calls now retry with backoff on HTTP 429/5xx instead of silently losing part of the result.</li>
+	  </ul>
+	</div>
+	<div class="cl-version">
 	  <h3>v6.11.1 &mdash; 2026-09-01 &mdash; Bug fix</h3>
 	  <ul>
 		<li>Fix: the second Copa Libertadores spelling with a <code>_wc_la</code> suffix, e.g. <code>Kit_body_corinthians13H_wc_la.png</code>, is now parsed correctly &ndash; team &bdquo;Corinthians&ldquo;, season &bdquo;2013&ldquo;, type &bdquo;Copa Libertadores home&ldquo; &ndash; instead of team &bdquo;Corinthians13H_wc&ldquo; with no season. Role <code>H</code>/<code>A</code>/<code>T</code> optional (defaults to home).</li>
@@ -4288,11 +5835,15 @@ function mwToDate(ts) {
 // ── Changelog Modal (v5.3.2) ─────────────────────────────────────────────
 function showChangelogModal() {
   var el = document.getElementById('clOverlay');
-  if (el) el.classList.add('active');
+  if (!el || el.classList.contains('active')) return;
+  el.classList.add('active');
+  if (typeof modalFocusOpen === 'function') modalFocusOpen(el, el.querySelector('.cl-close'));
 }
 function closeChangelogModal() {
   var el = document.getElementById('clOverlay');
-  if (el) el.classList.remove('active');
+  if (!el) return;
+  el.classList.remove('active');
+  if (typeof modalFocusClose === 'function') modalFocusClose(el);
 }
 (function() {
   document.addEventListener('DOMContentLoaded', function() {
